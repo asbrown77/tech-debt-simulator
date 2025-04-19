@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {RulesPage} from './components/RulesPage';
 import { Meeple, SprintData} from './types';
 import { MeepleWithValue, MeeplePlaceholder } from './components/Meeple';
 import DropZone from './components/DropZone';
@@ -12,6 +13,8 @@ import { handleDragStart, handleDrop, allowDrop } from './utils/dragHandlers';
 import { handleBeginTurnLogic } from './utils/turnHandler';
 import { Header } from './components/Header';
 import { generateChartData } from './utils/chartData';
+import { RulesModal } from './components/RulesModal';
+
 
 const maxSprintCount = 10;
 
@@ -38,7 +41,8 @@ export default function App() {
   const [currentSprint, setCurrentSprint] = useState(0);
   const [resultHistory, setResultHistory] = useState<SprintData[]>([]);
   const chartData = generateChartData(resultHistory, maxSprintCount);
-  
+  const [showRules, setShowRules] = useState(true);
+
   const handleBeginTurn = () => {
     const result = handleBeginTurnLogic(
       activeInvestments,
@@ -113,7 +117,33 @@ export default function App() {
   return (
     <div style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: 1200, margin: '0 auto' }}>
 
-    <Header />
+    {/* Header centered, with Rules button on same row (top right) */}
+    <div style={{ position: 'relative', marginBottom: '2rem' }}>
+      <div style={{ textAlign: 'center' }}>
+        <Header />
+      </div>
+
+      <button
+    onClick={() => setShowRules(true)}
+    style={{
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      backgroundColor: '#4dabf7',
+      color: 'white',
+      border: 'none',
+      borderRadius: '6px',
+      padding: '0.5rem 1rem',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    }}
+  >
+    Game Rules
+  </button>
+    </div>
+
+    <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
 
     {/* Build Game Area - 50/50 Split */}
     <div style={{ 
