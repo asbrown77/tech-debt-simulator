@@ -1,0 +1,99 @@
+/* Container for the whole app */
+.container {
+    font-family: sans-serif;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Wrapper for header and rules button */
+  .headerWrapper {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  
+  /* Header title styling */
+  .headerTitle {
+    text-align: center;
+  }
+  
+  /* Rules button in top right */
+  .rulesButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #4dabf7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Layout of game area */
+  .gameArea {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    min-height: 400px;
+  }
+  
+  /* Left column (build + stats) */
+  .leftColumn {
+    flex: 0 0 50%;
+  }
+  
+  /* Available devs area */
+  .devPool {
+    margin-bottom: 2rem;
+    border: 2px dashed #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  /* Meeples layout */
+  .meeples {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  
+  /* Begin turn button wrapper */
+  .buttonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  /* Begin Turn button */
+  .beginButton {
+    padding: 0.75rem 1.5rem;
+    background-color: #4dabf7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Disabled version of the button */
+  .beginButtonDisabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  /* Right column (investment dropzones) */
+  .rightColumn {
+    flex: 0 0 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1rem;
+  }
+  

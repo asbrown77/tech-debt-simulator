@@ -16,61 +16,62 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
         <div style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: 800, margin: '0 auto' }}>
           <h1 style={{ textAlign: 'center' }}>Tech Debt Simulator</h1>
           <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#444' }}>
-            See what happens when you ignore it or pay it down.
+            See what happens when you ignore it… or pay it down.
           </p>
 
           <h2>🎯 Your Goal</h2>
           <p>
-            Deliver as much value as possible across <strong>10 sprints</strong>. But there’s a catch — your team starts with high technical debt.
+            You’ve got <strong>10 sprints</strong> to deliver as much value as possible. Easy? Not quite. <br />
+            You’ve inherited a team buried in tech debt and they can’t release working software every sprint.
           </p>
 
-          <h2>🔨 Developers</h2>
+          <h2>👨‍💻 Your Developers</h2>
           <ul>
-            <li>You have 6 developers. Each starts with a value of <strong>5</strong>.</li>
-            <li>Place developers in the <strong>Build area</strong> to begin working on the next feature.</li>
-            <li>You can also assign developers to <strong>Investments</strong> that improve the team over time.</li>
-            <li>In Build, a developer randomly generates output between <strong>1 and their current value</strong>.</li>
+            <li>You’ve got 6 devs. Each one starts with a power level of <strong>5</strong>.</li>
+            <li>Drop them into the <strong>Build area</strong> to crank out features.</li>
+            <li>Or invest in the future – assign them to <strong>Investments</strong> like CI/CD or Test Coverage.</li>
+            <li>Each dev in Build rolls for value between <strong>1 and their current rating</strong> each sprint.</li>
+          </ul>
+
+          <h2>⏰ Tech Debt Gets in the Way</h2>
+          <ul>
+            <li>You inherited <strong>100% tech debt</strong>. Lucky you.</li>
+            <li>The more you ignore it, the worse it gets – think bugs and failed releases.</li>
+            <li>The only way out? Invest in improvements.</li>
           </ul>
 
           <h2>🧪 Improvements</h2>
           <p>
-            Not all investments are equal — some take more effort to complete but offer <strong>bigger long-term rewards</strong>.
+            You decide which one matters and when to invest. Some are quick wins, others take time but pack a punch.
           </p>
-          <p>When completed, they provide permanent boosts:</p>
           <ul>
-            <li><strong>CI/CD</strong>: +65% release confidence, +1 dev value</li>
-            <li><strong>Test Coverage</strong>: +25% release confidence, +1 dev value</li>
-            <li><strong>Code Quality</strong>: -1 tech debt, +1 dev value</li>
-            <li><strong>Reduce Complexity</strong>: -3 tech debt</li>
+            <li><strong>Increase developer’s value</strong> – Your devs get better at building features</li>
+            <li><strong>Higher release confidence</strong> – More chance your work actually gets delivered</li>
+            <li><strong>Lower tech debt</strong> – Fewer bugs, faster progress</li>
+          </ul>
+          <p>Once complete, they’re <strong>permanent upgrades</strong>.</p>
+
+          <h2>📋 How the Game Works</h2>
+          <ul>
+            <li>Only devs in Build generate value.</li>
+            <li>Bugs show up when tech debt’s high. They eat into your progress!</li>
+            <li>Releasing is a dice roll if not a simple activity. More confidence, better the odds.</li>
+            <li>Value is only delivered when work is released.</li>
+            <li>Fail the release? You lose all value from that sprint.</li>
+            <li>After 10 sprints, the game ends. </li>
+            <li>Check your results. What would you change next time?</li>
           </ul>
 
-          <h2>🔁 Sprints</h2>
-          <ul>
-            <li>Only developers in the Build area generate value.</li>
-            <li>Bugs appear when tech debt is high, reducing your net output.</li>
-            <li>Releases depend on your <strong>release confidence</strong>. The higher it is, the more likely you succeed.</li>
-            <li>If the release fails, all value from that sprint is lost.</li>
-          </ul>
-
-          <h2>🚨 Tech Debt</h2>
-          <ul>
-            <li>Your team starts overloaded — tech debt is at <strong>100%</strong>.</li>
-            <li>If left unchecked, it leads to bugs and failed deliveries.</li>
-            <li>Investments help reduce it.</li>
-          </ul>
-
-          <h2>🏁 Game Over</h2>
-          <p>
-            After 10 sprints, review how your strategy played out. What would you change next time?
+          <p style={{ marginTop: '2rem', fontSize: '1rem', textAlign: 'center' }}>
+            <strong>
+              Deliver now or build the team that keeps delivering value? You decide.
+            </strong>
           </p>
 
-          <p style={{ marginTop: '2rem', fontSize: '1rem', color: '#666' }}>
-            Now… can you balance building features with investing in your future?
-          </p>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
             <button
-                onClick={onClose}
-                style={{
+              onClick={onClose}
+              style={{
                 padding: '0.75rem 1.5rem',
                 backgroundColor: '#4dabf7',
                 color: 'white',
@@ -80,15 +81,13 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
                 fontWeight: 'bold',
                 cursor: 'pointer',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                }}
+              }}
             >
-                Let’s Begin
+              Let’s Begin
             </button>
           </div>
         </div>
-        
       </div>
-      
     </div>
   );
 };

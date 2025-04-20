@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import {RulesPage} from './components/RulesPage';
 import { Meeple, SprintData} from './types';
-import { MeepleWithValue, MeeplePlaceholder } from './components/Meeple';
+import { MeepleWithValue } from './components/Meeple';
 import DropZone from './components/DropZone';
 import { GameStats } from './components/GameStats';
 import { SprintChart } from './components/SprintChart';
@@ -9,13 +8,14 @@ import { ResultHistoryTable } from './components/ResultHistoryTable';
 import { investmentConfigs } from './config/investments';
 import { initialMeeples } from './config/meeples';
 import { SprintCounter } from './components/SprintCounter';
-import { handleDragStart, handleDrop, allowDrop } from './utils/dragHandlers';
+import { handleDragStart, handleDrop } from './utils/dragHandlers';
 import { handleBeginTurnLogic } from './utils/turnHandler';
 import { Header } from './components/Header';
 import { generateChartData } from './utils/chartData';
 import { RulesModal } from './components/RulesModal';
-
-
+import { Layout } from './components/Layout';
+import styles from './App.module.css';
+import logo from './bagile-logo.svg';
 const maxSprintCount = 10;
 
 export default function App() {
@@ -114,72 +114,54 @@ export default function App() {
     setResultHistory([]);
   };
 
+  const disableTurn =
+  meeples.length > 0 || currentSprint >= maxSprintCount;
+
+  const getTurnButtonText = () => {
+    if (currentSprint >= maxSprintCount) return 'Game Over';
+    if (meeples.length > 0) return 'Allocate All Developers';
+    return 'Begin Turn';
+  };
+
   return (
-    <div style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: 1200, margin: '0 auto' }}>
+    <Layout>
 
-    {/* Header centered, with Rules button on same row (top right) */}
-    <div style={{ position: 'relative', marginBottom: '2rem' }}>
-      <div style={{ textAlign: 'center' }}>
-        <Header />
-      </div>
-
-      <button
-    onClick={() => setShowRules(true)}
-    style={{
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      backgroundColor: '#4dabf7',
-      color: 'white',
-      border: 'none',
-      borderRadius: '6px',
-      padding: '0.5rem 1rem',
-      cursor: 'pointer',
-      fontWeight: 'bold',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-    }}
-  >
-    Game Rules
-  </button>
-    </div>
-
-    <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
-
-    {/* Build Game Area - 50/50 Split */}
-    <div style={{ 
-      display: 'flex', 
-      gap: '2rem', 
-      marginBottom: '2rem',
-      minHeight: '400px'
-    }}>
-        {/* Build - 50% */}
-        <div style={{ flex: '0 0 50%' }}>
-         
-         {/* Available Developers */}
-        <div style={{ 
-          marginBottom: '2rem', 
-          border: '2px dashed #ccc', 
-          padding: '1rem',
-          borderRadius: 8
-        }}>
-          <strong>Available Developers</strong>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-            {meeples.map((m) => (
-              <MeepleWithValue 
-                key={`available-${m.id}`}
-                meeple={m} 
-                onDragStart={(e, m) => {
-                  if (e.currentTarget instanceof HTMLElement) {
-                    e.currentTarget.style.opacity = '0.5';
-                  }
-                  handleDragStart(e, m, 'available');
-                }}
-                isInvestment={false}
-              />
-            ))}
+      {/* Header centered, with Rules button on same row (top right) */}
+      <div className={styles.headerWrapper}>
+        <div className={styles.headerTitle}>
+          <Header />
         </div>
-                
+
+        <button className={styles.rulesButton}
+          onClick={() => setShowRules(true)}>
+        Game Rules
+        </button>
       </div>
+
+      <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
+
+      {/* Build Game Area - 50/50 Split */}
+      <div className={styles.gameArea}>
+        <div className={styles.leftColumn}>
+          <div className={styles.devPool}>
+            <strong>Available Developers</strong>
+            <div className={styles.meeples}>              
+              {meeples.map((m) => (
+                  <MeepleWithValue 
+                    key={`available-${m.id}`}
+                    meeple={m} 
+                    onDragStart={(e, m) => {
+                      if (e.currentTarget instanceof HTMLElement) {
+                        e.currentTarget.style.opacity = '0.5';
+                      }
+                      handleDragStart(e, m, 'available');
+                    }}
+                    isInvestment={false}
+                  />
+                ))}
+            </div>
+                    
+          </div>
           <DropZone 
             title="Build" 
             area={mainArea} 
@@ -202,49 +184,20 @@ export default function App() {
           />
 
           {/* Begin Turn Button */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center',
-            marginTop: '1rem'
-          }}>
-            <button 
-              onClick={() => {
-                console.log('Button clicked');
-                handleBeginTurn();
-              }}
-              disabled={meeples.length > 0 || currentSprint >= maxSprintCount }
-              style={{
-                padding: '0.75rem 1.5rem',
-                backgroundColor: meeples.length > 0 || currentSprint >= maxSprintCount ? '#ccc' : '#4dabf7',
-                color: 'white',
-                border: 'none',
-                borderRadius: 8,
-                cursor: meeples.length > 0 || currentSprint >= maxSprintCount ? 'not-allowed' : 'pointer',
-                fontSize: '1.1rem',
-                fontWeight: 'bold',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                opacity: meeples.length > 0 || currentSprint >= maxSprintCount ? 0.7 : 1
-              }}
+          <div className={styles.buttonWrapper}>
+            <button
+              className={`${styles.beginButton} ${disableTurn ? styles.beginButtonDisabled : ''}`}
+              onClick={handleBeginTurn}
+              disabled={disableTurn}
             >
-                {currentSprint >= maxSprintCount 
-                ? 'Game Over'
-                : meeples.length > 0
-                    ? 'Allocate All Developers'
-                    : 'Begin Turn'}
+              {getTurnButtonText()}
             </button>
-
           </div>
-          
+            
         </div>
 
         {/* Investment Area - 50% */}
-        <div style={{ 
-          flex: '0 0 50%',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gridTemplateRows: '1fr 1fr',
-          gap: '1rem'
-        }}>
+        <div className={styles.rightColumn}>
           {investmentConfigs.map((investment) => (
             <DropZone
               key={investment.name}
@@ -265,7 +218,7 @@ export default function App() {
             />
           ))}
         </div>
-    </div> 
+      </div> 
 
       {/* Sprint Counter */}
       <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
@@ -273,6 +226,52 @@ export default function App() {
       <SprintChart data={chartData} />
       {/* Sprint History Table */}
       <ResultHistoryTable data={resultHistory} />
-    </div>
+
+      <hr style={{ marginTop: '3rem', marginBottom: '1rem' }} />
+
+      <footer
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '0.9rem',
+          color: '#666',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}
+      >
+        <div style={{ textAlign: 'center', flex: 1 }}>
+          <p style={{ margin: 5 }}>
+            <strong>Got feedback or ideas to improve the game? </strong>Email us at{' '}
+            <a
+              href="mailto:alexbrow@bagile.co.uk"
+              style={{ color: '#4dabf7', textDecoration: 'none' }}
+            >
+              alexbrow@bagile.co.uk
+            </a>
+          </p>
+          <p style={{ margin: 0 }}>
+            © 2024{' '}
+            <a
+              href="https://www.bagile.co.uk"
+              style={{ color: '#4dabf7', textDecoration: 'none' }}
+            >
+              bagile.co.uk
+            </a>{' '}
+            - Making agility part of your DNA.
+          </p>
+        </div>
+
+        <img
+          src={logo}
+          alt="Bagile logo"
+          style={{
+            height: '32px',
+            marginRight: '1rem',
+          }}
+        />
+      </footer>
+
+    </Layout>
   );
 } 
