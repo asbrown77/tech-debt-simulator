@@ -5,23 +5,37 @@ export type GameStatsProps = {
   techDebt: number;
   releaseConfidence: number;
   developerValue: number;
+  prevTechDebt: number;
+  prevConfidence: number;
+  prevDevPower: number;
 };
 
 export const GameStats = ({
   techDebt,
   releaseConfidence,
-  developerValue
+  developerValue,
+  prevTechDebt,
+  prevConfidence,
+  prevDevPower
 }: GameStatsProps) => (
-  <div className={styles.tableContainer}>
-    <div className={styles.row}>
-      <div className={styles.cell}>Tech Debt</div>
-      <div className={styles.cell}>Release Confidence</div>
-      <div className={styles.cell}>Dev Output</div>
+  <div className={styles.teamValues}>
+    <div>
+      <span className={styles.label}>Tech Debt</span>
+      <span className={`${styles.value} ${techDebt < prevTechDebt ? styles.improved : ''}`}>
+        {techDebt}%
+      </span>
     </div>
-    <div className={styles.row}>
-      <div className={styles.cell}>{techDebt}%</div>
-      <div className={styles.cell}>{releaseConfidence}%</div>
-      <div className={styles.cell}>1 to {developerValue}</div>
+    <div>
+      <span className={styles.label}>Confidence</span>
+      <span className={`${styles.value} ${releaseConfidence > prevConfidence ? styles.improved : ''}`}>
+        {releaseConfidence}%
+      </span>
+    </div>
+    <div>
+      <span className={styles.label}>Dev Output</span>
+      <span className={`${styles.value} ${developerValue > prevDevPower ? styles.improved : ''}`}>
+        1 to {developerValue}
+      </span>
     </div>
   </div>
 );

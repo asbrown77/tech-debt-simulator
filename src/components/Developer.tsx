@@ -15,33 +15,40 @@ export const DeveloperWithValue = ({
   onDragStart,
   developerPower,
   isInvestment,
-}: DeveloperWithValueProps) => (
-  <div className={styles.wrapper}>
-    <img
-      src={developerIcon}
-      draggable
-      onDragStart={(e) => onDragStart(e, developer)}
-      onDragEnd={(e) => {
-        if (e.currentTarget instanceof HTMLElement) {
-          e.currentTarget.style.opacity = '1';
-        }
-      }}
-      className={`${styles.image} ${isInvestment ? styles.imageInvestment : ''}`}
-      alt={`Developer ${developer.id}`}
-    />
-    <div className={styles.valueTag}>{developerPower}</div>
+}: DeveloperWithValueProps) => {
+  const showOutput = !isInvestment && developer.output && developer.output > 0;
 
-    {isInvestment && developer.turnsRemaining !== undefined && (
-      <div
-        className={`${styles.turnTag} ${
-          developer.turnsRemaining === 0 ? styles.turnDone : ''
-        }`}
-      >
-        {developer.turnsRemaining}
+  return (
+    <div className={styles.outerWrapper}>
+      <div className={styles.wrapper}>
+        <img
+          src={developerIcon}
+          draggable
+          onDragStart={(e) => onDragStart(e, developer)}
+          onDragEnd={(e) => {
+            if (e.currentTarget instanceof HTMLElement) {
+              e.currentTarget.style.opacity = '1';
+            }
+          }}
+          className={`${styles.image} ${isInvestment ? styles.imageInvestment : ''}`}
+          alt={`Developer ${developer.id}`}
+        />
+
+        <div className={styles.valueTag}>{developerPower}</div>
+
+        {isInvestment && developer.turnsRemaining !== undefined && (
+          <div className={`${styles.turnTag} ${developer.turnsRemaining === 0 ? styles.turnDone : ''}`}>
+            {developer.turnsRemaining}
+          </div>
+        )}
       </div>
-    )}
-  </div>
-);
+
+      {/* Only render if in Build and output > 0 */}
+      {showOutput && <div className={styles.outputTag}>{developer.output}</div>}
+    </div>
+  );
+};
+
 
 export const DeveloperPlaceholder = () => (
   <div className={styles.placeholder} />

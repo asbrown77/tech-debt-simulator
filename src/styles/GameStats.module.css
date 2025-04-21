@@ -32,6 +32,11 @@
     color: white;
   }
 
+  .improved {
+    color: #b3f38e; /* bright green */
+    font-weight: bold;
+  }
+
   .tableContainer {
     display: grid;
     color: white;

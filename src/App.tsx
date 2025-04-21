@@ -30,6 +30,9 @@ export default function App() {
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
   const chartData = generateChartData(resultHistory, maxSprintCount);
   const disableTurn = developers.length > 0 || currentSprint >= maxSprintCount;
+  const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
+  const [prevConfidence, setPrevConfidence] = useState(10);
+  const [prevDevPower, setPrevDevPower] = useState(developerPower);
 
   const [activeInvestments, setActiveInvestments] = useState<{ [key: string]: Developer[] }>(
     investmentConfigs.reduce((acc, investment) => ({
@@ -62,6 +65,10 @@ export default function App() {
       setDeveloperPower(prev => prev + 1);
     }
     
+    setPrevTechDebt(techDebt);
+    setPrevConfidence(currentSprintData.releaseConfidence);
+    setPrevDevPower(developerPower);
+
     setTurnsRemaining(result.updatedTurns);
     setCompletedInvestments(result.updatedCompleted);
     setDevelopers(result.updatedDevelopers);
@@ -159,6 +166,9 @@ export default function App() {
             techDebt={currentSprintData.techDebt}
             releaseConfidence={currentSprintData.releaseConfidence}
             developerValue={developerPower}
+            prevTechDebt={prevTechDebt}
+            prevConfidence={prevConfidence}
+            prevDevPower={prevDevPower}
           />
 
           <DropZone 

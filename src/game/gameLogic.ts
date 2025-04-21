@@ -30,6 +30,13 @@ export function handleBeginTurnLogic(
   let updatedTechDebt = techDebt;
   let increasePower = false;
 
+  // 1. Reset all developers' output to null
+  updatedDevelopers = updatedDevelopers.map(dev => ({ ...dev, output: null }));
+  Object.keys(updatedActiveInvestments).forEach(key => {
+    updatedActiveInvestments[key] = updatedActiveInvestments[key].map(dev => ({ ...dev, output: null }));
+  });
+  
+
   newlyCompleted.forEach((name) => {
     const investment = investmentConfigs.find((i) => i.name === name)!;
     const completedDevelopers = activeInvestments[name];
@@ -46,26 +53,28 @@ export function handleBeginTurnLogic(
     }
   });
 
-  // Calculate confidence
+  // 2. Calculate release confidence
   let confidence = 10;
   if (updatedCompleted.has('CI/CD')) confidence += 65;
   if (updatedCompleted.has('Test Coverage')) confidence += 25;
   confidence = Math.min(confidence, 100);
 
-  // Generate value from build area
+  // 3. Calculate dev output and bugs
   let totalValue = 0;
   let bugs = 0;
 
-  updatedMainArea.forEach(() => {
-    totalValue += Math.floor(Math.random() * developerPower) + 1;
+  updatedMainArea = updatedMainArea.map((dev) => {
+    const output = Math.floor(Math.random() * developerPower) + 1;
     const roll = Math.random() * 100;
-    if (roll <= updatedTechDebt) {
-      bugs++;
-    }
+    const bug = roll <= updatedTechDebt;
+
+    if (bug) bugs++;
+    totalValue += output;
+
+    return { ...dev, output };
   });
 
   const netValue = totalValue - bugs;
-
   let delivered = resultHistory.at(-1)?.totalValueDelivered || 0;
   let released = false;
 

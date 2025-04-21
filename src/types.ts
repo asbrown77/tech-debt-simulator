@@ -2,6 +2,7 @@ export type Developer = {
     id: number;
     name: string;
     turnsRemaining?: number;
+    output?: number | null; 
   };
 
   
