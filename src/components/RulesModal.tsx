@@ -28,7 +28,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
           <h2>👨‍💻 Your Developers</h2>
           <ul>
             <li>You’ve got 6 devs. Each one starts with a power level of <strong>5</strong>.</li>
-            <li>Drop them into the <strong>Build area</strong> to crank out features.</li>
+            <li>Double click the area, or drop them into the <strong>Build area</strong> to crank out features.</li>
             <li>Or invest in the future – assign them to <strong>Investments</strong> like CI/CD or Test Coverage.</li>
             <li>Each dev in Build rolls for value between <strong>1 and their current rating</strong> each sprint.</li>
           </ul>
@@ -36,7 +36,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
           <h2>⏰ Tech Debt Gets in the Way</h2>
           <ul>
             <li>You inherited <strong>100% tech debt</strong>. Lucky you.</li>
-            <li>The more you ignore it, the worse it gets – think bugs and failed releases.</li>
+            <li>The more you ignore it, the worse it gets – think increased bugs and failed releases.</li>
             <li>The only way out? Invest in improvements.</li>
           </ul>
 
