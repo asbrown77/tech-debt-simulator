@@ -47,6 +47,7 @@ export function handleBeginTurnLogic(
         ...Object.values(activeInvestments).flat(),
         ...completedDevelopers
       ];
+      
       const increaseValueDeveloperMap = new Map<number, Developer>();
       for (const m of all) {
         increaseValueDeveloperMap.set(m.id, { ...m, value: m.value + 1 });
@@ -64,33 +65,33 @@ export function handleBeginTurnLogic(
   // Calculate confidence
   let confidence = 10;
   if (updatedCompleted.has('CI/CD')) confidence += 65;
-  if (updatedCompleted.has('Test Coverage')) confidence += 25;
+  if (updatedCompleted.has('Test Coverage')) confidence += 15;
   confidence = Math.min(confidence, 100);
 
   // Generate value from build area
   let totalValue = 0;
+  let bugs = 0;
+
+
   updatedMainArea.forEach(m => {
     totalValue += Math.floor(Math.random() * m.value) + 1;
+    const roll = Math.random() * 100;
+    if (roll <= updatedTechDebt) {
+      bugs++;
+    }
   });
 
-  if (updatedCompleted.has('CI/CD')) {
-    totalValue += updatedMainArea.length;
-  }
-
-  const bugs = Math.max(0, Math.floor((updatedTechDebt - 80) / 10));
   const netValue = totalValue - bugs;
 
   let delivered = resultHistory.at(-1)?.totalValueDelivered || 0;
   let released = false;
-  if (netValue >= 15) {
-    const roll = Math.floor(Math.random() * 100) + 1;
-    if (roll <= confidence) {
-      released = true;
-      delivered += netValue;
-    }
+
+  if (calculateRelease(netValue, confidence)) {
+    released = true;
+    delivered += netValue;
   }
 
-  const newSprint: SprintData = {
+  const turnSprintData: SprintData = {
     sprintNumber: currentSprint + 1,
     techDebt: updatedTechDebt,
     releaseConfidence: confidence,
@@ -108,6 +109,6 @@ export function handleBeginTurnLogic(
     updatedMainArea,
     updatedActiveInvestments,
     updatedTechDebt,
-    newSprint
+    turnSprintData
   };
 }

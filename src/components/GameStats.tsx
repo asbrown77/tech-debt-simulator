@@ -54,8 +54,8 @@ export const TurnValues = ({
       marginBottom: '1rem'
     }}
   >
-    <div><strong>Value:</strong> {value}</div>
-    <div><strong>Bugs:</strong> {bugs}</div>
+    <div><strong>Dev Output:</strong> {value}</div>
+    <div><strong>Number of Bugs:</strong> {bugs}</div>
     <div><strong>Net Output:</strong> {netValue}</div>
     <div><strong>Release Successful:</strong> {successfulRelease ? 'Yes' : 'No'}</div>
   </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Developer } from '../types';
-import { DeveloperWithValue } from './Developer';
+import { DeveloperPlaceholder, DeveloperWithValue } from './Developer';
 
 type DropZoneProps = {
   title: string;
@@ -41,17 +41,6 @@ const DropZone: React.FC<DropZoneProps> = ({
   const allowDrop = (event: React.DragEvent) => {
     event.preventDefault();
   };
-
-  const DeveloperPlaceholder = () => (
-    <div style={{
-      width: 50,
-      height: 50,
-      border: '2px dashed #666',
-      borderRadius: '50%',
-      opacity: 0.5,
-      margin: '0.5rem'
-    }} />
-  );
 
   return (
     <div
@@ -133,19 +122,25 @@ const DropZone: React.FC<DropZoneProps> = ({
             )}
           </div>
         ))}
-        {isBuildArea && area.map((m) => (
-          <DeveloperWithValue
-            key={`Build-${m.id}`}
-            developer={m}
-            onDragStart={(e, m) => {
-              if (e.currentTarget instanceof HTMLElement) {
-                e.currentTarget.style.opacity = '0.5';
-              }
-              handleDragStart(e, m, title);
-            }}
-            isInvestment={false}
-          />
-        ))}
+          {isBuildArea && Array(6).fill(null).map((_, index) => (
+            <div key={`build-slot-${index}`} style={{ position: 'relative' }}>
+              {area[index] ? (
+                <DeveloperWithValue
+                  key={`Build-${area[index].id}`}
+                  developer={area[index]}
+                  onDragStart={(e, m) => {
+                    if (e.currentTarget instanceof HTMLElement) {
+                      e.currentTarget.style.opacity = '0.5';
+                    }
+                    handleDragStart(e, m, title);
+                  }}
+                  isInvestment={false}
+                />
+              ) : (
+                <DeveloperPlaceholder />
+              )}
+            </div>
+          ))}
       </div>
 
       {description && (

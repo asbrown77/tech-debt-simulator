@@ -62,7 +62,7 @@ export default function App() {
     setMainArea(result.updatedMainArea);
     setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
-    setResultHistory(prev => [...prev, result.newSprint]);
+    setResultHistory(prev => [...prev, result.turnSprintData]);
     setCurrentSprint(prev => prev + 1);
   };  
 
