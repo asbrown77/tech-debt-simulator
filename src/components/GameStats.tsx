@@ -49,14 +49,15 @@ export const TurnValues = ({
       borderRadius: 8,
       border: '1px solid #dee2e6',
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: '0.5rem',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr',
+      gap: '0.5 rem',
       marginBottom: '1rem'
     }}
   >
     <div><strong>Value:</strong> {value}</div>
     <div><strong>Bugs:</strong> {bugs}</div>
-    <div><strong>Net Ouput:</strong> {netValue}</div>
+    <div><strong>Net Output:</strong> {netValue}</div>
     <div><strong>Release Successful:</strong> {successfulRelease ? 'Yes' : 'No'}</div>
   </div>
 );
+

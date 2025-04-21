@@ -201,13 +201,6 @@ export default function App() {
             cumulativeValue={resultHistory.reduce((sum, s) => sum + s.devOutput, 0)}
             bugs={currentSprintData.bugs}
           />
-
-          <TurnValues
-            value={currentSprintData.devOutput}
-            bugs={currentSprintData.bugs}
-            netValue={currentSprintData.netValue}
-            successfulRelease={currentSprintData.released}
-          />
             
         </div>
 
@@ -234,10 +227,21 @@ export default function App() {
             />
           ))}
         </div>
+        
       </div> 
+
+
 
       {/* Sprint Counter */}
       <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
+
+      <TurnValues
+            value={currentSprintData.devOutput}
+            bugs={currentSprintData.bugs}
+            netValue={currentSprintData.netValue}
+            successfulRelease={currentSprintData.released}
+          />
+          
       {/* Graph */}
       <SprintChart data={chartData} />
       {/* Sprint History Table */}
