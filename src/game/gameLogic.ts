@@ -65,7 +65,7 @@ export function handleBeginTurnLogic(
   // Calculate confidence
   let confidence = 10;
   if (updatedCompleted.has('CI/CD')) confidence += 65;
-  if (updatedCompleted.has('Test Coverage')) confidence += 15;
+  if (updatedCompleted.has('Test Coverage')) confidence += 25;
   confidence = Math.min(confidence, 100);
 
   // Generate value from build area

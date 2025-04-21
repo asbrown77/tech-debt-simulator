@@ -10,7 +10,7 @@ import { initialDevelopers } from './config/developers';
 import { SprintCounter } from './components/SprintCounter';
 import { handleDragStart, handleDrop } from './utils/dragHandlers';
 import { handleBeginTurnLogic } from './game/gameLogic';
-import { Header } from './components/Header';
+import Header from './components/Header';
 import { generateChartData } from './utils/chartData';
 import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
@@ -129,7 +129,7 @@ export default function App() {
 
   return (
     <Layout>
-
+  <div className={styles.appContainer}>
       {/* Header centered, with Rules button on same row (top right) */}
       <div className={styles.headerWrapper}>
         <div className={styles.headerTitle}>
@@ -147,8 +147,30 @@ export default function App() {
       {/* Build Game Area - 50/50 Split */}
       <div className={styles.gameArea}>
         <div className={styles.leftColumn}>
+
+          {/* Game Parameters Box */}
+          <GameStats
+            techDebt={currentSprintData.techDebt}
+            releaseConfidence={currentSprintData.releaseConfidence}
+            developerValue={developers[0]?.value ?? 0}
+          />
+
+          <DropZone 
+            title="Build" 
+            area={mainArea} 
+            setArea={setMainArea} 
+            isBuildArea={true}  
+            turnsRemaining={turnsRemaining}
+            handleDoubleClick={() => handleDropZoneDoubleClick('Build')}
+            handleDrop={onDrop}
+            handleDragStart={handleDragStart}
+            completedInvestments={completedInvestments}
+            investmentConfigs={investmentConfigs}
+          />
+          
+<br/>
           <div className={styles.devPool}>
-            <strong>Available Developers</strong>
+            {/* <strong>Available Developers</strong> */}
             <div className={styles.developers}>              
               {developers.map((m) => (
                   <DeveloperWithValue 
@@ -165,23 +187,8 @@ export default function App() {
                 ))}
             </div>
                     
-          </div>
-
-          <DropZone 
-            title="Build" 
-            area={mainArea} 
-            setArea={setMainArea} 
-            color="#eef"
-            isBuildArea={true}  
-            turnsRemaining={turnsRemaining}
-            handleDoubleClick={() => handleDropZoneDoubleClick('Build')}
-            handleDrop={onDrop}
-            handleDragStart={handleDragStart}
-            completedInvestments={completedInvestments}
-            investmentConfigs={investmentConfigs}
-          />
+          </div>     
           
-
           {/* Begin Turn Button */}
           <div className={styles.buttonWrapper}>
             <button
@@ -192,16 +199,6 @@ export default function App() {
               {getTurnButtonText()}
             </button>
           </div>
-
-<br/>
-          {/* Game Parameters Box */}
-          <GameStats
-            techDebt={currentSprintData.techDebt}
-            releaseConfidence={currentSprintData.releaseConfidence}
-            cumulativeValue={resultHistory.reduce((sum, s) => sum + s.devOutput, 0)}
-            bugs={currentSprintData.bugs}
-          />
-            
         </div>
 
         {/* Investment Area - 50% */}
@@ -214,7 +211,6 @@ export default function App() {
               setArea={(updater) =>
                 setActiveInvestments((prev) => ({ ...prev, [investment.name]: updater(prev[investment.name]) }))
               }
-              color= "#efe"
               description={investment.description}
               maxDevelopers={investment.maxDevelopers}
               turnsToComplete={investment.turnsToComplete}
@@ -291,7 +287,7 @@ export default function App() {
           }}
         />
       </footer>
-
+      </div>
     </Layout>
   );
 } 

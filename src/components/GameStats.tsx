@@ -1,30 +1,28 @@
 import React from 'react';
+import styles from '../styles/GameStats.module.css';
 
 export type GameStatsProps = {
   techDebt: number;
   releaseConfidence: number;
-  cumulativeValue: number;
-  bugs: number;
+  developerValue: number;
 };
 
 export const GameStats = ({
   techDebt,
-  releaseConfidence
+  releaseConfidence,
+  developerValue
 }: GameStatsProps) => (
-  <div
-    style={{
-      backgroundColor: '#f8f9fa',
-      padding: '1rem',
-      borderRadius: 8,
-      border: '1px solid #dee2e6',
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: '0.5rem',
-      marginBottom: '1rem'
-    }}
-  >
-    <div><strong>Tech Debt:</strong> {techDebt}%</div>
-    <div><strong>Release Confidence:</strong> {releaseConfidence}%</div>
+  <div className={styles.tableContainer}>
+    <div className={styles.row}>
+      <div className={styles.cell}>Tech Debt</div>
+      <div className={styles.cell}>Release Confidence</div>
+      <div className={styles.cell}>Dev Output</div>
+    </div>
+    <div className={styles.row}>
+      <div className={styles.cell}>{techDebt}%</div>
+      <div className={styles.cell}>{releaseConfidence}%</div>
+      <div className={styles.cell}>1 to {developerValue}</div>
+    </div>
   </div>
 );
 
@@ -42,22 +40,24 @@ export const TurnValues = ({
   netValue,
   successfulRelease
 }: TurnValuesProps) => (
-  <div
-    style={{
-      backgroundColor: '#f8f9fa',
-      padding: '1rem',
-      borderRadius: 8,
-      border: '1px solid #dee2e6',
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr 1fr',
-      gap: '0.5 rem',
-      marginBottom: '1rem'
-    }}
+  <div className={styles.turnValues} 
   >
-    <div><strong>Dev Output:</strong> {value}</div>
-    <div><strong>Number of Bugs:</strong> {bugs}</div>
-    <div><strong>Net Output:</strong> {netValue}</div>
-    <div><strong>Release Successful:</strong> {successfulRelease ? 'Yes' : 'No'}</div>
+ <div>
+      <span className={styles.label}>Dev Output:</span>
+      <span className={styles.value}>{value}</span>
+    </div>
+    <div>
+      <span className={styles.label}>Number of Bugs:</span>
+      <span className={styles.value}>{bugs}</span>
+    </div>
+    <div>
+      <span className={styles.label}>Net Output:</span>
+      <span className={styles.value}>{netValue}</span>
+    </div>
+    <div>
+      <span className={styles.label}>Release Successful:</span>
+      <span className={styles.value}>{successfulRelease ? 'Yes' : 'No'}</span>
+    </div>
   </div>
 );
 

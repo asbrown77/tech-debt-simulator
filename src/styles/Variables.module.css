@@ -1,0 +1,11 @@
+:root {
+    --bagile-blue: #007bff;
+    --bagile-dark-blue: #003366;
+    --bagile-orange: #ff7700;
+    --light-gray: #f8f9fa;
+    --mid-gray: #dee2e6;
+    --text-gray: #666666;
+    --border-radius: 8px;
+    --font-primary: 'Montserrat', sans-serif;
+    --font-heading: 'Nexa', sans-serif;
+  }

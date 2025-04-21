@@ -1,0 +1,23 @@
+.wrapper {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.item {
+  flex: 1;
+  font-weight: bold;
+}
+
+.value {
+  display: block;
+  font-weight: normal;
+  margin-top: 0.25rem;
+}
