@@ -5,7 +5,6 @@ import { calculateRelease } from './calculateRelease';
 import { uniqueDevelopers } from '../utils/helpers';
 import { SprintData } from '../types';
 
-
 export function handleBeginTurnLogic(
   activeInvestments: { [key: string]: Developer[] },
   investmentConfigs: InvestmentConfig[],
@@ -15,7 +14,8 @@ export function handleBeginTurnLogic(
   mainArea: Developer[],
   resultHistory: SprintData[],
   currentSprint: number,
-  techDebt: number
+  techDebt: number,
+  developerPower: number
 ) {
   const { updatedTurns, updatedCompleted, newlyCompleted } = processInvestments(
     activeInvestments,
@@ -28,9 +28,10 @@ export function handleBeginTurnLogic(
   let updatedMainArea = [...mainArea];
   let updatedActiveInvestments = { ...activeInvestments };
   let updatedTechDebt = techDebt;
+  let increasePower = false;
 
-  newlyCompleted.forEach(name => {
-    const investment = investmentConfigs.find(i => i.name === name)!;
+  newlyCompleted.forEach((name) => {
+    const investment = investmentConfigs.find((i) => i.name === name)!;
     const completedDevelopers = activeInvestments[name];
 
     const currentUnits = Math.ceil((updatedTechDebt * BASE_TECH_DEBT) / 100);
@@ -41,24 +42,7 @@ export function handleBeginTurnLogic(
     updatedActiveInvestments[name] = [];
 
     if (investment.increaseValue) {
-      const all = [
-        ...updatedDevelopers,
-        ...updatedMainArea,
-        ...Object.values(activeInvestments).flat(),
-        ...completedDevelopers
-      ];
-      
-      const increaseValueDeveloperMap = new Map<number, Developer>();
-      for (const m of all) {
-        increaseValueDeveloperMap.set(m.id, { ...m, value: m.value + 1 });
-      }
-
-      updatedDevelopers = updatedDevelopers.map(m => increaseValueDeveloperMap.get(m.id) ?? m);
-      updatedMainArea = updatedMainArea.map(m => increaseValueDeveloperMap.get(m.id) ?? m);
-      updatedActiveInvestments = Object.entries(updatedActiveInvestments).reduce((acc, [key, value]) => {
-        acc[key] = value.map(m => increaseValueDeveloperMap.get(m.id) ?? m);
-        return acc;
-      }, {} as typeof activeInvestments);
+      increasePower = true;
     }
   });
 
@@ -72,9 +56,8 @@ export function handleBeginTurnLogic(
   let totalValue = 0;
   let bugs = 0;
 
-
-  updatedMainArea.forEach(m => {
-    totalValue += Math.floor(Math.random() * m.value) + 1;
+  updatedMainArea.forEach(() => {
+    totalValue += Math.floor(Math.random() * developerPower) + 1;
     const roll = Math.random() * 100;
     if (roll <= updatedTechDebt) {
       bugs++;
@@ -99,7 +82,7 @@ export function handleBeginTurnLogic(
     netValue,
     bugs,
     totalValueDelivered: delivered,
-    released
+    released,
   };
 
   return {
@@ -109,6 +92,7 @@ export function handleBeginTurnLogic(
     updatedMainArea,
     updatedActiveInvestments,
     updatedTechDebt,
-    turnSprintData
+    turnSprintData,
+    increasePower,
   };
 }

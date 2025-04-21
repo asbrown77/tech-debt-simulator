@@ -1,7 +1,6 @@
 export type Developer = {
     id: number;
     name: string;
-    value: number;
     turnsRemaining?: number;
   };
 

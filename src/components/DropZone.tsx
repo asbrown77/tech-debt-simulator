@@ -25,6 +25,7 @@ type DropZoneProps = {
   ) => void;
   completedInvestments: Set<string>;
   investmentConfigs: { name: string; maxDevelopers: number; turnsToComplete: number }[];
+  developerPower: number;
 };
 
 const DropZone: React.FC<DropZoneProps> = ({
@@ -40,7 +41,8 @@ const DropZone: React.FC<DropZoneProps> = ({
   handleDrop,
   handleDragStart,
   completedInvestments,
-  investmentConfigs
+  investmentConfigs,
+  developerPower
 }) => {
   const investmentConfig = investmentConfigs.find((config) => config.name === title);
   const isCompleted = !isBuildArea && completedInvestments.has(title);
@@ -104,6 +106,7 @@ const DropZone: React.FC<DropZoneProps> = ({
                     handleDragStart(e, m, title);
                   }}
                   isInvestment={!isBuildArea}
+                  developerPower={developerPower}
                 />
               ) : (
                 <DeveloperPlaceholder />

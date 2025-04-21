@@ -21,6 +21,7 @@ const maxSprintCount = 10;
 
 export default function App() {
   const [developers, setDevelopers] = useState<Developer[]>(initialDevelopers); 
+  const [developerPower, setDeveloperPower] = useState(5); 
   const [currentSprint, setCurrentSprint] = useState(0);
   const [techDebt, setTechDebt] = useState(100);
   const [resultHistory, setResultHistory] = useState<SprintData[]>([]);
@@ -53,9 +54,14 @@ export default function App() {
       mainArea,
       resultHistory,
       currentSprint,
-      techDebt
+      techDebt,
+      developerPower
     );
   
+    if (result.increasePower) {
+      setDeveloperPower(prev => prev + 1);
+    }
+    
     setTurnsRemaining(result.updatedTurns);
     setCompletedInvestments(result.updatedCompleted);
     setDevelopers(result.updatedDevelopers);
@@ -152,7 +158,7 @@ export default function App() {
           <GameStats
             techDebt={currentSprintData.techDebt}
             releaseConfidence={currentSprintData.releaseConfidence}
-            developerValue={developers[0]?.value ?? 0}
+            developerValue={developerPower}
           />
 
           <DropZone 
@@ -166,6 +172,7 @@ export default function App() {
             handleDragStart={handleDragStart}
             completedInvestments={completedInvestments}
             investmentConfigs={investmentConfigs}
+            developerPower={developerPower}
           />
           
 <br/>
@@ -183,6 +190,7 @@ export default function App() {
                       handleDragStart(e, m, 'available');
                     }}
                     isInvestment={false}
+                    developerPower={developerPower}
                   />
                 ))}
             </div>
@@ -220,6 +228,7 @@ export default function App() {
               handleDragStart={handleDragStart}
               completedInvestments={completedInvestments}
               investmentConfigs={investmentConfigs}
+              developerPower={developerPower}
             />
           ))}
         </div>

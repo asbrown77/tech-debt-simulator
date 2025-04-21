@@ -30,7 +30,6 @@ export const investmentConfigs: InvestmentConfig[] = [
     maxDevelopers: 2,
     turnsToComplete: 2,
     confidenceIncrease: 25,
-    techDebtReduction: 1,
     increaseValue: true
   }),
   Object.assign(new BaseInvestment(), {

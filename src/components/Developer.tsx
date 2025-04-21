@@ -6,12 +6,14 @@ import { Developer } from '../types';
 export type DeveloperWithValueProps = {
   developer: Developer;
   onDragStart: (e: React.DragEvent, m: Developer) => void;
+  developerPower: number;
   isInvestment?: boolean;
 };
 
 export const DeveloperWithValue = ({
   developer,
   onDragStart,
+  developerPower,
   isInvestment,
 }: DeveloperWithValueProps) => (
   <div className={styles.wrapper}>
@@ -27,7 +29,7 @@ export const DeveloperWithValue = ({
       className={`${styles.image} ${isInvestment ? styles.imageInvestment : ''}`}
       alt={`Developer ${developer.id}`}
     />
-    <div className={styles.valueTag}>{developer.value}</div>
+    <div className={styles.valueTag}>{developerPower}</div>
 
     {isInvestment && developer.turnsRemaining !== undefined && (
       <div
