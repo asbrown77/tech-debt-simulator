@@ -21,7 +21,7 @@ export const SprintChart = ({ data }: SprintChartProps) => (
         <Legend verticalAlign="top" height={36} />
         <Line type="linear" dataKey="net" stroke="#007bff" name="Net Value" connectNulls />
         <Line type="linear" dataKey="techDebt" stroke="#dc3545" name="Tech Debt (%)" connectNulls />
-        <Line type="linear" dataKey="delivered" stroke="#28a745" name="Delivered Value" connectNulls />
+        <Line type="linear" dataKey="delivered" stroke="#28a745" name="Value Delivered" connectNulls />
       </LineChart>
     </ResponsiveContainer>
   </div>
