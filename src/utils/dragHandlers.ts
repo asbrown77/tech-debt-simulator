@@ -1,12 +1,12 @@
-import { Meeple } from '../types';
+import { Developer } from '../types';
 import { Dispatch, SetStateAction } from 'react';
 
 export const handleDragStart = (
   event: React.DragEvent,
-  meeple: Meeple,
+  developer: Developer,
   sourceArea?: string
 ) => {
-  event.dataTransfer.setData('meepleId', meeple.id.toString());
+  event.dataTransfer.setData('developerId', developer.id.toString());
   event.dataTransfer.setData('sourceArea', sourceArea === 'Build' ? 'Build' : sourceArea || 'available');
   console.log('Drag started from:', sourceArea);
 };
@@ -18,29 +18,29 @@ export const allowDrop = (event: React.DragEvent) => {
 export const handleDrop = (
   event: React.DragEvent,
   targetArea: string,
-  areaSetter: (updater: (prev: Meeple[]) => Meeple[]) => void,
-  meeples: Meeple[],
-  mainArea: Meeple[],
-  activeInvestments: { [key: string]: Meeple[] },
-  setMeeples: Dispatch<SetStateAction<Meeple[]>>,
-  setMainArea: Dispatch<SetStateAction<Meeple[]>>,
-  setActiveInvestments: Dispatch<SetStateAction<{ [key: string]: Meeple[] }>>,
+  areaSetter: (updater: (prev: Developer[]) => Developer[]) => void,
+  developers: Developer[],
+  mainArea: Developer[],
+  activeInvestments: { [key: string]: Developer[] },
+  setDevelopers: Dispatch<SetStateAction<Developer[]>>,
+  setMainArea: Dispatch<SetStateAction<Developer[]>>,
+  setActiveInvestments: Dispatch<SetStateAction<{ [key: string]: Developer[] }>>,
   setTurnsRemaining: Dispatch<SetStateAction<{ [key: string]: number | undefined }>>,
   investmentConfigs: any[]
 ) => {
   event.preventDefault();
-  const id = parseInt(event.dataTransfer.getData('meepleId'));
+  const id = parseInt(event.dataTransfer.getData('developerId'));
   const sourceArea = event.dataTransfer.getData('sourceArea');
 
-  let draggedMeeple: Meeple | undefined =
-    meeples.find(m => m.id === id) ||
+  let draggedDeveloper: Developer | undefined =
+    developers.find(m => m.id === id) ||
     mainArea.find(m => m.id === id) ||
     Object.values(activeInvestments).flat().find(m => m.id === id);
 
-  if (!draggedMeeple) return;
+  if (!draggedDeveloper) return;
 
   // Remove from all areas
-  setMeeples(prev => prev.filter(m => m.id !== id));
+  setDevelopers(prev => prev.filter(m => m.id !== id));
   setMainArea(prev => prev.filter(m => m.id !== id));
   setActiveInvestments(prev => {
     const updated: typeof activeInvestments = {};
@@ -52,13 +52,13 @@ export const handleDrop = (
 
   // Add to target
   if (targetArea === 'Build') {
-    setMainArea(prev => [...prev, draggedMeeple!]);
+    setMainArea(prev => [...prev, draggedDeveloper!]);
   } else {
     const slots = Object.keys(activeInvestments);
     if (slots.includes(targetArea)) {
       setActiveInvestments(prev => {
-        const newMeeples = [...prev[targetArea], draggedMeeple!];
-        if (newMeeples.length === 1) {
+        const newDevelopers = [...prev[targetArea], draggedDeveloper!];
+        if (newDevelopers.length === 1) {
           const investmentConfig = investmentConfigs.find(config => config.name === targetArea)!;
           setTurnsRemaining(prev => ({
             ...prev,
@@ -67,7 +67,7 @@ export const handleDrop = (
         }
         return {
           ...prev,
-          [targetArea]: newMeeples
+          [targetArea]: newDevelopers
         };
       });
     }

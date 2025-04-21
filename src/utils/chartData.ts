@@ -6,7 +6,7 @@ export function generateChartData(history: SprintData[], max: number) {
     return {
       sprint: `Sprint ${i + 1}`,
       net: sprint?.netValue ?? null,
-      delivered: sprint?.delivered ?? null,
+      delivered: sprint?.totalValueDelivered ?? null,
       techDebt: sprint?.techDebt ?? null
     };
   });

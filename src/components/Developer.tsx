@@ -1,14 +1,14 @@
 import React from 'react';
 import developerIcon from '../developer.svg';
-import { Meeple } from '../types'; 
+import { Developer } from '../types'; 
 
-export type MeepleWithValueProps = {
-    meeple: Meeple;
-    onDragStart: (e: React.DragEvent, m: Meeple) => void;
+export type DeveloperWithValueProps = {
+    developer: Developer;
+    onDragStart: (e: React.DragEvent, m: Developer) => void;
     isInvestment?: boolean;
   };
   
-  export const MeepleWithValue = ({ meeple, onDragStart, isInvestment }: MeepleWithValueProps) => (
+  export const DeveloperWithValue = ({ developer, onDragStart, isInvestment }: DeveloperWithValueProps) => (
     <div style={{ 
       position: 'relative', 
       width:50, 
@@ -19,7 +19,7 @@ export type MeepleWithValueProps = {
       <img
         src={developerIcon}
         draggable
-        onDragStart={(e) => onDragStart(e, meeple)}
+        onDragStart={(e) => onDragStart(e, developer)}
         onDragEnd={(e) => {
           if (e.currentTarget instanceof HTMLElement) {
             e.currentTarget.style.opacity = '1';
@@ -32,7 +32,7 @@ export type MeepleWithValueProps = {
           filter: isInvestment ? 'grayscale(100%) brightness(70%)' : 'none',
           transition: 'filter 0.2s ease'
         }}
-        alt={`Developer ${meeple.id}`}
+        alt={`Developer ${developer.id}`}
       />
       <div style={{
         position: 'absolute',
@@ -45,27 +45,27 @@ export type MeepleWithValueProps = {
         borderRadius: '4px',
         fontWeight: 'bold'
       }}>
-        {meeple.value}
+        {developer.value}
       </div>
-      {isInvestment && meeple.turnsRemaining !== undefined && (
+      {isInvestment && developer.turnsRemaining !== undefined && (
         <div style={{
           position: 'absolute',
           top: '0',
           right: '0',
-          backgroundColor: meeple.turnsRemaining === 0 ? 'rgba(40, 167, 69, 0.9)' : 'rgba(0,0,0,0.7)',
+          backgroundColor: developer.turnsRemaining === 0 ? 'rgba(40, 167, 69, 0.9)' : 'rgba(0,0,0,0.7)',
           color: 'white',
           fontSize: '12px',
           padding: '2px 4px',
           borderRadius: '4px',
           fontWeight: 'bold'
         }}>
-          {meeple.turnsRemaining}
+          {developer.turnsRemaining}
         </div>
       )}
     </div>
   );
 
-  export const MeeplePlaceholder = () => (
+  export const DeveloperPlaceholder = () => (
     <div style={{
       width: 50,
       height: 50,

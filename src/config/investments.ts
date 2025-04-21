@@ -12,14 +12,14 @@ export class BaseInvestment {
 
 export type InvestmentConfig = BaseInvestment & {
   name: string;
-  maxMeeples: number;
+  maxDevelopers: number;
   turnsToComplete: number;
 };
 
 export const investmentConfigs: InvestmentConfig[] = [
   Object.assign(new BaseInvestment(), {
     name: 'CI/CD',
-    maxMeeples: 3,
+    maxDevelopers: 3,
     turnsToComplete: 2,
     confidenceIncrease: 65,
     techDebtReduction: 1,
@@ -27,7 +27,7 @@ export const investmentConfigs: InvestmentConfig[] = [
   }),
   Object.assign(new BaseInvestment(), {
     name: 'Test Coverage',
-    maxMeeples: 2,
+    maxDevelopers: 2,
     turnsToComplete: 2,
     confidenceIncrease: 25,
     techDebtReduction: 1,
@@ -35,14 +35,14 @@ export const investmentConfigs: InvestmentConfig[] = [
   }),
   Object.assign(new BaseInvestment(), {
     name: 'Code Quality',
-    maxMeeples: 2,
+    maxDevelopers: 2,
     turnsToComplete: 1,
     techDebtReduction: 1,
     increaseValue: true
   }),
   Object.assign(new BaseInvestment(), {
     name: 'Reduce Complexity',
-    maxMeeples: 1,
+    maxDevelopers: 1,
     turnsToComplete: 2,
     techDebtReduction: 3
   })

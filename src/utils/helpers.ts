@@ -1,8 +1,8 @@
-import { Meeple } from "../types";
+import { Developer } from "../types";
 
-export function uniqueMeeples(meeples: Meeple[]): Meeple[] {
-    const seen = new Map<number, Meeple>();
-    for (const m of meeples) {
+export function uniqueDevelopers(developers: Developer[]): Developer[] {
+    const seen = new Map<number, Developer>();
+    for (const m of developers) {
       const existing = seen.get(m.id);
       if (!existing || m.value > existing.value) {
         seen.set(m.id, m);

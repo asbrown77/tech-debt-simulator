@@ -1,21 +1,22 @@
 import React from 'react';
-import { Meeple } from '../types';
-import { MeepleWithValue } from './Meeple';
+import { Developer } from '../types';
+import { DeveloperWithValue } from './Developer';
 
 type DropZoneProps = {
   title: string;
-  area: Meeple[];
-  setArea: (updater: (prev: Meeple[]) => Meeple[]) => void;
+  area: Developer[];
+  setArea: (updater: (prev: Developer[]) => Developer[]) => void;
   color: string;
   description?: string;
   isBuildArea?: boolean;
-  maxMeeples?: number;
+  maxDevelopers?: number;
   turnsToComplete?: number;
   turnsRemaining: { [key: string]: number | undefined };
-  handleDrop: (event: React.DragEvent, targetArea: string, areaSetter: (updater: (prev: Meeple[]) => Meeple[]) => void) => void;
-  handleDragStart: (event: React.DragEvent, meeple: Meeple, sourceArea?: string) => void;
+  handleDoubleClick?: () => void;
+  handleDrop: (event: React.DragEvent, targetArea: string, areaSetter: (updater: (prev: Developer[]) => Developer[]) => void) => void;
+  handleDragStart: (event: React.DragEvent, developer: Developer, sourceArea?: string) => void;
   completedInvestments: Set<string>;
-  investmentConfigs: { name: string; maxMeeples: number; turnsToComplete: number }[];
+  investmentConfigs: { name: string; maxDevelopers: number; turnsToComplete: number }[];
 };
 
 const DropZone: React.FC<DropZoneProps> = ({
@@ -25,9 +26,10 @@ const DropZone: React.FC<DropZoneProps> = ({
   color,
   description,
   isBuildArea,
-  maxMeeples,
+  maxDevelopers,
   turnsToComplete,
   turnsRemaining,
+  handleDoubleClick,
   handleDrop,
   handleDragStart,
   completedInvestments,
@@ -40,7 +42,7 @@ const DropZone: React.FC<DropZoneProps> = ({
     event.preventDefault();
   };
 
-  const MeeplePlaceholder = () => (
+  const DeveloperPlaceholder = () => (
     <div style={{
       width: 50,
       height: 50,
@@ -53,6 +55,7 @@ const DropZone: React.FC<DropZoneProps> = ({
 
   return (
     <div
+      onDoubleClick={() => handleDoubleClick?.()} 
       onDrop={(e) => !isCompleted && handleDrop(e, title, setArea)}
       onDragOver={allowDrop}
       style={{
@@ -76,7 +79,7 @@ const DropZone: React.FC<DropZoneProps> = ({
         marginBottom: '0.5rem'
       }}>
         <strong style={{ textAlign: 'center' }}>{title}</strong>
-        {!isBuildArea && investmentConfig && (isCompleted || area.length === maxMeeples) && (
+        {!isBuildArea && investmentConfig && (isCompleted || area.length === maxDevelopers) && (
           <div style={{
             backgroundColor: isCompleted ? 'rgba(40, 167, 69, 0.9)' : 'rgba(30, 119, 235, 0.7)',
             color: 'white',
@@ -111,12 +114,12 @@ const DropZone: React.FC<DropZoneProps> = ({
         flex: 1,
         alignContent: 'center'
       }}>
-        {!isBuildArea && maxMeeples && Array(maxMeeples).fill(null).map((_, index) => (
+        {!isBuildArea && maxDevelopers && Array(maxDevelopers).fill(null).map((_, index) => (
           <div key={`placeholder-${title}-${index}`} style={{ position: 'relative' }}>
             {area[index] ? (
-              <MeepleWithValue
+              <DeveloperWithValue
                 key={`${title}-${area[index].id}`}
-                meeple={area[index]}
+                developer={area[index]}
                 onDragStart={(e, m) => {
                   if (e.currentTarget instanceof HTMLElement) {
                     e.currentTarget.style.opacity = '0.5';
@@ -126,14 +129,14 @@ const DropZone: React.FC<DropZoneProps> = ({
                 isInvestment={true}
               />
             ) : (
-              <MeeplePlaceholder />
+              <DeveloperPlaceholder />
             )}
           </div>
         ))}
         {isBuildArea && area.map((m) => (
-          <MeepleWithValue
+          <DeveloperWithValue
             key={`Build-${m.id}`}
-            meeple={m}
+            developer={m}
             onDragStart={(e, m) => {
               if (e.currentTarget instanceof HTMLElement) {
                 e.currentTarget.style.opacity = '0.5';

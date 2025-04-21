@@ -1,15 +1,5 @@
 import React from 'react';
-
-type SprintData = {
-  sprintNumber: number;
-  techDebt: number;
-  releaseConfidence: number;
-  devOutput: number;
-  netValue: number;
-  delivered: number;
-  bugs: number;
-  released: boolean;
-};
+import { SprintData } from '../types';
 
 type Props = {
   data: SprintData[];
@@ -54,7 +44,7 @@ export const ResultHistoryTable = ({ data }: Props) => {
               <td style={cellStyle}>{sprint.bugs}</td>
               <td style={cellStyle}>{sprint.netValue}</td>
               <td style={cellStyle}>{sprint.released ? '✅' : '❌'}</td>
-              <td style={cellStyle}>{sprint.delivered}</td>
+              <td style={cellStyle}>{sprint.totalValueDelivered}</td>
             </tr>
           ))}
         </tbody>

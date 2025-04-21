@@ -1,27 +1,36 @@
 import React, { useState } from 'react';
-import { Meeple, SprintData} from './types';
-import { MeepleWithValue } from './components/Meeple';
+import { Developer, SprintData} from './types';
+import { DeveloperWithValue } from './components/Developer';
 import DropZone from './components/DropZone';
-import { GameStats } from './components/GameStats';
+import { GameStats, TurnValues } from './components/GameStats';
 import { SprintChart } from './components/SprintChart';
 import { ResultHistoryTable } from './components/ResultHistoryTable';
 import { investmentConfigs } from './config/investments';
-import { initialMeeples } from './config/meeples';
+import { initialDevelopers } from './config/developers';
 import { SprintCounter } from './components/SprintCounter';
 import { handleDragStart, handleDrop } from './utils/dragHandlers';
-import { handleBeginTurnLogic } from './utils/turnHandler';
+import { handleBeginTurnLogic } from './game/gameLogic';
 import { Header } from './components/Header';
 import { generateChartData } from './utils/chartData';
 import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
+
 const maxSprintCount = 10;
 
 export default function App() {
-  const [meeples, setMeeples] = useState<Meeple[]>(initialMeeples);
-  const [mainArea, setMainArea] = useState<Meeple[]>([]);
-  const [activeInvestments, setActiveInvestments] = useState<{ [key: string]: Meeple[] }>(
+  const [developers, setDevelopers] = useState<Developer[]>(initialDevelopers); 
+  const [currentSprint, setCurrentSprint] = useState(0);
+  const [techDebt, setTechDebt] = useState(100);
+  const [resultHistory, setResultHistory] = useState<SprintData[]>([]);
+  const [showRules, setShowRules] = useState(true);
+  const [mainArea, setMainArea] = useState<Developer[]>([]);
+  const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
+  const chartData = generateChartData(resultHistory, maxSprintCount);
+  const disableTurn = developers.length > 0 || currentSprint >= maxSprintCount;
+
+  const [activeInvestments, setActiveInvestments] = useState<{ [key: string]: Developer[] }>(
     investmentConfigs.reduce((acc, investment) => ({
       ...acc,
       [investment.name]: []
@@ -33,15 +42,6 @@ export default function App() {
       [investment.name]: undefined
     }), {})
   );
-  const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
-  const [techDebt, setTechDebt] = useState(100);
-  const [releaseConfidence, setConfidence] = useState(10);
-  const [bugs, setBugs] = useState(0);
-  const [cumulativeValue, setCumulativeValue] = useState(0);
-  const [currentSprint, setCurrentSprint] = useState(0);
-  const [resultHistory, setResultHistory] = useState<SprintData[]>([]);
-  const chartData = generateChartData(resultHistory, maxSprintCount);
-  const [showRules, setShowRules] = useState(true);
 
   const handleBeginTurn = () => {
     const result = handleBeginTurnLogic(
@@ -49,22 +49,19 @@ export default function App() {
       investmentConfigs,
       turnsRemaining,
       completedInvestments,
-      techDebt,
-      meeples,
+      developers,
       mainArea,
       resultHistory,
-      currentSprint
+      currentSprint,
+      techDebt
     );
   
     setTurnsRemaining(result.updatedTurns);
     setCompletedInvestments(result.updatedCompleted);
-    setMeeples(result.updatedMeeples);
+    setDevelopers(result.updatedDevelopers);
     setMainArea(result.updatedMainArea);
     setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
-    setConfidence(result.newSprint.releaseConfidence);
-    setBugs(result.newSprint.bugs);
-    setCumulativeValue(prev => prev + result.newSprint.devOutput);
     setResultHistory(prev => [...prev, result.newSprint]);
     setCurrentSprint(prev => prev + 1);
   };  
@@ -73,54 +70,61 @@ export default function App() {
   const onDrop = (
     event: React.DragEvent,
     targetArea: string,
-    areaSetter: (updater: (prev: Meeple[]) => Meeple[]) => void
+    areaSetter: (updater: (prev: Developer[]) => Developer[]) => void
   ) => {
     handleDrop(
       event,
       targetArea,
       areaSetter,
-      meeples,
+      developers,
       mainArea,
       activeInvestments,
-      setMeeples,
+      setDevelopers,
       setMainArea,
       setActiveInvestments,
       setTurnsRemaining,
       investmentConfigs
     );
   };
-  
-  const resetGame = () => {
-    setMeeples(initialMeeples);
-    setMainArea([]);
-    setActiveInvestments(
-      investmentConfigs.reduce((acc, investment) => ({
-        ...acc,
-        [investment.name]: []
-      }), {})
-    );
-    setTurnsRemaining(
-      investmentConfigs.reduce((acc, investment) => ({
-        ...acc,
-        [investment.name]: undefined
-      }), {})
-    );
-    setCompletedInvestments(new Set());
-    setTechDebt(100);
-    setConfidence(10);
-    setBugs(0);
-    setCumulativeValue(0);
-    setCurrentSprint(0);
-    setResultHistory([]);
-  };
 
-  const disableTurn =
-  meeples.length > 0 || currentSprint >= maxSprintCount;
+  const handleDropZoneDoubleClick = (target: string) => {
+    if (developers.length > 0) {
+      // Take first available and assign to target area
+      const [first, ...rest] = developers;
+      setDevelopers(rest);
+  
+      if (target === 'Build') {
+        setMainArea(prev => [...prev, first]);
+      } else {
+        setActiveInvestments(prev => ({
+          ...prev,
+          [target]: [...prev[target], first]
+        }));
+      }
+    } else if (target !== 'Build' && mainArea.length > 0) {
+      // Take from Build instead
+      const [first, ...rest] = mainArea;
+      setMainArea(rest);
+      setActiveInvestments(prev => ({
+        ...prev,
+        [target]: [...prev[target], first]
+      }));
+    }
+  };
 
   const getTurnButtonText = () => {
     if (currentSprint >= maxSprintCount) return 'Game Over';
-    if (meeples.length > 0) return 'Allocate All Developers';
+    if (developers.length > 0) return 'Allocate All Developers';
     return 'Begin Turn';
+  };
+
+  const currentSprintData = resultHistory[currentSprint - 1] || {
+    techDebt: 100,
+    releaseConfidence: 10,
+    bugs: 0,
+    netValue: 0,
+    devOutput: 0,
+    released: false
   };
 
   return (
@@ -145,11 +149,11 @@ export default function App() {
         <div className={styles.leftColumn}>
           <div className={styles.devPool}>
             <strong>Available Developers</strong>
-            <div className={styles.meeples}>              
-              {meeples.map((m) => (
-                  <MeepleWithValue 
+            <div className={styles.developers}>              
+              {developers.map((m) => (
+                  <DeveloperWithValue 
                     key={`available-${m.id}`}
-                    meeple={m} 
+                    developer={m} 
                     onDragStart={(e, m) => {
                       if (e.currentTarget instanceof HTMLElement) {
                         e.currentTarget.style.opacity = '0.5';
@@ -162,6 +166,7 @@ export default function App() {
             </div>
                     
           </div>
+
           <DropZone 
             title="Build" 
             area={mainArea} 
@@ -169,19 +174,13 @@ export default function App() {
             color="#eef"
             isBuildArea={true}  
             turnsRemaining={turnsRemaining}
+            handleDoubleClick={() => handleDropZoneDoubleClick('Build')}
             handleDrop={onDrop}
             handleDragStart={handleDragStart}
             completedInvestments={completedInvestments}
             investmentConfigs={investmentConfigs}
           />
           
-          {/* Game Parameters Box */}
-          <GameStats
-            techDebt={techDebt}
-            releaseConfidence={releaseConfidence}
-            cumulativeValue={cumulativeValue}
-            bugs={bugs}
-          />
 
           {/* Begin Turn Button */}
           <div className={styles.buttonWrapper}>
@@ -193,6 +192,22 @@ export default function App() {
               {getTurnButtonText()}
             </button>
           </div>
+
+<br/>
+          {/* Game Parameters Box */}
+          <GameStats
+            techDebt={currentSprintData.techDebt}
+            releaseConfidence={currentSprintData.releaseConfidence}
+            cumulativeValue={resultHistory.reduce((sum, s) => sum + s.devOutput, 0)}
+            bugs={currentSprintData.bugs}
+          />
+
+          <TurnValues
+            value={currentSprintData.devOutput}
+            bugs={currentSprintData.bugs}
+            netValue={currentSprintData.netValue}
+            successfulRelease={currentSprintData.released}
+          />
             
         </div>
 
@@ -202,15 +217,16 @@ export default function App() {
             <DropZone
               key={investment.name}
               title={investment.name}
-              area={activeInvestments[investment.name]}
+              area={activeInvestments[investment.name] || []}
               setArea={(updater) =>
                 setActiveInvestments((prev) => ({ ...prev, [investment.name]: updater(prev[investment.name]) }))
               }
               color= "#efe"
               description={investment.description}
-              maxMeeples={investment.maxMeeples}
+              maxDevelopers={investment.maxDevelopers}
               turnsToComplete={investment.turnsToComplete}
               turnsRemaining={turnsRemaining}
+              handleDoubleClick={() => handleDropZoneDoubleClick(investment.name)}
               handleDrop={onDrop}
               handleDragStart={handleDragStart}
               completedInvestments={completedInvestments}

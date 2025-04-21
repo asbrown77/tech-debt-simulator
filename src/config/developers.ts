@@ -1,6 +1,6 @@
-import { Meeple } from '../types';
+import { Developer } from '../types';
 
-export const initialMeeples: Meeple[] = [
+export const initialDevelopers: Developer[] = [
   { id: 1, name: 'Dev 1', value: 5 },
   { id: 2, name: 'Dev 2', value: 5 },
   { id: 3, name: 'Dev 3', value: 5 },

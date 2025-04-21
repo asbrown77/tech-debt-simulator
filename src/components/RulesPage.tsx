@@ -13,7 +13,7 @@ export const RulesPage = () => {
 
       <h2>🔨 Developers</h2>
       <ul>
-        <li>You have 6 developers (Meeples), each with a value (1–5).</li>
+        <li>You have 6 developers (Developers), each with a value (1–5).</li>
         <li>Drag developers to the <strong>Build area</strong> to generate value.</li>
         <li>Or assign them to <strong>Investments</strong> that improve your team over time.</li>
       </ul>
