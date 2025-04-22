@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react';  
 import { Developer, SprintData} from './types';
 import { DeveloperWithValue } from './components/Developer';
 import DropZone from './components/DropZone';
@@ -76,7 +76,20 @@ export default function App() {
     setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
     setResultHistory(prev => [...prev, result.turnSprintData]);
-    setCurrentSprint(prev => prev + 1);
+    setCurrentSprint(prev => {
+      const nextSprint = prev + 1;
+    
+      // Game over: fire Google Analytics event
+      if (nextSprint >= maxSprintCount && window.gtag) {
+        window.gtag('event', 'game_completed', {
+          event_category: 'gameplay',
+          event_label: 'User completed the game',
+        });
+      }
+    
+      return nextSprint;
+    });
+    
   };  
 
 
@@ -151,9 +164,9 @@ export default function App() {
 
         <button className={styles.rulesButton}
           onClick={() => setShowRules(true)}>
-        Game Rules
+          Game Rules
         </button>
-      </div>
+</div>
 
       <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
 
@@ -279,10 +292,10 @@ export default function App() {
           <p style={{ margin: 5 }}>
             <strong>Got feedback or ideas to improve the game? </strong>Email us at{' '}
             <a
-              href="mailto:alexbrow@bagile.co.uk"
+              href="mailto:info@bagile.co.uk"
               style={{ color: '#4dabf7', textDecoration: 'none' }}
             >
-              alexbrow@bagile.co.uk
+              info@bagile.co.uk
             </a>
           </p>
           <p style={{ margin: 0 }}>
@@ -299,11 +312,7 @@ export default function App() {
 
         <img
           src={logo}
-          alt="Bagile logo"
-          style={{
-            height: '32px',
-            marginRight: '1rem',
-          }}
+          alt="Bagile logo" className={styles.logoImage} 
         />
       </footer>
       </div>

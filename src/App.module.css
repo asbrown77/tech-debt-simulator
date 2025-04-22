@@ -99,3 +99,13 @@
     gap: 1rem;
   }
   
+  .logoArea {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+  }
+  
+  .logoImage {
+    height: 32px;
+    margin-left: 1rem;
+  }
