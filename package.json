@@ -2,6 +2,7 @@
   "name": "techdebtgame",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/techdebt-simulator",
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.10",
     "cra-template-typescript": "1.3.0",

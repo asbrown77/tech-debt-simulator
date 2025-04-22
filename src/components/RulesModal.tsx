@@ -21,52 +21,51 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
 
           <h2>🎯 Your Goal</h2>
           <p>
-            You’ve got <strong>10 sprints</strong> to deliver as much value as possible. Easy? Not quite. <br />
+            You’ve got <strong>10 sprints</strong> to deliver as much value as possible.
+            Easy? Not quite.<br />
             You’ve inherited a team buried in tech debt and they can’t release working software every sprint.
           </p>
 
           <h2>👨‍💻 Your Developers</h2>
           <ul>
-            <li>You’ve got 6 devs. Each one starts with a power level of <strong>5</strong>.</li>
-            <li>Double click the area, or drop them into the <strong>Build area</strong> to crank out features.</li>
-            <li>Or invest in the future – assign them to <strong>Investments</strong> like CI/CD or Test Coverage.</li>
-            <li>Each dev in Build rolls for value between <strong>1 and their current rating</strong> each sprint.</li>
+            <li>You’ve got 6 devs. Each one starts with a <strong>power level of 5</strong>.</li>
+            <li>
+              That means when they’re assigned to <strong>Build</strong>, they can generate <strong>1 to 5 value</strong> each sprint.
+            </li>
+            <li>Double-click an area or drag and drop your devs to assign them.</li>
+            <li>
+              Drop them into <strong>Build</strong> to crank out features, or invest in the future by assigning them to
+              <strong>Investments</strong> like CI/CD or Test Coverage.
+            </li>
           </ul>
 
           <h2>⏰ Tech Debt Gets in the Way</h2>
           <ul>
             <li>You inherited <strong>100% tech debt</strong>. Lucky you.</li>
-            <li>The more you ignore it, the worse it gets – think increased bugs and failed releases.</li>
+            <li>Ignore it, and it gets worse - more bugs, more failed releases.</li>
             <li>The only way out? Invest in improvements.</li>
           </ul>
 
           <h2>🧪 Improvements</h2>
-          <p>
-            You decide which one matters and when to invest. Some are quick wins, others take time but pack a punch.
-          </p>
+          <p>Each investment you complete gives your team a permanent upgrade:</p>
           <ul>
-            <li><strong>Increase developer’s value</strong> – Your devs get better at building features</li>
-            <li><strong>Higher release confidence</strong> – More chance your work actually gets delivered</li>
-            <li><strong>Lower tech debt</strong> – Fewer bugs, faster progress</li>
+            <li><strong>More dev power</strong> - your devs generate more value each sprint</li>
+            <li><strong>Higher release confidence</strong> - better odds your work actually ships</li>
+            <li><strong>Less tech debt</strong> - fewer bugs, faster progress</li>
           </ul>
-          <p>Once complete, they’re <strong>permanent upgrades</strong>.</p>
 
           <h2>📋 How the Game Works</h2>
           <ul>
             <li>Only devs in Build generate value.</li>
-            <li>Bugs show up when tech debt’s high. They eat into your progress!</li>
-            <li>Releasing is a dice roll if not a simple activity. More confidence, better the odds.</li>
-            <li>Value is only delivered when work is released.</li>
-            <li>Fail the release? You lose all value from that sprint.</li>
-            <li>After 10 sprints, the game ends. </li>
-            <li>Check your results. What would you change next time?</li>
+            <li>Bugs show up when tech debt’s high, they eat into your output.</li>
+            <li>Releasing is a dice roll - more confidence means better odds.</li>
+            <li>Value only counts if you release. Fail the release? You lose that sprint’s work.</li>
+            <li>After 10 sprints, the game ends. Check your results. What would you change next time?</li>
           </ul>
 
-          <p style={{ marginTop: '2rem', fontSize: '1rem', textAlign: 'center' }}>
-            <strong>
-              Deliver now or build the team that keeps delivering value? You decide.
-            </strong>
-          </p>
+        <p style={{ marginTop: '2rem', fontSize: '1rem', textAlign: 'center' }}>
+          <strong>Deliver now or build a team that delivers forever? You decide.</strong>
+        </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
             <button
