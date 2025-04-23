@@ -299,14 +299,10 @@ export default function App() {
             </a>
           </p>
           <p style={{ margin: 0 }}>
-            © 2024{' '}
-            <a
-              href="https://www.bagile.co.uk"
-              style={{ color: '#4dabf7', textDecoration: 'none' }}
-            >
+            Game design and development by <strong>Alex Brown</strong> · © 2025{' '}
+            <a href="https://www.bagile.co.uk" style={{ color: '#4dabf7', textDecoration: 'none' }}>
               bagile.co.uk
-            </a>{' '}
-            - Making agility part of your DNA.
+            </a> – Making agility part of your DNA.
           </p>
         </div>
 

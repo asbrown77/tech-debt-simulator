@@ -1,3 +1,5 @@
+Created by Alex Brown. Powered by the B-Agile. Learn more at bagile.co.uk.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
