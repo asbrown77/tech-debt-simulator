@@ -200,7 +200,16 @@ export default function App() {
           
 <br/>
           <div className={styles.devPool}>
-            {/* <strong>Available Developers</strong> */}
+            {/* Hint inside the box */}
+            <div style={{
+              opacity: 0.5,
+              fontSize: '0.85rem',
+              textAlign: 'center',
+              marginBottom: '0.5rem'
+            }}>
+              Drag or double-click to assign developers
+            </div>
+  
             <div className={styles.developers}>              
               {developers.map((m) => (
                   <DeveloperWithValue 
