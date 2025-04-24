@@ -26,7 +26,7 @@ export const GameStats = ({
       </span>
     </div>
     <div>
-      <span className={styles.label}>Confidence</span>
+      <span className={styles.label}>Release Confidence</span>
       <span className={`${styles.value} ${releaseConfidence > prevConfidence ? styles.improved : ''}`}>
         {releaseConfidence}%
       </span>

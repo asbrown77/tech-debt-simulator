@@ -50,10 +50,10 @@ export const investmentConfigs: InvestmentConfig[] = [
 export const formatDescription = (config: BaseInvestment): string => {
   const parts = [];
   if (config.confidenceIncrease)
-    parts.push(`+${config.confidenceIncrease}% confidence`);
+    parts.push(`+${config.confidenceIncrease}% release confidence`);
   if (config.techDebtReduction)
     parts.push(`-${config.techDebtReduction} tech debt`);
   if (config.increaseValue)
-    parts.push('+1 value');
+    parts.push('+1 Max value');
   return parts.join(', ');
 };

@@ -34,8 +34,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
             </li>
             <li>Double-click an area or drag and drop your devs to assign them.</li>
             <li>
-              Drop them into <strong>Build</strong> to crank out features, or invest in the future by assigning them to
-              <strong>Investments</strong> like CI/CD or Test Coverage.
+              Drop them into <strong>Build</strong> to crank out features, or invest in the future by assigning them to <strong>Improvements</strong>!
             </li>
           </ul>
 
@@ -46,7 +45,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
             <li>The only way out? Invest in improvements.</li>
           </ul>
 
-          <h2>🧪 Improvements</h2>
+          <h2>🧪 Team Improvements</h2>
           <p>Each investment you complete gives your team a permanent upgrade:</p>
           <ul>
             <li><strong>More dev power</strong> - your devs generate more value each sprint</li>
@@ -57,7 +56,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
           <h2>📋 How the Game Works</h2>
           <ul>
             <li>Only devs in Build generate value.</li>
-            <li>Bugs show up when tech debt’s high, they eat into your output.</li>
+            <li>Bugs show up more often when tech debt’s high, they eat into your output.</li>
             <li>Releasing is a dice roll - more confidence means better odds.</li>
             <li>Value only counts if you release. Fail the release? You lose that sprint’s work.</li>
             <li>After 10 sprints, the game ends. Check your results. What would you change next time?</li>

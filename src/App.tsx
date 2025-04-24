@@ -140,7 +140,7 @@ export default function App() {
 
   const getTurnButtonText = () => {
     if (currentSprint >= maxSprintCount) return 'Game Over';
-    if (developers.length > 0) return 'Allocate All Developers';
+    if (developers.length > 0) return 'Allocate Remaining Developers';
     return 'Begin Turn';
   };
 
@@ -298,8 +298,8 @@ export default function App() {
         }}
       >
         <div style={{ textAlign: 'center', flex: 1 }}>
-          <p style={{ margin: 5 }}>
-            <strong>Got feedback or ideas to improve the game? </strong>Email us at{' '}
+        <p style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', fontWeight: '600'}}>
+            <strong>Got ideas or feedback to improve the game? </strong>Email us at{' '}
             <a
               href="mailto:info@bagile.co.uk"
               style={{ color: '#4dabf7', textDecoration: 'none' }}
@@ -307,8 +307,9 @@ export default function App() {
               info@bagile.co.uk
             </a>
           </p>
+          <br/>
           <p style={{ margin: 0 }}>
-            Game design and development by <strong>Alex Brown</strong> · © 2025{' '}
+           Created by <strong>Alex Brown</strong> · © 2025{' '}
             <a href="https://www.bagile.co.uk" style={{ color: '#4dabf7', textDecoration: 'none' }}>
               bagile.co.uk
             </a> – Making agility part of your DNA.
