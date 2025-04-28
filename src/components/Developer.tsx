@@ -1,7 +1,9 @@
 import React from 'react';
 import styles from '../styles/Developer.module.css';
+import DeveloperToken from '../developer-token.png';
 import developerIcon from '../developer.svg';
 import { Developer } from '../types';
+<img src={DeveloperToken} alt="Developer" />
 
 export type DeveloperWithValueProps = {
   developer: Developer;
@@ -22,7 +24,7 @@ export const DeveloperWithValue = ({
     <div className={styles.outerWrapper}>
       <div className={styles.wrapper}>
         <img
-          src={developerIcon}
+          src={DeveloperToken}
           draggable
           onDragStart={(e) => onDragStart(e, developer)}
           onDragEnd={(e) => {
