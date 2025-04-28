@@ -21,7 +21,7 @@ export const investmentConfigs: InvestmentConfig[] = [
     name: 'CI/CD',
     maxDevelopers: 3,
     turnsToComplete: 2,
-    confidenceIncrease: 65,
+    confidenceIncrease: 60,
     techDebtReduction: 1,
     increaseValue: true
   }),
@@ -29,7 +29,7 @@ export const investmentConfigs: InvestmentConfig[] = [
     name: 'Test Coverage',
     maxDevelopers: 2,
     turnsToComplete: 2,
-    confidenceIncrease: 25,
+    confidenceIncrease: 20,
     increaseValue: true
   }),
   Object.assign(new BaseInvestment(), {

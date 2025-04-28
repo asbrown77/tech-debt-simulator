@@ -24,6 +24,7 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
         bugs: Math.floor(Math.random() * 5) + 2, // few bugs each sprint
         totalValueDelivered: 0,
         released: false,
+        roll: Math.floor(Math.random() * 100) + 1,
       });
     }
   

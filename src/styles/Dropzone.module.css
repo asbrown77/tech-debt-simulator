@@ -69,3 +69,36 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
   
+  .sprintSummary {
+    margin-top: 1rem;
+    background: #e7f1fb;
+    border: 1px solid #c3ddf5;
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #003366;
+    font-weight: bold;
+  }
+  
+  .summaryItem {
+    flex: 1;
+    text-align: center;
+  }
+
+  .releaseSummary {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    background: #f0f4f8;
+    border: 1px dashed #c3ddf5;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #003366;
+  }
+  
+  

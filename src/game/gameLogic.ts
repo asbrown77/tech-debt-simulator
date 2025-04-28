@@ -55,8 +55,8 @@ export function handleBeginTurnLogic(
 
   // 2. Calculate release confidence
   let confidence = 10;
-  if (updatedCompleted.has('CI/CD')) confidence += 65;
-  if (updatedCompleted.has('Test Coverage')) confidence += 25;
+  if (updatedCompleted.has('CI/CD')) confidence += investmentConfigs.find((i) => i.name === 'CI/CD')?.confidenceIncrease ?? 0;
+  if (updatedCompleted.has('Test Coverage')) confidence += investmentConfigs.find((i) => i.name === 'Test Coverage')?.confidenceIncrease ?? 0;
   confidence = Math.min(confidence, 100);
 
   // 3. Calculate dev output and bugs
@@ -76,10 +76,11 @@ export function handleBeginTurnLogic(
 
   const netValue = totalValue - bugs;
   let delivered = resultHistory.at(-1)?.totalValueDelivered || 0;
-  let released = false;
 
-  if (calculateRelease(netValue, confidence)) {
-    released = true;
+  const rollForRelease = Math.floor(Math.random() * 100) + 1;
+  const released = rollForRelease <= confidence;
+
+  if (released) {
     delivered += netValue;
   }
 
@@ -92,6 +93,7 @@ export function handleBeginTurnLogic(
     bugs,
     totalValueDelivered: delivered,
     released,
+    roll: rollForRelease
   };
 
   return {

@@ -12,9 +12,10 @@ export type Developer = {
     sprintNumber: number;
     techDebt: number;
     releaseConfidence: number;
+    roll: number;               // Roll happens after setting confidence
+    released: boolean;          // Result of the roll
     devOutput: number;
+    bugs: number;
     netValue: number;
     totalValueDelivered: number;
-    bugs: number;
-    released: boolean;
-  };
+};

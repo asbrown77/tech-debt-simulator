@@ -34,6 +34,7 @@ export default function App() {
   const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
   const [prevConfidence, setPrevConfidence] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
+  const [clearSpinResultVersion, setClearSpinResultVersion] = useState(0);
 
   const [activeInvestments, setActiveInvestments] = useState<{ [key: string]: Developer[] }>(
     investmentConfigs.reduce((acc, investment) => ({
@@ -47,60 +48,6 @@ export default function App() {
       [investment.name]: undefined
     }), {})
   );
-
-  const handleBeginTurn = () => {
-    const result = handleBeginTurnLogic(
-      activeInvestments,
-      investmentConfigs,
-      turnsRemaining,
-      completedInvestments,
-      developers,
-      mainArea,
-      resultHistory,
-      currentSprint,
-      techDebt,
-      developerPower
-    );
-  
-    const clearedMainArea = mainArea.map(dev => ({
-      ...dev,
-      output: null,
-      hasBug: null,
-      working: false,
-    }));
-
-    setMainArea(clearedMainArea);
-
-    if (result.increasePower) {
-      setDeveloperPower(prev => prev + 1);
-    }
-    
-    setPrevTechDebt(techDebt);
-    setPrevConfidence(currentSprintData.releaseConfidence);
-    setPrevDevPower(developerPower);
-
-    setTurnsRemaining(result.updatedTurns);
-    setCompletedInvestments(result.updatedCompleted);
-    setDevelopers(result.updatedDevelopers);
-    setMainArea(result.updatedMainArea);
-    setActiveInvestments(result.updatedActiveInvestments);
-    setTechDebt(result.updatedTechDebt);
-    setResultHistory(prev => [...prev, result.turnSprintData]);
-    setCurrentSprint(prev => {
-      const nextSprint = prev + 1;
-    
-      // Game over: fire Google Analytics event
-      if (nextSprint >= maxSprintCount && window.gtag) {
-        window.gtag('event', 'game_completed', {
-          event_category: 'gameplay',
-          event_label: 'User completed the game',
-        });
-      }
-    
-      return nextSprint;
-    });
-    
-  };  
 
   const processTurn = async () => {
     const result = handleBeginTurnLogic(
@@ -123,6 +70,7 @@ export default function App() {
       working: false,
     }));
 
+    setClearSpinResultVersion(prev => prev + 1);
     setMainArea(clearedMainArea);
 
     if (result.increasePower) {
@@ -232,12 +180,15 @@ export default function App() {
   };
 
   const currentSprintData = resultHistory[currentSprint - 1] || {
+    sprintNumber: currentSprint,
     techDebt: 100,
     releaseConfidence: 10,
-    bugs: 0,
-    netValue: 0,
     devOutput: 0,
-    released: false
+    netValue: 0,
+    bugs: 0,
+    totalValueDelivered: 0,
+    released: false,
+    roll: 0, 
   };
 
   return (
@@ -283,6 +234,9 @@ export default function App() {
             completedInvestments={completedInvestments}
             investmentConfigs={investmentConfigs}
             developerPower={developerPower}
+            currentSprintData={currentSprintData}
+            resetSpinResultTrigger={currentSprint}
+            clearSpinResultVersion={clearSpinResultVersion}
           />
           
 <br/>
@@ -348,6 +302,7 @@ export default function App() {
               completedInvestments={completedInvestments}
               investmentConfigs={investmentConfigs}
               developerPower={developerPower}
+              currentSprintData={currentSprintData}
             />
           ))}
         </div>
