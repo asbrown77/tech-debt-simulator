@@ -3,6 +3,8 @@ export type Developer = {
     name: string;
     turnsRemaining?: number;
     output?: number | null; 
+    hasBug?: boolean | null;
+    working?: boolean | null;
   };
 
   

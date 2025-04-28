@@ -31,9 +31,9 @@ export function handleBeginTurnLogic(
   let increasePower = false;
 
   // 1. Reset all developers' output to null
-  updatedDevelopers = updatedDevelopers.map(dev => ({ ...dev, output: null }));
+  updatedDevelopers = updatedDevelopers.map(dev => ({ ...dev, output: null, hasBug: false }));
   Object.keys(updatedActiveInvestments).forEach(key => {
-    updatedActiveInvestments[key] = updatedActiveInvestments[key].map(dev => ({ ...dev, output: null }));
+    updatedActiveInvestments[key] = updatedActiveInvestments[key].map(dev => ({ ...dev, output: null, hasBug: false }));
   });
   
 
@@ -71,7 +71,7 @@ export function handleBeginTurnLogic(
     if (bug) bugs++;
     totalValue += output;
 
-    return { ...dev, output };
+    return { ...dev, output, hasBug: bug };
   });
 
   const netValue = totalValue - bugs;

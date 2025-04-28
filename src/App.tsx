@@ -16,15 +16,16 @@ import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
+import { generateStartingHistory } from './utils/helpers';
 
-const maxSprintCount = 10;
+const maxSprintCount = 20;
 
 export default function App() {
   const [developers, setDevelopers] = useState<Developer[]>(initialDevelopers); 
   const [developerPower, setDeveloperPower] = useState(5); 
-  const [currentSprint, setCurrentSprint] = useState(0);
+  const [currentSprint, setCurrentSprint] = useState(10);
   const [techDebt, setTechDebt] = useState(100);
-  const [resultHistory, setResultHistory] = useState<SprintData[]>([]);
+  const [resultHistory, setResultHistory] = useState<SprintData[]>(generateStartingHistory(10));
   const [showRules, setShowRules] = useState(true);
   const [mainArea, setMainArea] = useState<Developer[]>([]);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
@@ -61,6 +62,15 @@ export default function App() {
       developerPower
     );
   
+    const clearedMainArea = mainArea.map(dev => ({
+      ...dev,
+      output: null,
+      hasBug: null,
+      working: false,
+    }));
+
+    setMainArea(clearedMainArea);
+
     if (result.increasePower) {
       setDeveloperPower(prev => prev + 1);
     }
@@ -92,6 +102,83 @@ export default function App() {
     
   };  
 
+  const processTurn = async () => {
+    const result = handleBeginTurnLogic(
+      activeInvestments,
+      investmentConfigs,
+      turnsRemaining,
+      completedInvestments,
+      developers,
+      mainArea,
+      resultHistory,
+      currentSprint,
+      techDebt,
+      developerPower
+    );
+  
+    const clearedMainArea = mainArea.map(dev => ({
+      ...dev,
+      output: null,
+      hasBug: null,
+      working: false,
+    }));
+
+    setMainArea(clearedMainArea);
+
+    if (result.increasePower) {
+      setDeveloperPower(prev => prev + 1);
+    }
+    
+    setPrevTechDebt(techDebt);
+    setPrevConfidence(currentSprintData.releaseConfidence);
+    setPrevDevPower(developerPower);
+  
+    setTurnsRemaining(result.updatedTurns);
+    setCompletedInvestments(result.updatedCompleted);
+    setDevelopers(result.updatedDevelopers);
+    setActiveInvestments(result.updatedActiveInvestments);
+    setTechDebt(result.updatedTechDebt);
+  
+    // ✨ New part: Animate each developer output generation
+    for (let i = 0; i < mainArea.length; i++) {
+      // Set working = true
+      setMainArea(prev => {
+        const updated = [...prev];
+        updated[i] = { ...updated[i], working: true };
+        return updated;
+      });
+  
+      // Wait a bit
+      await new Promise(resolve => setTimeout(resolve, 800));
+  
+      // Update developer with output + bug
+      setMainArea(prev => {
+        const updated = [...prev];
+        const dev = updated[i];
+        const output = Math.floor(Math.random() * developerPower) + 1;
+        const bugRoll = Math.random() * 100;
+        const hasBug = bugRoll <= techDebt;
+        updated[i] = { ...dev, output, hasBug, working: false };
+        return updated;
+      });
+    }
+  
+    // After all devs finished working → finalize sprint data
+    setResultHistory(prev => [...prev, result.turnSprintData]);
+    setCurrentSprint(prev => {
+      const nextSprint = prev + 1;
+  
+      if (nextSprint >= maxSprintCount && window.gtag) {
+        window.gtag('event', 'game_completed', {
+          event_category: 'gameplay',
+          event_label: 'User completed the game',
+        });
+      }
+  
+      return nextSprint;
+    });
+  };
+  
 
   const onDrop = (
     event: React.DragEvent,
@@ -233,7 +320,7 @@ export default function App() {
           <div className={styles.buttonWrapper}>
             <button
               className={`${styles.beginButton} ${disableTurn ? styles.beginButtonDisabled : ''}`}
-              onClick={handleBeginTurn}
+              onClick={processTurn}
               disabled={disableTurn}
             >
               {getTurnButtonText()}

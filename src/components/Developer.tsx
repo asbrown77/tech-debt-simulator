@@ -1,9 +1,7 @@
 import React from 'react';
 import styles from '../styles/Developer.module.css';
 import DeveloperToken from '../developer-token.png';
-import developerIcon from '../developer.svg';
 import { Developer } from '../types';
-<img src={DeveloperToken} alt="Developer" />
 
 export type DeveloperWithValueProps = {
   developer: Developer;
@@ -18,39 +16,43 @@ export const DeveloperWithValue = ({
   developerPower,
   isInvestment,
 }: DeveloperWithValueProps) => {
-  const showOutput = !isInvestment && developer.output && developer.output > 0;
+  const showOutput = !isInvestment && developer.output !== undefined && developer.output !== null;
+  const showBug = !isInvestment && developer.hasBug;
 
   return (
     <div className={styles.outerWrapper}>
-      <div className={styles.wrapper}>
-        <img
-          src={DeveloperToken}
-          draggable
-          onDragStart={(e) => onDragStart(e, developer)}
-          onDragEnd={(e) => {
-            if (e.currentTarget instanceof HTMLElement) {
-              e.currentTarget.style.opacity = '1';
-            }
-          }}
-          className={`${styles.image} ${isInvestment ? styles.imageInvestment : ''}`}
-          alt={`Developer ${developer.id}`}
-        />
+      <div className={styles.devCard}>
+        
+        {/* Top Row: Output */}
+        <div className={styles.outputRow}>
+          {showOutput ? `+${developer.output}` : ''}
+        </div>
 
-        <div className={styles.valueTag}>{developerPower}</div>
+        {/* Middle Row: Developer Icon */}
+        <div className={styles.devIconRow}>
+          <img
+            src={DeveloperToken}
+            draggable
+            onDragStart={(e) => onDragStart(e, developer)}
+            onDragEnd={(e) => {
+              if (e.currentTarget instanceof HTMLElement) {
+                e.currentTarget.style.opacity = '1';
+              }
+            }}
+            className={`${styles.image} ${developer.working ? styles.imageWorking : ''} ${isInvestment ? styles.imageInvestment : ''}`}
+            alt={`Developer ${developer.id}`}
+          />
+        </div>
 
-        {isInvestment && developer.turnsRemaining !== undefined && (
-          <div className={`${styles.turnTag} ${developer.turnsRemaining === 0 ? styles.turnDone : ''}`}>
-            {developer.turnsRemaining}
-          </div>
-        )}
+        {/* Bottom Row: Bug */}
+        <div className={styles.bugRow}>
+          {showBug && <span className={styles.bugTag}>🐞</span>}
+        </div>
+
       </div>
-
-      {/* Only render if in Build and output > 0 */}
-      {showOutput && <div className={styles.outputTag}>{developer.output}</div>}
     </div>
   );
 };
-
 
 export const DeveloperPlaceholder = () => (
   <div className={styles.placeholder} />
