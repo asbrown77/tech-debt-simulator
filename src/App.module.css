@@ -98,6 +98,17 @@
     grid-template-rows: 1fr 1fr;
     gap: 1rem;
   }
+
+  .improvementText {
+    min-height: 3.6em; /* roughly 3 lines */
+    text-align: center;
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.2;
+    margin-top: 0.5rem;
+    white-space: normal;
+    overflow: hidden;
+  }
   
   .logoArea {
     display: flex;

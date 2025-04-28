@@ -14,57 +14,77 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
         <button style={styles.closeButton} onClick={onClose}>×</button>
 
         <div style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: 800, margin: '0 auto' }}>
-          <h1 style={{ textAlign: 'center' }}>Tech Debt Simulator</h1>
+          <h1 style={{ textAlign: 'center' }}>Tech Debt Simulation</h1>
           <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#444' }}>
-            See what happens when you ignore it… or pay it down.
+            See what happens when you ignore it or invest wisely.
+          </p>
+          <p style={{ textAlign: 'center', fontSize: '1rem', color: '#666', marginTop: '0.5rem' }}>
+            A simple tool to explore how tech debt decisions shape delivery outcomes.
           </p>
 
           <h2>🎯 Your Goal</h2>
           <p>
-            You’ve got <strong>10 sprints</strong> to deliver as much value as possible.
-            Easy? Not quite.<br />
-            You’ve inherited a team buried in tech debt and they can’t release working software every sprint.
+            You have <strong>10 sprints</strong> to deliver as much value as possible. Sounds simple.
+          </p>
+          <p>
+            But your team is stuck. They are buried in tech debt, unable to release reliably, and looking busy without results.
+          </p>
+          <p>
+            What will you do next?
+          </p>
+          <ul>
+            <li>How will you help them start delivering?</li>
+            <li>What happens if you invest?</li>
+            <li>What happens if you do nothing?</li>
+          </ul>
+          <p>
+            Every decision is a trade off. What you invest in or ignore will shape how your team delivers.
           </p>
 
           <h2>👨‍💻 Your Developers</h2>
           <ul>
-            <li>You’ve got 6 devs. Each one starts with a <strong>power level of 5</strong>.</li>
+            <li>You have 6 devs. Each one starts with a <strong>power level of 5</strong>.</li>
             <li>
-              That means when they’re assigned to <strong>Build</strong>, they can generate <strong>1 to 5 value</strong> each sprint.
+              When assigned to <strong>Build</strong>, they generate <strong>1 to 5 value</strong> each sprint.
             </li>
             <li>Double-click an area or drag and drop your devs to assign them.</li>
             <li>
-              Drop them into <strong>Build</strong> to crank out features, or invest in the future by assigning them to <strong>Improvements</strong>!
+              Drop them into <strong>Build</strong> to crank out features, or invest in the future by assigning them to <strong>Improvements</strong>.
             </li>
           </ul>
 
           <h2>⏰ Tech Debt Gets in the Way</h2>
           <ul>
-            <li>You inherited <strong>100% tech debt</strong>. Lucky you.</li>
-            <li>Ignore it, and it gets worse - more bugs, more failed releases.</li>
-            <li>The only way out? Invest in improvements.</li>
+            <li>You inherited <strong>100 percent tech debt</strong>. Lucky you.</li>
+            <li>Ignore it, and it gets worse, with more bugs and failed releases.</li>
+            <li>The only way out is to invest in improvements.</li>
           </ul>
 
           <h2>🧪 Team Improvements</h2>
           <p>Each investment you complete gives your team a permanent upgrade:</p>
           <ul>
-            <li><strong>More dev power</strong> - your devs generate more value each sprint</li>
-            <li><strong>Higher release confidence</strong> - better odds your work actually ships</li>
-            <li><strong>Less tech debt</strong> - fewer bugs, faster progress</li>
+            <li><strong>More dev power</strong>, generating more value each sprint.</li>
+            <li><strong>Higher release confidence</strong>, better odds your work actually ships.</li>
+            <li><strong>Less tech debt</strong>, meaning fewer bugs and faster progress.</li>
           </ul>
 
-          <h2>📋 How the Game Works</h2>
+          <h2>📋 How the Simulation Works</h2>
           <ul>
-            <li>Only devs in Build generate value.</li>
-            <li>Bugs show up more often when tech debt’s high, they eat into your output.</li>
-            <li>Releasing is a dice roll - more confidence means better odds.</li>
-            <li>Value only counts if you release. Fail the release? You lose that sprint’s work.</li>
-            <li>After 10 sprints, the game ends. Check your results. What would you change next time?</li>
+            <li>Only devs in <strong>Build</strong> generate value each sprint.</li>
+            <li><strong>Bugs</strong> are more likely with high tech debt for each developer building.</li>
+            <li><strong>Releases</strong> depend on a roll from 1 to 100:
+              <ul>
+                <li>If the roll is less than or equal to your <strong>Release Confidence</strong>, the release succeeds.</li>
+                <li>Otherwise, nothing is released that sprint.</li>
+              </ul>
+            </li>
+            <li>Only released value counts. Failed release equals lost value.</li>
+            <li>The simulation ends after 10 sprints. Reflect on your results and what you might change next time.</li>
           </ul>
 
-        <p style={{ marginTop: '2rem', fontSize: '1rem', textAlign: 'center' }}>
-          <strong>Deliver now or build a team that delivers forever? You decide.</strong>
-        </p>
+          <p style={{ marginTop: '2rem', fontSize: '1rem', textAlign: 'center' }}>
+            <strong>Deliver now or build a team that delivers sustainably. You decide.</strong>
+          </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
             <button

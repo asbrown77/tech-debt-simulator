@@ -38,17 +38,6 @@
     min-height: 400px;
   }
   
-  .leftColumn,
-  .rightColumn {
-    flex: 0 0 50%;
-  }
-  
-  .rightColumn {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 1rem;
-  }
   
   .devPool {
     margin-bottom: 2rem;
