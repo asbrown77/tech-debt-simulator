@@ -1,8 +1,8 @@
-import { InvestmentConfig } from '../config/investments';
-import { Developer } from '../types';
+import { InvestmentConfig } from '../config/investmentsConfig';
+import { ActiveInvestments } from '../types';
 
 export function processInvestments(
-  activeInvestments: { [key: string]: Developer[] },
+  activeInvestments: ActiveInvestments,
   turnsRemaining: { [key: string]: number | undefined },
   completedInvestments: Set<string>,
   investmentConfigs: InvestmentConfig[]

@@ -1,14 +1,14 @@
-import { Developer } from '../types';
-import { InvestmentConfig } from '../config/investments';
+import { Developer, ActiveInvestments, CompletedInvestmentResult} from '../types';
+import { InvestmentConfig } from '../config/investmentsConfig';
 import { processInvestments } from './trackInvestments';
-import { processCompletedInvestments } from './investments';
-import { resetDevelopers, calculateDeveloperOutput } from './developers';
-import { calculateReleaseConfidence, rollForRelease } from './release';
-import { generateSprintData } from './sprint';
+import { finalizeCompletedInvestments } from './investmentLogic';
+import { resetDevelopers, calculateDeveloperOutput } from './developerLogic';
+import { calculateReleaseConfidence, rollForRelease } from './releaseLogic';
+import { generateSprintData } from './sprintLogic';
 import { SprintData } from '../types';
 
 export function handleBeginTurnLogic(
-  activeInvestments: { [key: string]: Developer[] },
+  activeInvestments: ActiveInvestments,
   investmentConfigs: InvestmentConfig[],
   turnsRemaining: { [key: string]: number | undefined },
   completedInvestments: Set<string>,
@@ -33,8 +33,8 @@ export function handleBeginTurnLogic(
     updatedTechDebt,
     updatedDevelopers: processedDevelopers,
     updatedActiveInvestments,
-    increasePower,
-  } = processCompletedInvestments(
+    developerPowerIncreased,
+  } = finalizeCompletedInvestments(
     Array.from(newlyCompleted),
     activeInvestments,
     investmentConfigs,
@@ -78,6 +78,6 @@ export function handleBeginTurnLogic(
     updatedActiveInvestments,
     updatedTechDebt,
     turnSprintData,
-    increasePower,
+    developerPowerIncreased,
   };
 }

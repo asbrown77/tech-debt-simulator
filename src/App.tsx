@@ -1,12 +1,12 @@
 import React, { useState } from 'react';  
-import { Developer, SprintData} from './types';
+import { Developer, SprintData, ActiveInvestments} from './types';
 import { DeveloperWithValue } from './components/Developer';
 import DropZone from './components/DropZone';
 import { GameStats, TurnValues } from './components/GameStats';
 import { SprintChart } from './components/SprintChart';
 import { ResultHistoryTable } from './components/ResultHistoryTable';
-import { investmentConfigs } from './config/investments';
-import { initialDevelopers } from './config/developers';
+import { investmentConfigs } from './config/investmentsConfig';
+import { initialDevelopers } from './config/developersConfig';
 import { SprintCounter } from './components/SprintCounter';
 import { handleDragStart, handleDrop } from './utils/dragHandlers';
 import { handleBeginTurnLogic } from './game/gameLogic';
@@ -39,7 +39,7 @@ export default function App() {
   const [resetSpinResultTrigger, setResetSpinResultTrigger] = useState(0);
   const [startSpinVersion, setStartSpinVersion] = useState(0);
 
-  const [activeInvestments, setActiveInvestments] = useState<{ [key: string]: Developer[] }>(
+  const [activeInvestments, setActiveInvestments] = useState<ActiveInvestments>(
     investmentConfigs.reduce((acc, investment) => ({
       ...acc,
       [investment.name]: []
@@ -80,7 +80,7 @@ export default function App() {
     setMainArea(clearedMainArea);
     setClearSpinResultVersion(prev => prev + 1);
 
-    if (result.increasePower) {
+    if (result.developerPowerIncreased) {
       setDeveloperPower(prev => prev + 1);
     }
     

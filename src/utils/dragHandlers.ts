@@ -1,4 +1,4 @@
-import { Developer } from '../types';
+import { Developer, ActiveInvestments } from '../types';
 import { Dispatch, SetStateAction } from 'react';
 
 export const handleDragStart = (
@@ -21,10 +21,10 @@ export const handleDrop = (
   areaSetter: (updater: (prev: Developer[]) => Developer[]) => void,
   developers: Developer[],
   mainArea: Developer[],
-  activeInvestments: { [key: string]: Developer[] },
+  activeInvestments: ActiveInvestments,
   setDevelopers: Dispatch<SetStateAction<Developer[]>>,
   setMainArea: Dispatch<SetStateAction<Developer[]>>,
-  setActiveInvestments: Dispatch<SetStateAction<{ [key: string]: Developer[] }>>,
+  setActiveInvestments: Dispatch<SetStateAction<ActiveInvestments>>,
   setTurnsRemaining: Dispatch<SetStateAction<{ [key: string]: number | undefined }>>,
   investmentConfigs: any[]
 ) => {

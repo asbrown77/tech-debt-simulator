@@ -19,3 +19,12 @@ export type Developer = {
     netValue: number;
     totalValueDelivered: number;
 };
+
+export type ActiveInvestments = { [investmentName: string]: Developer[] };
+
+export type CompletedInvestmentResult = {
+  updatedTechDebt: number;
+  updatedDevelopers: Developer[];
+  updatedActiveInvestments: ActiveInvestments;
+  developerPowerIncreased: boolean;
+};
