@@ -1,6 +1,6 @@
 import React, { useState } from 'react';  
 import { Developer, SprintData, ActiveInvestments} from './types';
-import { DeveloperWithValue } from './components/Developer';
+import { DeveloperComponent } from './components/Developer';
 import GameDropZone from './components/GameDropZone';
 import { GameStats, TurnSummary } from './components/GameStats';
 import { SprintChart } from './components/SprintChart';
@@ -93,7 +93,7 @@ export default function App() {
     setDevelopers(result.updatedDevelopers);
     setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
-  
+
     for (let i = 0; i < mainArea.length; i++) {
       setMainArea(prev => {
         const updated = [...prev];
@@ -114,11 +114,16 @@ export default function App() {
         updated[i] = { ...dev, output, hasBug, working: false };
         return updated;
       });
+
+      // temp fix until fix timer on both release spinner and dev
+      if (i == 2) {
+        setStartSpinVersion(prev => prev + 1);
+      }
     }
   
     // After all devs finished working → finalize sprint data
       // now devs are done
-    setStartSpinVersion(prev => prev + 1);
+     // setStartSpinVersion(prev => prev + 1);
 
     setResultHistory(prev => [...prev, result.turnSprintData]);
     setCurrentSprint(prev => {
@@ -231,7 +236,7 @@ export default function App() {
           />
 
           <GameDropZone 
-            key="Build" 
+            name="Build" 
             title={`Sprint ${currentSprint.toString()}`}
             area={mainArea} 
             setArea={setMainArea} 
@@ -262,7 +267,7 @@ export default function App() {
   
             <div className={styles.developers}>              
               {developers.map((m) => (
-                  <DeveloperWithValue 
+                  <DeveloperComponent 
                     key={`available-${m.id}`}
                     developer={m} 
                     onDragStart={(e, m) => {
@@ -295,7 +300,7 @@ export default function App() {
         <div className={styles.rightColumn}>
           {investmentConfigs.map((investment) => (
             <GameDropZone
-              key={investment.name}
+              name={investment.name}
               title={investment.name}
               area={activeInvestments[investment.name] || []}
               setArea={(updater: (prev: Developer[]) => Developer[]) =>

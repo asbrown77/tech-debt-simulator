@@ -3,19 +3,19 @@ import styles from '../styles/Developer.module.css';
 import DeveloperToken from '../developer-token.png';
 import { Developer } from '../types';
 
-export type DeveloperWithValueProps = {
+export type DeveloperComponentProps = {
   developer: Developer;
   onDragStart: (e: React.DragEvent, m: Developer) => void;
   developerPower: number;
   isInvestment?: boolean;
 };
 
-export const DeveloperWithValue = ({
+export const DeveloperComponent = ({
   developer,
   onDragStart,
   developerPower,
   isInvestment,
-}: DeveloperWithValueProps) => {
+}: DeveloperComponentProps) => {
   const showOutput = !isInvestment && developer.output !== undefined && developer.output !== null;
   const showBug = !isInvestment && developer.hasBug;
 

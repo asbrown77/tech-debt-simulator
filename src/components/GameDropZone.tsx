@@ -1,12 +1,12 @@
 import React from 'react';
 import { Developer, SprintData } from '../types';
-import { DeveloperWithValue, DeveloperPlaceholder } from './Developer';
+import { DeveloperComponent, DeveloperPlaceholder } from './Developer';
 import styles from '../styles/GameDropzone.module.css';
 import { ReleaseSpinnerRow } from './ReleaseSpinnerRow';
 import { useEffect } from 'react';
 
 type GameDropZoneProps = {
-  key: string;
+  name: string;
   title: string;
   area: Developer[];
   setArea: (updater: (prev: Developer[]) => Developer[]) => void;
@@ -35,7 +35,7 @@ type GameDropZoneProps = {
 };
 
 const GameDropZone: React.FC<GameDropZoneProps> = ({
-  key,
+  name,
   title,
   area,
   setArea,
@@ -54,8 +54,8 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   resetSpinResultTrigger,
   startSpinVersion
 }) => {
-  const investmentConfig = investmentConfigs.find((config) => config.name === key);
-  const isCompleted = !isBuildArea && completedInvestments.has(key);
+  const investmentConfig = investmentConfigs.find((config) => config.name === name);
+  const isCompleted = !isBuildArea && completedInvestments.has(name);
 
   const [spinRequested, setSpinRequested] = React.useState(false);
   const [triggerSpin, setTriggerSpin] = React.useState(false);
@@ -74,7 +74,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   }, [resetSpinResultTrigger]);
   
   useEffect(() => {
-    if (startSpinVersion !== undefined && isBuildArea) {
+    if (isBuildArea) {
       setTriggerSpin(true);     // ✅ Start spinning AFTER devs finished
     }
   }, [startSpinVersion]);
@@ -83,7 +83,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   return (
     <div
       onDoubleClick={handleDoubleClick}
-      onDrop={(e) => !isCompleted && handleDrop(e, key, setArea)}
+      onDrop={(e) => !isCompleted && handleDrop(e, name, setArea)}
       onDragOver={allowDrop}
       className={`${styles.gameDropZone} ${
         isCompleted
@@ -97,7 +97,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         <strong>{title}</strong>
         {!isBuildArea && investmentConfig && (isCompleted || area.length === maxDevelopers) && (
           <div className={`${styles.turnsInfo} ${isCompleted ? styles.turnsComplete : ''}`}>
-            {isCompleted ? 'Done' : `${turnsRemaining[key] ?? investmentConfig.turnsToComplete} turns`}
+            {isCompleted ? 'Done' : `${turnsRemaining[name] ?? investmentConfig.turnsToComplete} turns`}
           </div>
         )}
       </div>
@@ -123,16 +123,16 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         {Array((isBuildArea ? 6 : maxDevelopers || 0))
           .fill(null)
           .map((_, index) => (
-            <div key={`${key}-slot-${index}`} style={{ position: 'relative' }}>
+            <div key={`${name}-slot-${index}`} style={{ position: 'relative' }}>
               {area[index] ? (
-                <DeveloperWithValue
-                  key={`${key}-${area[index].id}`}
+                <DeveloperComponent
+                  key={`${name}-${area[index].id}`}
                   developer={area[index]}
                   onDragStart={(e, m) => {
                     if (e.currentTarget instanceof HTMLElement) {
                       e.currentTarget.style.opacity = '0.5';
                     }
-                    handleDragStart(e, m, key);
+                    handleDragStart(e, m, name);
                   }}
                   isInvestment={!isBuildArea}
                   developerPower={developerPower}
