@@ -1,8 +1,8 @@
 import React, { useState } from 'react';  
 import { Developer, SprintData, ActiveInvestments} from './types';
 import { DeveloperWithValue } from './components/Developer';
-import DropZone from './components/DropZone';
-import { GameStats, TurnValues } from './components/GameStats';
+import GameDropZone from './components/GameDropZone';
+import { GameStats, TurnSummary } from './components/GameStats';
 import { SprintChart } from './components/SprintChart';
 import { ResultHistoryTable } from './components/ResultHistoryTable';
 import { investmentConfigs } from './config/investmentsConfig';
@@ -230,7 +230,7 @@ export default function App() {
             prevDevPower={prevDevPower}
           />
 
-          <DropZone 
+          <GameDropZone 
             title="Build" 
             area={mainArea} 
             setArea={setMainArea} 
@@ -293,7 +293,7 @@ export default function App() {
         {/* Investment Area - 50% */}
         <div className={styles.rightColumn}>
           {investmentConfigs.map((investment) => (
-            <DropZone
+            <GameDropZone
               key={investment.name}
               title={investment.name}
               area={activeInvestments[investment.name] || []}
@@ -322,7 +322,7 @@ export default function App() {
       {/* Sprint Counter */}
       <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
 
-      <TurnValues
+      <TurnSummary
             value={currentSprintData.devOutput}
             bugs={currentSprintData.bugs}
             netValue={currentSprintData.netValue}

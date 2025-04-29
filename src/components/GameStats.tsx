@@ -41,20 +41,20 @@ export const GameStats = ({
 );
 
 
-export type TurnValuesProps = {
+export type TurnSummaryProps = {
   value: number;
   bugs: number;
   netValue: number;
   successfulRelease: boolean;
 };
 
-export const TurnValues = ({
+export const TurnSummary = ({
   value,
   bugs,
   netValue,
   successfulRelease
-}: TurnValuesProps) => (
-  <div className={styles.turnValues} 
+}: TurnSummaryProps) => (
+  <div className={styles.turnSummary} 
   >
  <div>
       <span className={styles.label}>Dev Output:</span>

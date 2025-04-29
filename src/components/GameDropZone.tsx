@@ -1,11 +1,11 @@
 import React from 'react';
 import { Developer, SprintData } from '../types';
 import { DeveloperWithValue, DeveloperPlaceholder } from './Developer';
-import styles from '../styles/Dropzone.module.css';
+import styles from '../styles/GameDropzone.module.css';
 import { ReleaseSpinnerRow } from './ReleaseSpinnerRow';
 import { useEffect } from 'react';
 
-type DropZoneProps = {
+type GameDropZoneProps = {
   title: string;
   area: Developer[];
   setArea: (updater: (prev: Developer[]) => Developer[]) => void;
@@ -33,7 +33,7 @@ type DropZoneProps = {
   startSpinVersion?: number;
 };
 
-const DropZone: React.FC<DropZoneProps> = ({
+const GameDropZone: React.FC<GameDropZoneProps> = ({
   title,
   area,
   setArea,
@@ -83,7 +83,7 @@ const DropZone: React.FC<DropZoneProps> = ({
       onDoubleClick={handleDoubleClick}
       onDrop={(e) => !isCompleted && handleDrop(e, title, setArea)}
       onDragOver={allowDrop}
-      className={`${styles.dropZone} ${
+      className={`${styles.gameDropZone} ${
         isCompleted
           ? styles.completed
           : isBuildArea
@@ -91,7 +91,7 @@ const DropZone: React.FC<DropZoneProps> = ({
           : styles.investmentZone
       }`}
     >
-      <div className={styles.dropZoneHeader}>
+      <div className={styles.gameDropZoneHeader}>
         <strong>{title}</strong>
         {!isBuildArea && investmentConfig && (isCompleted || area.length === maxDevelopers) && (
           <div className={`${styles.turnsInfo} ${isCompleted ? styles.turnsComplete : ''}`}>
@@ -184,4 +184,4 @@ const DropZone: React.FC<DropZoneProps> = ({
   );
 };
 
-export default DropZone;
+export default GameDropZone;
