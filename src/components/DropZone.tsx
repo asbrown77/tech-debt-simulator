@@ -30,7 +30,7 @@ type DropZoneProps = {
   developerPower: number;
   currentSprintData: SprintData;
   resetSpinResultTrigger?: number;
-  clearSpinResultVersion?: number;
+  startSpinVersion?: number;
 };
 
 const DropZone: React.FC<DropZoneProps> = ({
@@ -50,12 +50,13 @@ const DropZone: React.FC<DropZoneProps> = ({
   developerPower,
   currentSprintData,
   resetSpinResultTrigger,
-  clearSpinResultVersion,
+  startSpinVersion
 }) => {
   const investmentConfig = investmentConfigs.find((config) => config.name === title);
   const isCompleted = !isBuildArea && completedInvestments.has(title);
 
   const [spinRequested, setSpinRequested] = React.useState(false);
+  const [triggerSpin, setTriggerSpin] = React.useState(false);
   const [spinResult, setSpinResult] = React.useState<boolean | null>(null);
 
 
@@ -63,20 +64,18 @@ const DropZone: React.FC<DropZoneProps> = ({
     event.preventDefault();
   };
 
-  // When new sprint starts
   useEffect(() => {
     if (isBuildArea) {
-      setSpinRequested(true);
-      setSpinResult(null); // important: clear immediately
+      setSpinResult(null);       // ✅ Clear old result
+      setTriggerSpin(false);     // ✅ Prepare spinner (but don't spin yet)
     }
   }, [resetSpinResultTrigger]);
-
-  // When click Begin Turn button
+  
   useEffect(() => {
-    if (clearSpinResultVersion !== undefined && isBuildArea) {
-      setSpinResult(null);
+    if (startSpinVersion !== undefined && isBuildArea) {
+      setTriggerSpin(true);     // ✅ Start spinning AFTER devs finished
     }
-  }, [clearSpinResultVersion]);
+  }, [startSpinVersion]);
   
 
   return (
@@ -160,42 +159,25 @@ const DropZone: React.FC<DropZoneProps> = ({
       
       {isBuildArea && (
       <div style={{ marginTop: '1rem' }}>
+        {/* Always show spinner */}
+        <ReleaseSpinnerRow
+          confidence={currentSprintData.releaseConfidence ?? 0}
+          triggerSpin={triggerSpin}
+          resetSpinResultTrigger={resetSpinResultTrigger ?? 0 }
+          onSpinComplete={(success) => {
+            setSpinResult(success);
+            setTriggerSpin(false);   // ✅ stop spinning after finish
+          }}
+        />
 
-        {spinRequested && (
-          <ReleaseSpinnerRow
-            confidence={currentSprintData.releaseConfidence ?? 0}
-            triggerSpin={spinRequested}
-            onSpinComplete={(success) => {
-              setSpinRequested(false);
-              setSpinResult(success);
-            }}
-          />
-        )}
-
-        {spinResult !== null && (
-          <div style={{ marginTop: '0.5rem', fontWeight: 'bold', textAlign: 'center'}}>
+        {/* Only show result text if spin is finished */}
+        {/* {spinResult !== null && (
+          <div style={{ marginTop: '0.5rem', fontWeight: 'bold', textAlign: 'center' }}>
             {spinResult ? '✅ Released!' : '❌ Failed!'}
           </div>
-        )}
+        )} */}
       </div>
-    )}
-
-
-
-      {/* {isBuildArea && currentSprintData && (
-        <div className={styles.releaseSummary}>
-          <div>
-            <strong>Release Confidence:</strong> {currentSprintData.releaseConfidence ?? 0}%
-          </div>
-          <div>
-            <strong>Roll:</strong> 🎲 {currentSprintData.roll ?? '-'}
-          </div>
-
-          <div>
-            {currentSprintData.released ? '👍🏻 Released!' : '👎🏻 Failed'}
-          </div>
-        </div>
-      )} */}
+)}
 
       {description && <div className={styles.description}>{description}</div>}
     </div>

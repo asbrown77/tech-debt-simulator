@@ -36,6 +36,9 @@ export default function App() {
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
   const [clearSpinResultVersion, setClearSpinResultVersion] = useState(0);
 
+  const [resetSpinResultTrigger, setResetSpinResultTrigger] = useState(0);
+  const [startSpinVersion, setStartSpinVersion] = useState(0);
+
   const [activeInvestments, setActiveInvestments] = useState<{ [key: string]: Developer[] }>(
     investmentConfigs.reduce((acc, investment) => ({
       ...acc,
@@ -50,6 +53,10 @@ export default function App() {
   );
 
   const processTurn = async () => {
+
+    // Immediately clear old spin result
+    setResetSpinResultTrigger(prev => prev + 1);
+
     const result = handleBeginTurnLogic(
       activeInvestments,
       investmentConfigs,
@@ -70,8 +77,8 @@ export default function App() {
       working: false,
     }));
 
-    setClearSpinResultVersion(prev => prev + 1);
     setMainArea(clearedMainArea);
+    setClearSpinResultVersion(prev => prev + 1);
 
     if (result.increasePower) {
       setDeveloperPower(prev => prev + 1);
@@ -87,9 +94,7 @@ export default function App() {
     setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
   
-    // ✨ New part: Animate each developer output generation
     for (let i = 0; i < mainArea.length; i++) {
-      // Set working = true
       setMainArea(prev => {
         const updated = [...prev];
         updated[i] = { ...updated[i], working: true };
@@ -112,6 +117,9 @@ export default function App() {
     }
   
     // After all devs finished working → finalize sprint data
+      // now devs are done
+    setStartSpinVersion(prev => prev + 1);
+
     setResultHistory(prev => [...prev, result.turnSprintData]);
     setCurrentSprint(prev => {
       const nextSprint = prev + 1;
@@ -236,7 +244,7 @@ export default function App() {
             developerPower={developerPower}
             currentSprintData={currentSprintData}
             resetSpinResultTrigger={currentSprint}
-            clearSpinResultVersion={clearSpinResultVersion}
+            startSpinVersion={startSpinVersion}
           />
           
 <br/>
@@ -289,7 +297,7 @@ export default function App() {
               key={investment.name}
               title={investment.name}
               area={activeInvestments[investment.name] || []}
-              setArea={(updater) =>
+              setArea={(updater: (prev: Developer[]) => Developer[]) =>
                 setActiveInvestments((prev) => ({ ...prev, [investment.name]: updater(prev[investment.name]) }))
               }
               description={investment.description}

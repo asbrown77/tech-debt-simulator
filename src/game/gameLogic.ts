@@ -1,8 +1,10 @@
 import { Developer } from '../types';
-import { InvestmentConfig, BASE_TECH_DEBT } from '../config/investments';
+import { InvestmentConfig } from '../config/investments';
 import { processInvestments } from './trackInvestments';
-import { calculateRelease } from './calculateRelease';
-import { uniqueDevelopers } from '../utils/helpers';
+import { processCompletedInvestments } from './investments';
+import { resetDevelopers, calculateDeveloperOutput } from './developers';
+import { calculateReleaseConfidence, rollForRelease } from './release';
+import { generateSprintData } from './sprint';
 import { SprintData } from '../types';
 
 export function handleBeginTurnLogic(
@@ -24,83 +26,55 @@ export function handleBeginTurnLogic(
     investmentConfigs
   );
 
-  let updatedDevelopers = [...developers];
-  let updatedMainArea = [...mainArea];
-  let updatedActiveInvestments = { ...activeInvestments };
-  let updatedTechDebt = techDebt;
-  let increasePower = false;
+  let updatedDevelopers = resetDevelopers(developers);
+  let updatedMainArea = resetDevelopers(mainArea);
 
-  // 1. Reset all developers' output to null
-  updatedDevelopers = updatedDevelopers.map(dev => ({ ...dev, output: null, hasBug: false }));
-  Object.keys(updatedActiveInvestments).forEach(key => {
-    updatedActiveInvestments[key] = updatedActiveInvestments[key].map(dev => ({ ...dev, output: null, hasBug: false }));
-  });
-  
+  const {
+    updatedTechDebt,
+    updatedDevelopers: processedDevelopers,
+    updatedActiveInvestments,
+    increasePower,
+  } = processCompletedInvestments(
+    Array.from(newlyCompleted),
+    activeInvestments,
+    investmentConfigs,
+    techDebt,
+    updatedDevelopers
+  );
 
-  newlyCompleted.forEach((name) => {
-    const investment = investmentConfigs.find((i) => i.name === name)!;
-    const completedDevelopers = activeInvestments[name];
+  const confidence = calculateReleaseConfidence(updatedCompleted, investmentConfigs);
 
-    const currentUnits = Math.ceil((updatedTechDebt * BASE_TECH_DEBT) / 100);
-    const newUnits = Math.max(0, currentUnits - (investment.techDebtReduction ?? 0));
-    updatedTechDebt = (newUnits * 100) / BASE_TECH_DEBT;
-
-    updatedDevelopers = uniqueDevelopers([...updatedDevelopers, ...completedDevelopers]);
-    updatedActiveInvestments[name] = [];
-
-    if (investment.increaseValue) {
-      increasePower = true;
-    }
-  });
-
-  // 2. Calculate release confidence
-  let confidence = 10;
-  if (updatedCompleted.has('CI/CD')) confidence += investmentConfigs.find((i) => i.name === 'CI/CD')?.confidenceIncrease ?? 0;
-  if (updatedCompleted.has('Test Coverage')) confidence += investmentConfigs.find((i) => i.name === 'Test Coverage')?.confidenceIncrease ?? 0;
-  confidence = Math.min(confidence, 100);
-
-  // 3. Calculate dev output and bugs
-  let totalValue = 0;
-  let bugs = 0;
-
-  updatedMainArea = updatedMainArea.map((dev) => {
-    const output = Math.floor(Math.random() * developerPower) + 1;
-    const roll = Math.random() * 100;
-    const bug = roll <= updatedTechDebt;
-
-    if (bug) bugs++;
-    totalValue += output;
-
-    return { ...dev, output, hasBug: bug };
-  });
+  const { updatedDevelopers: finalDevelopers, totalValue, bugs } = calculateDeveloperOutput(
+    updatedMainArea,
+    developerPower,
+    updatedTechDebt
+  );
 
   const netValue = totalValue - bugs;
   let delivered = resultHistory.at(-1)?.totalValueDelivered || 0;
 
-  const rollForRelease = Math.floor(Math.random() * 100) + 1;
-  const released = rollForRelease <= confidence;
-
+  const released = rollForRelease(confidence);
   if (released) {
     delivered += netValue;
   }
 
-  const turnSprintData: SprintData = {
-    sprintNumber: currentSprint + 1,
-    techDebt: updatedTechDebt,
-    releaseConfidence: confidence,
-    devOutput: totalValue,
+  const turnSprintData = generateSprintData(
+    currentSprint,
+    updatedTechDebt,
+    confidence,
+    totalValue,
     netValue,
     bugs,
-    totalValueDelivered: delivered,
+    delivered,
     released,
-    roll: rollForRelease
-  };
+    Math.floor(Math.random() * 100) + 1
+  );
 
   return {
     updatedTurns,
     updatedCompleted,
-    updatedDevelopers,
-    updatedMainArea,
+    updatedDevelopers: processedDevelopers,
+    updatedMainArea: finalDevelopers,
     updatedActiveInvestments,
     updatedTechDebt,
     turnSprintData,
