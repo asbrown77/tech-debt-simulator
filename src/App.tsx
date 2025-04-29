@@ -231,7 +231,8 @@ export default function App() {
           />
 
           <GameDropZone 
-            title="Build" 
+            key="Build" 
+            title={`Sprint ${currentSprint.toString()}`}
             area={mainArea} 
             setArea={setMainArea} 
             isBuildArea={true}  

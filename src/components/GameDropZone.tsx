@@ -6,6 +6,7 @@ import { ReleaseSpinnerRow } from './ReleaseSpinnerRow';
 import { useEffect } from 'react';
 
 type GameDropZoneProps = {
+  key: string;
   title: string;
   area: Developer[];
   setArea: (updater: (prev: Developer[]) => Developer[]) => void;
@@ -34,6 +35,7 @@ type GameDropZoneProps = {
 };
 
 const GameDropZone: React.FC<GameDropZoneProps> = ({
+  key,
   title,
   area,
   setArea,
@@ -52,8 +54,8 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   resetSpinResultTrigger,
   startSpinVersion
 }) => {
-  const investmentConfig = investmentConfigs.find((config) => config.name === title);
-  const isCompleted = !isBuildArea && completedInvestments.has(title);
+  const investmentConfig = investmentConfigs.find((config) => config.name === key);
+  const isCompleted = !isBuildArea && completedInvestments.has(key);
 
   const [spinRequested, setSpinRequested] = React.useState(false);
   const [triggerSpin, setTriggerSpin] = React.useState(false);
@@ -81,7 +83,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   return (
     <div
       onDoubleClick={handleDoubleClick}
-      onDrop={(e) => !isCompleted && handleDrop(e, title, setArea)}
+      onDrop={(e) => !isCompleted && handleDrop(e, key, setArea)}
       onDragOver={allowDrop}
       className={`${styles.gameDropZone} ${
         isCompleted
@@ -95,7 +97,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         <strong>{title}</strong>
         {!isBuildArea && investmentConfig && (isCompleted || area.length === maxDevelopers) && (
           <div className={`${styles.turnsInfo} ${isCompleted ? styles.turnsComplete : ''}`}>
-            {isCompleted ? 'Done' : `${turnsRemaining[title] ?? investmentConfig.turnsToComplete} turns`}
+            {isCompleted ? 'Done' : `${turnsRemaining[key] ?? investmentConfig.turnsToComplete} turns`}
           </div>
         )}
       </div>
@@ -113,7 +115,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
           flexWrap: 'wrap',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: isBuildArea ? '200px' : '60px',
+          minHeight: isBuildArea ? '150px' : '60px',
           flex: 1,
           alignContent: 'center'
         }}
@@ -121,16 +123,16 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         {Array((isBuildArea ? 6 : maxDevelopers || 0))
           .fill(null)
           .map((_, index) => (
-            <div key={`${title}-slot-${index}`} style={{ position: 'relative' }}>
+            <div key={`${key}-slot-${index}`} style={{ position: 'relative' }}>
               {area[index] ? (
                 <DeveloperWithValue
-                  key={`${title}-${area[index].id}`}
+                  key={`${key}-${area[index].id}`}
                   developer={area[index]}
                   onDragStart={(e, m) => {
                     if (e.currentTarget instanceof HTMLElement) {
                       e.currentTarget.style.opacity = '0.5';
                     }
-                    handleDragStart(e, m, title);
+                    handleDragStart(e, m, key);
                   }}
                   isInvestment={!isBuildArea}
                   developerPower={developerPower}
@@ -158,7 +160,11 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
       )}
       
       {isBuildArea && (
+
       <div style={{ marginTop: '1rem' }}>
+        <div>
+          <strong>Release Successful?</strong>
+        </div>
         {/* Always show spinner */}
         <ReleaseSpinnerRow
           confidence={currentSprintData.releaseConfidence ?? 0}
@@ -169,15 +175,8 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
             setTriggerSpin(false);   // ✅ stop spinning after finish
           }}
         />
-
-        {/* Only show result text if spin is finished */}
-        {/* {spinResult !== null && (
-          <div style={{ marginTop: '0.5rem', fontWeight: 'bold', textAlign: 'center' }}>
-            {spinResult ? '✅ Released!' : '❌ Failed!'}
-          </div>
-        )} */}
       </div>
-)}
+      )}
 
       {description && <div className={styles.description}>{description}</div>}
     </div>

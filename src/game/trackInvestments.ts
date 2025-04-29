@@ -13,22 +13,22 @@ export function processInvestments(
 
   investmentConfigs.forEach(config => {
     const area = activeInvestments[config.name];
-    const title = config.name;
+    const name = config.name;
 
-    if (completedInvestments.has(title)) return;
+    if (completedInvestments.has(name)) return;
 
     if (area.length === config.maxDevelopers) {
-      if (updatedTurns[title] === undefined) {
-        updatedTurns[title] = config.turnsToComplete - 1;
+      if (updatedTurns[name] === undefined) {
+        updatedTurns[name] = config.turnsToComplete - 1;
       } else {
-        updatedTurns[title] = Math.max(0, updatedTurns[title]! - 1);
-        if (updatedTurns[title] === 0) {
-          newlyCompleted.add(title);
-          updatedCompleted.add(title);
+        updatedTurns[name] = Math.max(0, updatedTurns[name]! - 1);
+        if (updatedTurns[name] === 0) {
+          newlyCompleted.add(name);
+          updatedCompleted.add(name);
         }
       }
     } else {
-      updatedTurns[title] = undefined;
+      updatedTurns[name] = undefined;
     }
   });
 
