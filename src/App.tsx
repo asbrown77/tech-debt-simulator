@@ -39,6 +39,8 @@ export default function App() {
   const [resetSpinResultTrigger, setResetSpinResultTrigger] = useState(0);
   const [startSpinVersion, setStartSpinVersion] = useState(0);
 
+  const [turnInProgress, setTurnInProgress] = useState(false);
+
   const [activeInvestments, setActiveInvestments] = useState<ActiveInvestments>(
     investmentConfigs.reduce((acc, investment) => ({
       ...acc,
@@ -54,6 +56,11 @@ export default function App() {
 
   const processTurn = async () => {
 
+    if (turnInProgress) 
+      return; // Prevent starting a new turn if one is already in progress
+
+    setTurnInProgress(true); // Mark the turn as in progress
+    
     // Immediately clear old spin result
     setResetSpinResultTrigger(prev => prev + 1);
 
@@ -138,6 +145,8 @@ export default function App() {
   
       return nextSprint;
     });
+
+    setTurnInProgress(false); // Mark the turn as finished
   };
   
 
@@ -146,6 +155,11 @@ export default function App() {
     targetArea: string,
     areaSetter: (updater: (prev: Developer[]) => Developer[]) => void
   ) => {
+    if (turnInProgress) {
+      console.warn('Cannot drop while a turn is in progress.');
+      return; // Prevent dropping if a turn is in progress
+    }
+
     handleDrop(
       event,
       targetArea,
@@ -162,6 +176,12 @@ export default function App() {
   };
 
   const handleDropZoneDoubleClick = (target: string) => {
+    
+    if (turnInProgress) {
+      console.warn('Cannot assign developers while a turn is in progress.');
+      return; // Prevent double-click actions if a turn is in progress
+    }
+
     if (developers.length > 0) {
       // Take first available and assign to target area
       const [first, ...rest] = developers;
@@ -287,9 +307,9 @@ export default function App() {
           {/* Begin Turn Button */}
           <div className={styles.buttonWrapper}>
             <button
-              className={`${styles.beginButton} ${disableTurn ? styles.beginButtonDisabled : ''}`}
+              className={`${styles.beginButton} ${disableTurn || turnInProgress ? styles.beginButtonDisabled : ''}`}
               onClick={processTurn}
-              disabled={disableTurn}
+              disabled={disableTurn || turnInProgress}
             >
               {getTurnButtonText()}
             </button>

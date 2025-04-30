@@ -57,7 +57,6 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   const investmentConfig = investmentConfigs.find((config) => config.name === name);
   const isCompleted = !isBuildArea && completedInvestments.has(name);
 
-  const [spinRequested, setSpinRequested] = React.useState(false);
   const [triggerSpin, setTriggerSpin] = React.useState(false);
   const [spinResult, setSpinResult] = React.useState<boolean | null>(null);
 
