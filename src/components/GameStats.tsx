@@ -54,9 +54,8 @@ export const TurnSummary = ({
   netValue,
   successfulRelease
 }: TurnSummaryProps) => (
-  <div className={styles.turnSummary} 
-  >
- <div>
+  <div className={styles.turnSummary}>
+    <div>
       <span className={styles.label}>Dev Output:</span>
       <span className={styles.value}>{value}</span>
     </div>

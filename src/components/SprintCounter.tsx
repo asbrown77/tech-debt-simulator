@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '../styles/GameStats.module.css';
 
 type SprintCounterProps = {
   currentSprint: number;
@@ -6,13 +7,15 @@ type SprintCounterProps = {
 };
 
 export const SprintCounter: React.FC<SprintCounterProps> = ({ currentSprint, maxSprints }) => (
+  <div className={styles.turnSummary}>
   <div style={{ 
     textAlign: 'center', 
-    fontSize: '1.5rem', 
-    marginBottom: '1rem',
+    fontSize: '1.4rem', 
+    marginBottom: '0rem',
     fontWeight: 'bold',
-    color: '#333'
+    color: 'white'
   }}>
     Sprint {currentSprint} of {maxSprints}
+  </div>
   </div>
 );

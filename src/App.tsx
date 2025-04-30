@@ -328,13 +328,6 @@ export default function App() {
       {/* Sprint Counter */}
       <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
 
-      <TurnSummary
-            value={currentSprintData.devOutput}
-            bugs={currentSprintData.bugs}
-            netValue={currentSprintData.netValue}
-            successfulRelease={currentSprintData.released}
-          />
-          
       {/* Graph */}
       <SprintChart data={chartData} />
       {/* Sprint History Table */}
