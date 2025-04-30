@@ -161,9 +161,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
       {isBuildArea && (
 
       <div style={{ marginTop: '1rem' }}>
-        <div>
-          <strong>Release Successful?</strong>
-        </div>
+
         {/* Always show spinner */}
         <ReleaseSpinnerRow
           confidence={currentSprintData.releaseConfidence ?? 0}
@@ -173,6 +171,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
             setSpinResult(success);
             setTriggerSpin(false);   // ✅ stop spinning after finish
           }}
+          valueDelivered={currentSprintData.valueDelivered ?? 0}
         />
       </div>
       )}

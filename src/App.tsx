@@ -219,9 +219,9 @@ export default function App() {
     devValue: 0,
     netValue: 0,
     bugs: 0,
+    valueDelivered: 0,
     accumulatedValueDelivered: 0,
     released: false,
-    roll: 0, 
   };
 
   return (

@@ -5,11 +5,13 @@ export const ReleaseSpinnerRow = ({
   triggerSpin,
   resetSpinResultTrigger,
   onSpinComplete,
+  valueDelivered,
 }: {
   confidence: number;
   triggerSpin: boolean;
   resetSpinResultTrigger: number;
   onSpinComplete: (success: boolean) => void;
+  valueDelivered: number;
 }) => {
   const segments = Array.from({ length: 10 }, (_, i) => i); // 10 segments
   const [current, setCurrent] = useState<number | null>(null); // Current active segment
@@ -73,47 +75,83 @@ export const ReleaseSpinnerRow = ({
   const greenSegments = Math.floor((confidence / 100) * segments.length); // Calculate success segments
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '1rem' }}>
-      {/* Spinner Row */}
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {segments.map((_, idx) => {
-          const isGreen = idx < greenSegments; // Success segment
-          const isActive = spinning ? idx === current : idx === finalTarget; // Highlight current during spin, finalTarget after spin
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', marginTop: '1rem' }}>
+      {/* Left Section */}
+      <div style={{ flex: 1 }}>
+        
+        {/* Result Row */}
+        <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginBottom: '1rem' }}>
+          <div>
+            <strong>Release Successful?</strong>
+          </div>
+          <div
+            style={{
+              fontWeight: 'bold',
+              fontSize: '1.2rem',
+              color: localResult === 'success' ? 'green' : 'red',
+            }}
+          >
+            {localResult === 'success' ? '✅ Release Successful' : '❌ Failed'}
+          </div>
+        </div>
 
-          return (
-            <div
-              key={idx}
-              style={{
-                width: '30px',
-                height: '30px',
-                margin: '0 4px',
-                borderRadius: '4px',
-                backgroundColor: isActive
-                  ? '#4dabf7' // Active segment color
-                  : isGreen
-                  ? 'lightgreen' // Success segment color
-                  : '#f8d7da', // Fail segment color
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                border: isActive ? '2px solid #333' : '1px solid #ccc', // Highlight active segment
-                transition: 'background-color 0.2s',
-              }}
-            >
-              {idx + 1}
-            </div>
-          );
-        })}
+        {/* Spinner Row */}
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          
+          {segments.map((_, idx) => {
+            const isGreen = idx < greenSegments; // Success segment
+            const isActive = spinning ? idx === current : idx === finalTarget; // Highlight current during spin, finalTarget after spin
+
+            return (
+              <div
+                key={idx}
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  margin: '0 4px',
+                  borderRadius: '4px',
+                  backgroundColor: isActive
+                    ? '#4dabf7' // Active segment color
+                    : isGreen
+                    ? 'lightgreen' // Success segment color
+                    : '#f8d7da', // Fail segment color
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  border: isActive ? '2px solid #333' : '1px solid #ccc', // Highlight active segment
+                  transition: 'background-color 0.2s',
+                }}
+              >
+                {idx + 1}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Result text */}
-      {spinning !== true &&  (
-        <div style={{ marginTop: '0.5rem', fontWeight: 'bold', fontSize: '1rem' }}>
-          {localResult === 'success' ? '✅ Released!' : '❌ Failed!'}
+      {/* Right Section */}
+      <div style={{ marginLeft: '20px', textAlign: 'center', display: 'flex', flexDirection: 'column' }}>      
+        <div
+          style={{
+            width: '120px',
+            height: '80px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '2px solid #ccc',
+            borderRadius: '8px',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            color: valueDelivered > 0 ? 'green' : 'red',
+            backgroundColor: '#fff', // White background
+          }}
+        >
+          {valueDelivered > 0 ? `+${valueDelivered}` : valueDelivered}
         </div>
-      )}
+        <div style={{ fontSize: '1rem', fontWeight: 'bold', marginTop: '0.5rem' }}>Value Delivered</div>
+      </div>
     </div>
   );
 };
