@@ -18,7 +18,6 @@ export type Developer = {
     released: boolean; 
     valueDelivered: number;        
     accumulatedValueDelivered: number;
-    roll: number; 
 };
 
 export type ActiveInvestments = { [investmentName: string]: Developer[] };

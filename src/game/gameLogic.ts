@@ -68,7 +68,6 @@ export function handleBeginTurnLogic(
     released,
     netValue,
     accumulatedValueDelivered,
-    Math.floor(Math.random() * 100) + 1
   );
 
   return {

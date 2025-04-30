@@ -25,7 +25,6 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
         released: false,
         valueDelivered: 0, // no value delivered yet
         accumulatedValueDelivered: 0,
-        roll: Math.floor(Math.random() * 100) + 1,
       });
     }
   

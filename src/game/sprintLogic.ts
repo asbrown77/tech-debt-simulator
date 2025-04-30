@@ -10,7 +10,6 @@ export function generateSprintData(
   released: boolean,
   valueDelivered: number,
   accumulatedValueDelivered: number,
-  roll: number
 ): SprintData {
   return {
     sprintNumber: currentSprint + 1,
@@ -22,6 +21,5 @@ export function generateSprintData(
     released,
     valueDelivered,
     accumulatedValueDelivered,
-    roll,
   };
 }
