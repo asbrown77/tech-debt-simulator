@@ -19,11 +19,12 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
         sprintNumber: i,
         techDebt: 100, // high tech debt
         releaseConfidence: 10, // low release chance
-        devOutput: Math.floor(Math.random() * 10) + 5, // small random outputs
-        netValue: 0, // assume very little value delivered
+        devValue: Math.floor(Math.random() * 10) + 5, // small random outputs
         bugs: Math.floor(Math.random() * 5) + 2, // few bugs each sprint
-        totalValueDelivered: 0,
+        netValue: 0, // assume very little value delivered
         released: false,
+        valueDelivered: 0, // no value delivered yet
+        accumulatedValueDelivered: 0,
         roll: Math.floor(Math.random() * 100) + 1,
       });
     }

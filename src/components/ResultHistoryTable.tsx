@@ -40,11 +40,11 @@ export const ResultHistoryTable = ({ data }: Props) => {
               <td style={cellStyle}>{sprint.sprintNumber}</td>
               <td style={cellStyle}>{sprint.techDebt}%</td>
               <td style={cellStyle}>{sprint.releaseConfidence}%</td>
-              <td style={cellStyle}>{sprint.devOutput}</td>
+              <td style={cellStyle}>{sprint.devValue}</td>
               <td style={cellStyle}>{sprint.bugs}</td>
               <td style={cellStyle}>{sprint.netValue}</td>
               <td style={cellStyle}>{sprint.released ? '✅' : '❌'}</td>
-              <td style={cellStyle}>{sprint.totalValueDelivered}</td>
+              <td style={cellStyle}>{sprint.accumulatedValueDelivered}</td>
             </tr>
           ))}
         </tbody>

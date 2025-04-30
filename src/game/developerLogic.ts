@@ -23,7 +23,7 @@ export function calculateDeveloperOutput(
     return { ...dev, output, hasBug };
   });
 
-  return { updatedDevelopers, totalValue, bugs };
+  return { updatedDevelopers, devValue: totalValue, bugs };
 }
 
 // Add this line to fix TS1208

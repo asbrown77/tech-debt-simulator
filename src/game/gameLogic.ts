@@ -44,29 +44,30 @@ export function handleBeginTurnLogic(
 
   const confidence = calculateReleaseConfidence(updatedCompleted, investmentConfigs);
 
-  const { updatedDevelopers: finalDevelopers, totalValue, bugs } = calculateDeveloperOutput(
+  const { updatedDevelopers: finalDevelopers, devValue: devValue, bugs } = calculateDeveloperOutput(
     updatedMainArea,
     developerPower,
     updatedTechDebt
   );
 
-  const netValue = totalValue - bugs;
-  let delivered = resultHistory.at(-1)?.totalValueDelivered || 0;
+  const netValue = devValue - bugs;
+  let accumulatedValueDelivered = resultHistory.at(-1)?.accumulatedValueDelivered || 0;
 
   const released = rollForRelease(confidence);
   if (released) {
-    delivered += netValue;
+    accumulatedValueDelivered += netValue;
   }
 
   const turnSprintData = generateSprintData(
     currentSprint,
     updatedTechDebt,
     confidence,
-    totalValue,
+    devValue,
     netValue,
     bugs,
-    delivered,
     released,
+    netValue,
+    accumulatedValueDelivered,
     Math.floor(Math.random() * 100) + 1
   );
 

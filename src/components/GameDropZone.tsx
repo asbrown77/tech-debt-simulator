@@ -147,7 +147,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
       {isBuildArea && (
       <div className={styles.sprintSummary}>
         <div className={styles.summaryItem}>
-          <strong>Output:</strong> {currentSprintData?.devOutput ?? 0}
+          <strong>Output:</strong> {currentSprintData?.devValue ?? 0}
         </div>
         <div className={styles.summaryItem}>
           <strong>Bugs:</strong> {currentSprintData?.bugs ?? 0}

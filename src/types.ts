@@ -12,12 +12,13 @@ export type Developer = {
     sprintNumber: number;
     techDebt: number;
     releaseConfidence: number;
-    roll: number;               // Roll happens after setting confidence
-    released: boolean;          // Result of the roll
-    devOutput: number;
+    devValue: number;
     bugs: number;
     netValue: number;
-    totalValueDelivered: number;
+    released: boolean; 
+    valueDelivered: number;        
+    accumulatedValueDelivered: number;
+    roll: number; 
 };
 
 export type ActiveInvestments = { [investmentName: string]: Developer[] };

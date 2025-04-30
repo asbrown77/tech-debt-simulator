@@ -216,10 +216,10 @@ export default function App() {
     sprintNumber: currentSprint,
     techDebt: 100,
     releaseConfidence: 10,
-    devOutput: 0,
+    devValue: 0,
     netValue: 0,
     bugs: 0,
-    totalValueDelivered: 0,
+    accumulatedValueDelivered: 0,
     released: false,
     roll: 0, 
   };

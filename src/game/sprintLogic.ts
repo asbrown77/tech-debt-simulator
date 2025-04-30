@@ -3,23 +3,25 @@ import { SprintData } from '../types';
 export function generateSprintData(
   currentSprint: number,
   techDebt: number,
-  confidence: number,
-  totalValue: number,
-  netValue: number,
+  releaseConfidence: number,
+  devValue: number,
   bugs: number,
-  delivered: number,
+  netValue: number,
   released: boolean,
+  valueDelivered: number,
+  accumulatedValueDelivered: number,
   roll: number
 ): SprintData {
   return {
     sprintNumber: currentSprint + 1,
     techDebt,
-    releaseConfidence: confidence,
-    devOutput: totalValue,
-    netValue,
+    releaseConfidence,
+    devValue,
     bugs,
-    totalValueDelivered: delivered,
+    netValue,
     released,
+    valueDelivered,
+    accumulatedValueDelivered,
     roll,
   };
 }
