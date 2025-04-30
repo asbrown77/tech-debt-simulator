@@ -21,13 +21,13 @@ import { generateStartingHistory } from './utils/helpers';
 const maxSprintCount = 20;
 
 export default function App() {
-  const [developers, setDevelopers] = useState<Developer[]>(initialDevelopers); 
+  const [developers, setDevelopers] = useState<Developer[]>([]); 
   const [developerPower, setDeveloperPower] = useState(5); 
   const [currentSprint, setCurrentSprint] = useState(10);
   const [techDebt, setTechDebt] = useState(100);
   const [resultHistory, setResultHistory] = useState<SprintData[]>(generateStartingHistory(10));
   const [showRules, setShowRules] = useState(true);
-  const [mainArea, setMainArea] = useState<Developer[]>([]);
+  const [mainArea, setMainArea] = useState<Developer[]>(initialDevelopers);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
   const chartData = generateChartData(resultHistory, maxSprintCount);
   const disableTurn = developers.length > 0 || currentSprint >= maxSprintCount;

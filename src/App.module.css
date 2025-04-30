@@ -47,7 +47,7 @@
   
   /* Available devs area */
   .devPool {
-    color: #003366;
+    color: #358adf;
     margin-bottom: 2rem;
     border: 2px dashed #ccc;
     padding: 1rem;
@@ -60,7 +60,7 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-top: 1rem;
+    margin-top: 0rem;
   }
   
   /* Begin turn button wrapper */
