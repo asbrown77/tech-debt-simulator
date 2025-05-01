@@ -26,7 +26,6 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
         ? (history.at(-1)?.accumulatedValueDelivered || 0) + netValue
         : history.at(-1)?.accumulatedValueDelivered || 0;
   
-        debugger
       history.push({
         sprintNumber: i,
         techDebt: BASE_TECH_DEBT,

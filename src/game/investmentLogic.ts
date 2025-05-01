@@ -4,6 +4,7 @@ import { uniqueDevelopers } from '../utils/helpers';
 
 type CompletedInvestmentResult = {
   updatedTechDebt: number;
+  updatedReleaseConfidence: number;
   freeDevelopers: Developer[];
   updatedActiveInvestments: { [investmentName: string]: Developer[] };
   developerPowerIncreased: boolean;
@@ -14,9 +15,11 @@ export function finalizeCompletedInvestments(
   activeInvestmentsByName: { [investmentName: string]: Developer[] },
   investmentConfigs: InvestmentConfig[],
   currentTechDebt: number,
+  currentReleaseConfidence: number,
   currentDevelopers: Developer[]
 ): CompletedInvestmentResult {
   let updatedTechDebt = currentTechDebt;
+  let updatedReleaseConfidence = currentReleaseConfidence;
   let freeDevelopers = [...currentDevelopers];
   const updatedActiveInvestments = { ...activeInvestmentsByName };
   let developerPowerIncreased = false;
@@ -33,6 +36,10 @@ export function finalizeCompletedInvestments(
     const techDebtReduction = investment.techDebtReduction ?? 0;
     updatedTechDebt = Math.max(0, updatedTechDebt - techDebtReduction);
 
+    // Increase release confidence
+    const confidenceIncrease = investment.confidenceIncrease ?? 0;
+    updatedReleaseConfidence = Math.min(100, updatedReleaseConfidence + confidenceIncrease);
+
     // Add developers back to the pool
     freeDevelopers = uniqueDevelopers([...freeDevelopers, ...investedDevelopers]);
 
@@ -47,6 +54,7 @@ export function finalizeCompletedInvestments(
 
   return {
     updatedTechDebt,
+    updatedReleaseConfidence,
     freeDevelopers,
     updatedActiveInvestments,
     developerPowerIncreased,

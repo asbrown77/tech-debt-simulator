@@ -17,6 +17,7 @@ export function handleBeginTurnLogic(
   resultHistory: SprintData[],
   currentSprint: number,
   techDebt: number,
+  releaseConfidence: number,
   developerPower: number,
   getReleased: () => boolean
 ) {
@@ -40,8 +41,13 @@ export function handleBeginTurnLogic(
     activeInvestments,
     investmentConfigs,
     techDebt,
+    releaseConfidence,
     updatedNonWorkingDevelopers
   );
+
+  console.log('Updated Tech Debt:', updatedTechDebt);
+console.log('Free Developers:', freeDevelopers);
+console.log('Updated Active Investments:', updatedActiveInvestments);
  
   const { updatedDevelopers: workingDevelopers, devValue: devValue, bugs } = calculateDeveloperOutput(
     updatedMainArea,
@@ -49,6 +55,7 @@ export function handleBeginTurnLogic(
     updatedTechDebt
   );
 
+  debugger
   let previousSprintData = resultHistory.at(-1) ;
 
   const turnSprintData = generateSprintData(

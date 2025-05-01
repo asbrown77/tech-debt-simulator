@@ -22,10 +22,10 @@ export function processInvestments(
         updatedTurns[name] = config.turnsToComplete - 1;
       } else {
         updatedTurns[name] = Math.max(0, updatedTurns[name]! - 1);
-        if (updatedTurns[name] === 0) {
-          newlyCompleted.add(name);
-          updatedCompleted.add(name);
-        }
+      }
+      if (updatedTurns[name] === 0) {
+        newlyCompleted.add(name);
+        updatedCompleted.add(name);
       }
     } else {
       updatedTurns[name] = undefined;

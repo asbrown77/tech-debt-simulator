@@ -39,7 +39,7 @@ export default function App() {
 
   const chartData = resultHistory.map((sprint) => {
     const maxTechDebt = Math.max(...resultHistory.map((s) => s.techDebt || 0)); // Find the max tech debt
-    debugger;
+
     return {
       ...sprint,
       sprintNumber: sprint.sprintNumber,
@@ -110,6 +110,7 @@ export default function App() {
       resultHistory,
       currentSprint,
       techDebt,
+      currentSprintData.releaseConfidence,
       developerPower, 
       getReleased // Pass the callback to get the latest releaseStatus
     );
@@ -118,8 +119,9 @@ export default function App() {
     const resetWorkingDevelopers = workingDevelopers.map(resetDeveloper);
     setMainArea(resetWorkingDevelopers);
   
-    if (result.developerPowerIncreased) {
-      setDeveloperPower(prev => prev + 1);
+    debugger;
+    if (result.developerPowerIncreased) {; 
+      setDeveloperPower(developerPower +1 );
     }
     
     setPrevTechDebt(techDebt);
@@ -292,7 +294,7 @@ export default function App() {
             techDebt={currentSprintData.techDebt}
             releaseConfidence={currentSprintData.releaseConfidence}
             developerValue={developerPower}
-            prevTechDebt={prevTechDebt}
+            prevTechDebt={techDebt}
             prevConfidence={prevConfidence}
             prevDevPower={prevDevPower}
           />
