@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 export const ReleaseSpinnerRow = ({
   releaseConfidence,
   triggerSpin,
-  resetSpinResultTrigger,
+  resetTurnResultTrigger: resetTurnResultTrigger,
   onSpinComplete,
   netValue: netValue,
 }: {
   releaseConfidence: number;
   triggerSpin: boolean;
-  resetSpinResultTrigger: number;
+  resetTurnResultTrigger: number;
   onSpinComplete: (success: boolean) => void;
   netValue: number;
 }) => {
@@ -21,13 +21,13 @@ export const ReleaseSpinnerRow = ({
   const [finalTarget, setFinalTarget] = useState<number | null>(null); // Final target segment
   const [spinning, setSpinning] = useState(false); // Track if the spinner is spinning
 
-  // Reset result and spinner when resetSpinResultTrigger changes
+  // Reset result and spinner when resetTurnResultTrigger changes
   useEffect(() => {
     // setSuccessful(null);
     // setFinalTarget(null);
     // setCurrent(null);
     // setSpinning(false);
-  }, [resetSpinResultTrigger]);
+  }, [resetTurnResultTrigger]);
 
   useEffect(() => {
     if (triggerSpin) {

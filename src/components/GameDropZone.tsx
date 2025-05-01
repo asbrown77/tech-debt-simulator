@@ -30,7 +30,7 @@ type GameDropZoneProps = {
   investmentConfigs: { name: string; maxDevelopers: number; turnsToComplete: number }[];
   developerPower: number;
   currentSprintData: SprintData;
-  resetSpinResultTrigger?: number;
+  resetTurnResultTrigger?: number;
   startReleaseSpin?: number
   onReleaseStatusChange?: (status: boolean) => void;
 };
@@ -52,7 +52,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   investmentConfigs,
   developerPower,
   currentSprintData,
-  resetSpinResultTrigger,
+  resetTurnResultTrigger: resetSpinResultTrigger,
   startReleaseSpin, 
   onReleaseStatusChange,
 }) => {
@@ -167,7 +167,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         <ReleaseSpinnerRow
           releaseConfidence={currentSprintData.releaseConfidence ?? 0}
           triggerSpin={triggerReleaseSpin}
-          resetSpinResultTrigger={resetSpinResultTrigger ?? 0 }
+          resetTurnResultTrigger={resetSpinResultTrigger ?? 0 }
           onSpinComplete={(success) => {
             setSpinResult(success); // Update releaseStatus
             setTriggerReleaseSpin(false);   // ✅ stop spinning after finish

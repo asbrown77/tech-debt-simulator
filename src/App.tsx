@@ -36,7 +36,7 @@ export default function App() {
   const [prevConfidence, setPrevConfidence] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
 
-  const [resetSpinResultTrigger, setResetSpinResultTrigger] = useState(0);
+  const [resetTurnResultTrigger, setResetTurnResultTrigger] = useState(0);
   const [startReleaseSpin, setStartReleaseSpin] = useState(0);
 
   const [turnInProgress, setTurnInProgress] = useState(false);
@@ -63,7 +63,7 @@ export default function App() {
     setTurnInProgress(true); // Mark the turn as in progress
     
     // Immediately clear old spin result TODO: remove ResetSpinResultTrigge dont think we need anymore
-   // setResetSpinResultTrigger(prev => prev + 1);
+    setResetTurnResultTrigger(prev => prev + 1);
 
     // Wait for the spinner to complete
     const spinResult = await new Promise<boolean>((resolve) => {
@@ -298,7 +298,7 @@ export default function App() {
             investmentConfigs={investmentConfigs}
             developerPower={developerPower}
             currentSprintData={currentSprintData}
-            resetSpinResultTrigger={currentSprint}
+            resetTurnResultTrigger={currentSprint}
             startReleaseSpin={startReleaseSpin}  
             onReleaseStatusChange={(status) => {
               setReleaseStatus(status); // Update releaseStatus in the parent
