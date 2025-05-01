@@ -32,6 +32,7 @@ type GameDropZoneProps = {
   currentSprintData: SprintData;
   resetSpinResultTrigger?: number;
   startSpinVersion?: number;
+  setReleaseStatus?: (status: boolean) => void; 
 };
 
 const GameDropZone: React.FC<GameDropZoneProps> = ({

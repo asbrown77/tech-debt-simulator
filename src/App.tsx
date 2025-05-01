@@ -40,6 +40,7 @@ export default function App() {
   const [startSpinVersion, setStartSpinVersion] = useState(0);
 
   const [turnInProgress, setTurnInProgress] = useState(false);
+  const [releaseStatus, setReleaseStatus] = useState<boolean | null>(null);
 
   const [activeInvestments, setActiveInvestments] = useState<ActiveInvestments>(
     investmentConfigs.reduce((acc, investment) => ({
@@ -64,6 +65,9 @@ export default function App() {
     // Immediately clear old spin result
     setResetSpinResultTrigger(prev => prev + 1);
 
+    // Trigger the spinner
+    setStartSpinVersion((prev) => prev + 1);
+
     const result = handleBeginTurnLogic(
       activeInvestments,
       investmentConfigs,
@@ -74,7 +78,8 @@ export default function App() {
       resultHistory,
       currentSprint,
       techDebt,
-      developerPower
+      developerPower,
+      releaseStatus ?? false 
     );
   
     const clearedMainArea = mainArea.map(dev => ({
@@ -109,7 +114,7 @@ export default function App() {
       });
   
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise(resolve => setTimeout(resolve, 300));
   
       // Update developer with output + bug
       setMainArea(prev => {
@@ -122,10 +127,6 @@ export default function App() {
         return updated;
       });
 
-      // temp fix until fix timer on both release spinner and dev
-      if (i == 2) {
-        setStartSpinVersion(prev => prev + 1);
-      }
     }
   
     // After all devs finished working → finalize sprint data
@@ -271,6 +272,7 @@ export default function App() {
             currentSprintData={currentSprintData}
             resetSpinResultTrigger={currentSprint}
             startSpinVersion={startSpinVersion}
+            setReleaseStatus={setReleaseStatus} 
           />
           
 <br/>

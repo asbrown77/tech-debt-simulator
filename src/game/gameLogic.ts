@@ -17,7 +17,8 @@ export function handleBeginTurnLogic(
   resultHistory: SprintData[],
   currentSprint: number,
   techDebt: number,
-  developerPower: number
+  developerPower: number,
+  released: boolean
 ) {
   const { updatedTurns, updatedCompleted, newlyCompleted } = processInvestments(
     activeInvestments,
@@ -54,7 +55,6 @@ export function handleBeginTurnLogic(
   let accumulatedValueDelivered = resultHistory.at(-1)?.accumulatedValueDelivered || 0;
 
   //Todo: fix so correct as from spinner
-  const released = true;
   if (released) {
     accumulatedValueDelivered += netValue;
   }
@@ -67,7 +67,7 @@ export function handleBeginTurnLogic(
     bugs,
     netValue,
     released,
-    netValue,
+    released ? netValue : 0,
     accumulatedValueDelivered,
   );
 
