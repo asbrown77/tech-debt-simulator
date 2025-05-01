@@ -51,13 +51,7 @@ export function handleBeginTurnLogic(
     updatedTechDebt
   );
 
-  const netValue = devValue - bugs;
-  let accumulatedValueDelivered = resultHistory.at(-1)?.accumulatedValueDelivered || 0;
-
-  //Todo: fix so correct as from spinner
-  if (released) {
-    accumulatedValueDelivered += netValue;
-  }
+  let previousSprintData = resultHistory.at(-1) ;
 
   const turnSprintData = generateSprintData(
     currentSprint,
@@ -65,10 +59,8 @@ export function handleBeginTurnLogic(
     confidence,
     devValue,
     bugs,
-    netValue,
     released,
-    released ? netValue : 0,
-    accumulatedValueDelivered,
+    previousSprintData,
   );
 
   return {

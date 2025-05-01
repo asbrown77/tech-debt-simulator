@@ -6,11 +6,14 @@ export function generateSprintData(
   releaseConfidence: number,
   devValue: number,
   bugs: number,
-  netValue: number,
   released: boolean,
-  valueDelivered: number,
-  accumulatedValueDelivered: number,
+  previousSprint?: SprintData
 ): SprintData {
+  
+  const netValue = devValue - bugs;
+  const valueDelivered = released ? netValue : 0;
+  let accumulatedValueDelivered = previousSprint?.accumulatedValueDelivered || 0;
+
   return {
     sprintNumber: currentSprint + 1,
     techDebt,
