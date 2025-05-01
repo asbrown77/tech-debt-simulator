@@ -34,7 +34,6 @@ export default function App() {
   const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
   const [prevConfidence, setPrevConfidence] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
-  const [clearSpinResultVersion, setClearSpinResultVersion] = useState(0);
 
   const [resetSpinResultTrigger, setResetSpinResultTrigger] = useState(0);
   const [startSpinVersion, setStartSpinVersion] = useState(0);
@@ -90,7 +89,6 @@ export default function App() {
     }));
 
     setMainArea(clearedMainArea);
-    setClearSpinResultVersion(prev => prev + 1);
 
     if (result.developerPowerIncreased) {
       setDeveloperPower(prev => prev + 1);
@@ -128,10 +126,6 @@ export default function App() {
       });
 
     }
-  
-    // After all devs finished working → finalize sprint data
-      // now devs are done
-     // setStartSpinVersion(prev => prev + 1);
 
     setResultHistory(prev => [...prev, result.turnSprintData]);
     setCurrentSprint(prev => {

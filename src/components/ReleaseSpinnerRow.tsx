@@ -15,13 +15,13 @@ export const ReleaseSpinnerRow = ({
 }) => {
   const segments = Array.from({ length: 10 }, (_, i) => i); // 10 segments
   const [current, setCurrent] = useState<number | null>(null); // Current active segment
-  const [localResult, setLocalResult] = useState<'success' | 'fail' | null>(null); // Spin result
+  const [successful, setSuccessful] = useState<boolean>(false); // Spin result
   const [finalTarget, setFinalTarget] = useState<number | null>(null); // Final target segment
   const [spinning, setSpinning] = useState(false); // Track if the spinner is spinning
 
   // Reset result and spinner when resetSpinResultTrigger changes
   useEffect(() => {
-    setLocalResult(null);
+    setSuccessful(false);
     setFinalTarget(null);
     setCurrent(null);
     setSpinning(false);
@@ -29,7 +29,7 @@ export const ReleaseSpinnerRow = ({
 
   useEffect(() => {
     if (triggerSpin) {
-      setLocalResult(null); // Clear previous result
+      setSuccessful(false); // Clear previous result
       setSpinning(true); // Start spinning
 
       let steps = 20 + Math.floor(Math.random() * segments.length); // Total steps for the spin
@@ -63,7 +63,7 @@ export const ReleaseSpinnerRow = ({
         } else {
           setSpinning(false); // Stop spinning
           setCurrent(target); // Land on the correct box
-          setLocalResult(success ? 'success' : 'fail'); // Set result
+          setSuccessful(success); // Set result
           onSpinComplete(success); // Notify parent component
         }
       };
@@ -88,10 +88,10 @@ export const ReleaseSpinnerRow = ({
             style={{
               fontWeight: 'bold',
               fontSize: '1.2rem',
-              color: localResult === 'success' ? 'green' : 'red',
+              color: successful ? 'green' : 'red',
             }}
           >
-            {localResult === 'success' ? '✅ Release Successful' : '❌ Failed'}
+            {successful? '✅ Release Successful' : '❌ Failed'}
           </div>
         </div>
 
@@ -148,7 +148,7 @@ export const ReleaseSpinnerRow = ({
             backgroundColor: '#fff', // White background
           }}
         >
-          {valueDelivered > 0 ? `+${valueDelivered}` : valueDelivered}
+          {valueDelivered}
         </div>
         <div style={{ fontSize: '1rem', fontWeight: 'bold', marginTop: '0.5rem' }}>Value Delivered</div>
       </div>
