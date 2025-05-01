@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 
 export const ReleaseSpinnerRow = ({
-  confidence,
+  releaseConfidence,
   triggerSpin,
   resetSpinResultTrigger,
   onSpinComplete,
-  valueDelivered,
+  netValue: netValue,
 }: {
-  confidence: number;
+  releaseConfidence: number;
   triggerSpin: boolean;
   resetSpinResultTrigger: number;
   onSpinComplete: (success: boolean) => void;
-  valueDelivered: number;
+  netValue: number;
 }) => {
+
+  debugger
   const segments = Array.from({ length: 10 }, (_, i) => i); // 10 segments
   const [current, setCurrent] = useState<number | null>(null); // Current active segment
-  const [successful, setSuccessful] = useState<boolean>(false); // Spin result
+  const [successful, setSuccessful] = useState<boolean | null>(null); // Spin result
   const [finalTarget, setFinalTarget] = useState<number | null>(null); // Final target segment
   const [spinning, setSpinning] = useState(false); // Track if the spinner is spinning
 
   // Reset result and spinner when resetSpinResultTrigger changes
   useEffect(() => {
-    setSuccessful(false);
+    setSuccessful(null);
     setFinalTarget(null);
     setCurrent(null);
     setSpinning(false);
@@ -29,16 +31,16 @@ export const ReleaseSpinnerRow = ({
 
   useEffect(() => {
     if (triggerSpin) {
-      setSuccessful(false); // Clear previous result
+      setSuccessful(null); // Clear previous result
       setSpinning(true); // Start spinning
 
       let steps = 20 + Math.floor(Math.random() * segments.length); // Total steps for the spin
       let speed = 50; // Initial speed (ms between steps)
 
       const roll = Math.floor(Math.random() * 100) + 1; // Random roll (1-100)
-      const success = roll <= confidence; // Determine success based on confidence
+      const success = roll <= releaseConfidence; // Determine success based on confidence
 
-      const greenSegments = Math.floor((confidence / 100) * segments.length); // Number of success segments
+      const greenSegments = Math.floor((releaseConfidence / 100) * segments.length); // Number of success segments
       const targetIndexes = success
         ? segments.slice(0, greenSegments) // Success zones
         : segments.slice(greenSegments); // Fail zones
@@ -70,9 +72,9 @@ export const ReleaseSpinnerRow = ({
 
       spin(); // Start the spin
     }
-  }, [triggerSpin, confidence, onSpinComplete]);
+  }, [triggerSpin]);
 
-  const greenSegments = Math.floor((confidence / 100) * segments.length); // Calculate success segments
+  const greenSegments = Math.floor((releaseConfidence / 100) * segments.length); // Calculate success segments
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', marginTop: '1rem' }}>
@@ -91,7 +93,7 @@ export const ReleaseSpinnerRow = ({
               color: successful ? 'green' : 'red',
             }}
           >
-            {successful? '✅ Release Successful' : '❌ Failed'}
+            {successful == null ? '' : (successful ? '✅ Release Successful' : '❌ Failed')}
           </div>
         </div>
 
@@ -144,13 +146,14 @@ export const ReleaseSpinnerRow = ({
             borderRadius: '8px',
             fontSize: '1.5rem',
             fontWeight: 'bold',
-            color: valueDelivered > 0 ? 'green' : 'red',
+            color: successful ? 'green' : 'red',
             backgroundColor: '#fff', // White background
           }}
         >
-          {valueDelivered}
+          {successful ? netValue : 0}
         </div>
         <div style={{ fontSize: '1rem', fontWeight: 'bold', marginTop: '0.5rem' }}>Value Delivered</div>
+        <div>{successful !== null ? successful.toString() : 'N/A'}</div>
       </div>
     </div>
   );

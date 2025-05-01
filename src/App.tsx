@@ -1,4 +1,4 @@
-import React, { useState } from 'react';  
+import React, { useState } from 'react'; 
 import { Developer, SprintData, ActiveInvestments} from './types';
 import { DeveloperComponent } from './components/Developer';
 import GameDropZone from './components/GameDropZone';
@@ -16,7 +16,8 @@ import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
-import { generateStartingHistory } from './utils/helpers';
+import { BASE_RELEASE_CONFIDENCE, generateStartingHistory } from './utils/helpers';
+import { debug } from 'console';
 
 const maxSprintCount = 20;
 
@@ -61,11 +62,28 @@ export default function App() {
 
     setTurnInProgress(true); // Mark the turn as in progress
     
-    // Immediately clear old spin result
+    // Immediately clear old spin result TODO: remove ResetSpinResultTrigge dont think we need anymore
     setResetSpinResultTrigger(prev => prev + 1);
 
     // Trigger the spinner
     setStartSpinVersion((prev) => prev + 1);
+
+    // Wait for the spinner to complete
+    const spinResult = await new Promise<boolean>((resolve) => {
+      const checkSpinResult = () => {
+       // debugger
+        if (releaseStatus !== null) {
+          resolve(releaseStatus); // Resolve when releaseStatus is updated
+        } else {
+          setTimeout(checkSpinResult, 50); // Poll every 100ms
+        }
+      };
+      checkSpinResult();
+    });
+
+      // Define a callback to get the latest releaseStatus
+    const getReleased = () => spinResult;
+
 
     const result = handleBeginTurnLogic(
       activeInvestments,
@@ -77,8 +95,8 @@ export default function App() {
       resultHistory,
       currentSprint,
       techDebt,
-      developerPower,
-      releaseStatus ?? false 
+      developerPower, 
+      getReleased // Pass the callback to get the latest releaseStatus
     );
   
     const clearedMainArea = mainArea.map(dev => ({
@@ -112,7 +130,7 @@ export default function App() {
       });
   
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 400));
   
       // Update developer with output + bug
       setMainArea(prev => {
@@ -126,8 +144,23 @@ export default function App() {
       });
 
     }
-
-    setResultHistory(prev => [...prev, result.turnSprintData]);
+    
+    setResultHistory((prev) => {
+      const lastSprint = prev[prev.length - 1]; // Get the last sprint data
+      const accumulatedValueDelivered = lastSprint
+        ? lastSprint.accumulatedValueDelivered + (result.turnSprintData.released ? result.turnSprintData.netValue : 0)
+        : result.turnSprintData.released
+        ? result.turnSprintData.netValue
+        : 0;
+    
+      // Update the turnSprintData with the new accumulatedValueDelivered
+      const updatedSprintData = {
+        ...result.turnSprintData,
+        accumulatedValueDelivered,
+      };
+    
+      return [...prev, updatedSprintData];
+    });
     setCurrentSprint(prev => {
       const nextSprint = prev + 1;
   
@@ -210,7 +243,7 @@ export default function App() {
   const currentSprintData = resultHistory[currentSprint - 1] || {
     sprintNumber: currentSprint,
     techDebt: 100,
-    releaseConfidence: 10,
+    releaseConfidence: BASE_RELEASE_CONFIDENCE,
     devValue: 0,
     netValue: 0,
     bugs: 0,
@@ -265,8 +298,10 @@ export default function App() {
             developerPower={developerPower}
             currentSprintData={currentSprintData}
             resetSpinResultTrigger={currentSprint}
-            startSpinVersion={startSpinVersion}
-            setReleaseStatus={setReleaseStatus} 
+            startSpinVersion={startSpinVersion}  
+            onReleaseStatusChange={(status) => {
+              setReleaseStatus(status); // Update releaseStatus in the parent
+            }}
           />
           
 <br/>

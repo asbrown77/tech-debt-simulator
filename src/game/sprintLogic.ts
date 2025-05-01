@@ -11,8 +11,7 @@ export function generateSprintData(
 ): SprintData {
   
   const netValue = devValue - bugs;
-  const valueDelivered = released ? netValue : 0;
-  let accumulatedValueDelivered = previousSprint?.accumulatedValueDelivered || 0;
+  const accumulatedValueDelivered = previousSprint?.accumulatedValueDelivered || 0;
 
   return {
     sprintNumber: currentSprint + 1,
@@ -22,7 +21,6 @@ export function generateSprintData(
     bugs,
     netValue,
     released,
-    valueDelivered,
     accumulatedValueDelivered,
   };
 }

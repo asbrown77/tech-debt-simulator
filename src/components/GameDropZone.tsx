@@ -31,8 +31,8 @@ type GameDropZoneProps = {
   developerPower: number;
   currentSprintData: SprintData;
   resetSpinResultTrigger?: number;
-  startSpinVersion?: number;
-  setReleaseStatus?: (status: boolean) => void; 
+  startSpinVersion?: number
+  onReleaseStatusChange?: (status: boolean) => void;
 };
 
 const GameDropZone: React.FC<GameDropZoneProps> = ({
@@ -53,7 +53,8 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   developerPower,
   currentSprintData,
   resetSpinResultTrigger,
-  startSpinVersion
+  startSpinVersion, 
+  onReleaseStatusChange,
 }) => {
   const investmentConfig = investmentConfigs.find((config) => config.name === name);
   const isCompleted = !isBuildArea && completedInvestments.has(name);
@@ -165,14 +166,15 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
 
         {/* Always show spinner */}
         <ReleaseSpinnerRow
-          confidence={currentSprintData.releaseConfidence ?? 0}
+          releaseConfidence={currentSprintData.releaseConfidence ?? 0}
           triggerSpin={triggerSpin}
           resetSpinResultTrigger={resetSpinResultTrigger ?? 0 }
           onSpinComplete={(success) => {
-            setSpinResult(success);
+            setSpinResult(success); // Update releaseStatus
             setTriggerSpin(false);   // ✅ stop spinning after finish
+            onReleaseStatusChange?.(success); // Notify parent component
           }}
-          valueDelivered={currentSprintData.valueDelivered ?? 0}
+          netValue={currentSprintData.netValue ?? 0}
         />
       </div>
       )}

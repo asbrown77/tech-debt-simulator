@@ -8,16 +8,15 @@ export type Developer = {
   };
 
   
-  export type SprintData = {
-    sprintNumber: number;
-    techDebt: number;
-    releaseConfidence: number;
-    devValue: number;
-    bugs: number;
-    netValue: number;
-    released: boolean; 
-    valueDelivered: number;        
-    accumulatedValueDelivered: number;
+export type SprintData = {
+  sprintNumber: number;
+  techDebt: number;
+  releaseConfidence: number;
+  devValue: number;
+  bugs: number;
+  netValue: number;
+  released: boolean; 
+  accumulatedValueDelivered: number;
 };
 
 export type ActiveInvestments = { [investmentName: string]: Developer[] };

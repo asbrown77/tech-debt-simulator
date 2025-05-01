@@ -2,7 +2,7 @@ export function calculateReleaseConfidence(
   completedInvestments: Set<string>,
   investmentConfigs: { name: string; confidenceIncrease?: number }[]
 ) {
-  let confidence = 10;
+  let confidence = 20;
   if (completedInvestments.has('CI/CD')) {
     confidence += investmentConfigs.find((i) => i.name === 'CI/CD')?.confidenceIncrease ?? 0;
   }
