@@ -38,7 +38,7 @@ export const ResultHistoryTable = ({ data }: Props) => {
               borderBottom: index < data.length - 1 ? '1px solid #dee2e6' : 'none'
             }}>
               <td style={cellStyle}>{sprint.sprintNumber}</td>
-              <td style={cellStyle}>{sprint.techDebt}%</td>
+              <td style={cellStyle}>{sprint.techDebt*20}%</td>
               <td style={cellStyle}>{sprint.releaseConfidence}%</td>
               <td style={cellStyle}>{sprint.devValue}</td>
               <td style={cellStyle}>{sprint.bugs}</td>

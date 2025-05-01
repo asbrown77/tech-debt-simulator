@@ -1,6 +1,7 @@
 import { Developer, SprintData } from "../types";
 
 export const BASE_RELEASE_CONFIDENCE = 20;
+export const BASE_TECH_DEBT = 5;
 
 export function uniqueDevelopers(developers: Developer[]): Developer[] {
     const seen = new Map<number, Developer>();
@@ -28,7 +29,7 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
   
       history.push({
         sprintNumber: i,
-        techDebt: 100, // High tech debt
+        techDebt: BASE_TECH_DEBT, // High tech debt
         releaseConfidence: BASE_RELEASE_CONFIDENCE, // 20% release confidence
         devValue,
         bugs,

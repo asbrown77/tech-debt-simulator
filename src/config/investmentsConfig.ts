@@ -1,4 +1,4 @@
-export const BASE_TECH_DEBT = 5;
+
 
 export class BaseInvestment {
   confidenceIncrease?: number;

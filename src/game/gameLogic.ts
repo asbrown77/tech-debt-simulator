@@ -43,6 +43,7 @@ export function handleBeginTurnLogic(
     updatedDevelopers
   );
 
+  debugger
   const { updatedDevelopers: finalDevelopers, devValue: devValue, bugs } = calculateDeveloperOutput(
     updatedMainArea,
     developerPower,
@@ -51,7 +52,6 @@ export function handleBeginTurnLogic(
 
   let previousSprintData = resultHistory.at(-1) ;
 
-//debugger;
   const turnSprintData = generateSprintData(
     currentSprint,
     updatedTechDebt,

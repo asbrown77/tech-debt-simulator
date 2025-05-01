@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Developer, SprintData, ActiveInvestments} from './types';
 import { DeveloperComponent } from './components/Developer';
 import GameDropZone from './components/GameDropZone';
-import { GameStats, TurnSummary } from './components/GameStats';
+import { GameStats } from './components/GameStats';
 import { SprintChart } from './components/SprintChart';
 import { ResultHistoryTable } from './components/ResultHistoryTable';
 import { investmentConfigs } from './config/investmentsConfig';
@@ -16,7 +16,7 @@ import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
-import { BASE_RELEASE_CONFIDENCE, generateStartingHistory } from './utils/helpers';
+import { BASE_RELEASE_CONFIDENCE, BASE_TECH_DEBT, generateStartingHistory } from './utils/helpers';
 import { debug } from 'console';
 
 const maxSprintCount = 20;
@@ -25,7 +25,7 @@ export default function App() {
   const [developers, setDevelopers] = useState<Developer[]>([]); 
   const [developerPower, setDeveloperPower] = useState(5); 
   const [currentSprint, setCurrentSprint] = useState(10);
-  const [techDebt, setTechDebt] = useState(100);
+  const [techDebt, setTechDebt] = useState(BASE_TECH_DEBT);
   const [resultHistory, setResultHistory] = useState<SprintData[]>(generateStartingHistory(10));
   const [showRules, setShowRules] = useState(true);
   const [mainArea, setMainArea] = useState<Developer[]>(initialDevelopers);
@@ -60,15 +60,17 @@ export default function App() {
     if (turnInProgress) 
       return; // Prevent starting a new turn if one is already in progress
 
-    setTurnInProgress(true); // Mark the turn as in progress
-    
-    // Immediately clear old spin result TODO: remove ResetSpinResultTrigge dont think we need anymore
+    //Reset status at each of turn 
+    setTurnInProgress(true); 
+    setReleaseStatus(null); 
+
+    // Immediately clear old spin result TODO: move to boolean
     setResetTurnResultTrigger(prev => prev + 1);
 
     // Wait for the spinner to complete
     const spinResult = await new Promise<boolean>((resolve) => {
       const checkSpinResult = () => {
-       // debugger
+
         if (releaseStatus !== null) {
           resolve(releaseStatus); // Resolve when releaseStatus is updated
         } else {
@@ -243,7 +245,7 @@ export default function App() {
 
   const currentSprintData = resultHistory[currentSprint - 1] || {
     sprintNumber: currentSprint,
-    techDebt: 100,
+    techDebt: 5,
     releaseConfidence: BASE_RELEASE_CONFIDENCE,
     devValue: 0,
     netValue: 0,
@@ -338,13 +340,17 @@ export default function App() {
           
           {/* Begin Turn Button */}
           <div className={styles.buttonWrapper}>
-            <button
-              className={`${styles.beginButton} ${disableTurn || turnInProgress ? styles.beginButtonDisabled : ''}`}
-              onClick={processTurn}
-              disabled={disableTurn || turnInProgress}
-            >
-              {getTurnButtonText()}
-            </button>
+          <button
+  className={`${styles.beginButton} ${
+    disableTurn || turnInProgress || releaseStatus === null
+      ? styles.beginButtonDisabled
+      : ''
+  }`}
+  onClick={processTurn}
+  disabled={disableTurn || turnInProgress || releaseStatus === null}
+>
+  {getTurnButtonText()}
+</button>
           </div>
         </div>
 

@@ -52,7 +52,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   investmentConfigs,
   developerPower,
   currentSprintData,
-  resetTurnResultTrigger: resetSpinResultTrigger,
+  resetTurnResultTrigger: resetTurnResultTrigger,
   startReleaseSpin, 
   onReleaseStatusChange,
 }) => {
@@ -71,7 +71,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
       setSpinResult(null);       // ✅ Clear old result
       setTriggerReleaseSpin(false);     // ✅ Prepare spinner (but don't spin yet)
     }
-  }, [resetSpinResultTrigger]);
+  }, [resetTurnResultTrigger]);
   
   useEffect(() => {
     if (isBuildArea) {
@@ -167,7 +167,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         <ReleaseSpinnerRow
           releaseConfidence={currentSprintData.releaseConfidence ?? 0}
           triggerSpin={triggerReleaseSpin}
-          resetTurnResultTrigger={resetSpinResultTrigger ?? 0 }
+          resetTurnResultTrigger={resetTurnResultTrigger ?? 0 }
           onSpinComplete={(success) => {
             setSpinResult(success); // Update releaseStatus
             setTriggerReleaseSpin(false);   // ✅ stop spinning after finish

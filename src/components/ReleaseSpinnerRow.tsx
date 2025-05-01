@@ -14,7 +14,6 @@ export const ReleaseSpinnerRow = ({
   netValue: number;
 }) => {
 
-  debugger
   const segments = Array.from({ length: 10 }, (_, i) => i); // 10 segments
   const [current, setCurrent] = useState<number | null>(null); // Current active segment
   const [successful, setSuccessful] = useState<boolean | null>(null); // Spin result
@@ -153,7 +152,6 @@ export const ReleaseSpinnerRow = ({
           {successful ? netValue : 0}
         </div>
         <div style={{ fontSize: '1rem', fontWeight: 'bold', marginTop: '0.5rem' }}>Value Delivered</div>
-        <div>{successful !== null ? successful.toString() : 'N/A'}</div>
       </div>
     </div>
   );
