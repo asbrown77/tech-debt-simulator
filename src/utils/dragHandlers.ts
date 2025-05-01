@@ -1,5 +1,6 @@
 import { Developer, ActiveInvestments } from '../types';
 import { Dispatch, SetStateAction } from 'react';
+import { resetDeveloper } from './helpers';
 
 export const handleDragStart = (
   event: React.DragEvent,
@@ -38,6 +39,8 @@ export const handleDrop = (
     Object.values(activeInvestments).flat().find(m => m.id === id);
 
   if (!draggedDeveloper) return;
+
+  draggedDeveloper = resetDeveloper(draggedDeveloper); 
 
   // Remove from all areas
   setDevelopers(prev => prev.filter(m => m.id !== id));

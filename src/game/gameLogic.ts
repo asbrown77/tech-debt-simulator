@@ -1,9 +1,9 @@
-import { Developer, ActiveInvestments, CompletedInvestmentResult} from '../types';
+import { Developer, ActiveInvestments} from '../types';
 import { InvestmentConfig } from '../config/investmentsConfig';
 import { processInvestments } from './trackInvestments';
 import { finalizeCompletedInvestments } from './investmentLogic';
 import { resetDevelopers, calculateDeveloperOutput } from './developerLogic';
-import { calculateReleaseConfidence as getReleaseConfidence, rollForRelease } from './releaseLogic';
+import { calculateReleaseConfidence as getReleaseConfidence } from './releaseLogic';
 import { generateSprintData } from './sprintLogic';
 import { SprintData } from '../types';
 
@@ -12,7 +12,7 @@ export function handleBeginTurnLogic(
   investmentConfigs: InvestmentConfig[],
   turnsRemaining: { [key: string]: number | undefined },
   completedInvestments: Set<string>,
-  developers: Developer[],
+  nonWorkingDevelopers: Developer[],
   mainArea: Developer[],
   resultHistory: SprintData[],
   currentSprint: number,
@@ -27,12 +27,12 @@ export function handleBeginTurnLogic(
     investmentConfigs
   );
 
-  let updatedDevelopers = resetDevelopers(developers);
+  let updatedNonWorkingDevelopers = resetDevelopers(nonWorkingDevelopers);
   let updatedMainArea = resetDevelopers(mainArea);
 
   const {
     updatedTechDebt,
-    updatedDevelopers: processedDevelopers,
+    freeDevelopers,
     updatedActiveInvestments,
     developerPowerIncreased,
   } = finalizeCompletedInvestments(
@@ -40,11 +40,10 @@ export function handleBeginTurnLogic(
     activeInvestments,
     investmentConfigs,
     techDebt,
-    updatedDevelopers
+    updatedNonWorkingDevelopers
   );
-
-  debugger
-  const { updatedDevelopers: finalDevelopers, devValue: devValue, bugs } = calculateDeveloperOutput(
+ 
+  const { updatedDevelopers: workingDevelopers, devValue: devValue, bugs } = calculateDeveloperOutput(
     updatedMainArea,
     developerPower,
     updatedTechDebt
@@ -62,11 +61,12 @@ export function handleBeginTurnLogic(
     previousSprintData,
   );
 
+
   return {
     updatedTurns,
     updatedCompleted,
-    updatedDevelopers: processedDevelopers,
-    updatedMainArea: finalDevelopers,
+    freeDevelopers,
+    workingDevelopers,
     updatedActiveInvestments,
     updatedTechDebt,
     turnSprintData,

@@ -41,3 +41,10 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
   
     return history;
   }
+
+  export const resetDeveloper = (developer: Developer): Developer => ({
+    ...developer,
+    output: null,
+    hasBug: null,
+    working: false,
+  });

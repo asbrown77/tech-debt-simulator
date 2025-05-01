@@ -22,7 +22,7 @@ export const GameStats = ({
     <div>
       <span className={styles.label}>Tech Debt</span>
       <span className={`${styles.value} ${techDebt < prevTechDebt ? styles.improved : ''}`}>
-        {techDebt}%
+        {techDebt*20}%
       </span>
     </div>
     <div>

@@ -4,7 +4,7 @@ import { uniqueDevelopers } from '../utils/helpers';
 
 type CompletedInvestmentResult = {
   updatedTechDebt: number;
-  updatedDevelopers: Developer[];
+  freeDevelopers: Developer[];
   updatedActiveInvestments: { [investmentName: string]: Developer[] };
   developerPowerIncreased: boolean;
 };
@@ -17,7 +17,7 @@ export function finalizeCompletedInvestments(
   currentDevelopers: Developer[]
 ): CompletedInvestmentResult {
   let updatedTechDebt = currentTechDebt;
-  let updatedDevelopers = [...currentDevelopers];
+  let freeDevelopers = [...currentDevelopers];
   const updatedActiveInvestments = { ...activeInvestmentsByName };
   let developerPowerIncreased = false;
 
@@ -27,14 +27,14 @@ export function finalizeCompletedInvestments(
       throw new Error(`Investment configuration not found for: ${investmentName}`);
     }
 
-    const developersAssigned = activeInvestmentsByName[investmentName] || [];
+    const investedDevelopers = activeInvestmentsByName[investmentName] || [];
 
     // Reduce tech debt
     const techDebtReduction = investment.techDebtReduction ?? 0;
     updatedTechDebt = Math.max(0, updatedTechDebt - techDebtReduction);
 
     // Add developers back to the pool
-    updatedDevelopers = uniqueDevelopers([...updatedDevelopers, ...developersAssigned]);
+    freeDevelopers = uniqueDevelopers([...freeDevelopers, ...investedDevelopers]);
 
     // Clear the investment from active investments
     updatedActiveInvestments[investmentName] = [];
@@ -47,7 +47,7 @@ export function finalizeCompletedInvestments(
 
   return {
     updatedTechDebt,
-    updatedDevelopers,
+    freeDevelopers,
     updatedActiveInvestments,
     developerPowerIncreased,
   };

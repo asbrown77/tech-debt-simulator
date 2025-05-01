@@ -16,22 +16,23 @@ import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
-import { BASE_RELEASE_CONFIDENCE, BASE_TECH_DEBT, generateStartingHistory } from './utils/helpers';
+import { BASE_RELEASE_CONFIDENCE, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper } from './utils/helpers';
 import { debug } from 'console';
+import { calculateDeveloperOutput } from './game/developerLogic';
 
 const maxSprintCount = 20;
 
 export default function App() {
-  const [developers, setDevelopers] = useState<Developer[]>([]); 
+  const [nonWorkingdevelopers, setDevelopers] = useState<Developer[]>([]); 
   const [developerPower, setDeveloperPower] = useState(5); 
   const [currentSprint, setCurrentSprint] = useState(10);
   const [techDebt, setTechDebt] = useState(BASE_TECH_DEBT);
   const [resultHistory, setResultHistory] = useState<SprintData[]>(generateStartingHistory(10));
   const [showRules, setShowRules] = useState(true);
-  const [mainArea, setMainArea] = useState<Developer[]>(initialDevelopers);
+  const [workingDevelopers, setMainArea] = useState<Developer[]>(initialDevelopers);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
   const chartData = generateChartData(resultHistory, maxSprintCount);
-  const disableTurn = developers.length > 0 || currentSprint >= maxSprintCount;
+  const disableTurn = nonWorkingdevelopers.length > 0 || currentSprint >= maxSprintCount;
   const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
   const [prevConfidence, setPrevConfidence] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
@@ -89,8 +90,8 @@ export default function App() {
       investmentConfigs,
       turnsRemaining,
       completedInvestments,
-      developers,
-      mainArea,
+      nonWorkingdevelopers,
+      workingDevelopers,
       resultHistory,
       currentSprint,
       techDebt,
@@ -98,14 +99,8 @@ export default function App() {
       getReleased // Pass the callback to get the latest releaseStatus
     );
   
-    const clearedMainArea = mainArea.map(dev => ({
-      ...dev,
-      output: null,
-      hasBug: null,
-      working: false,
-    }));
-
-    setMainArea(clearedMainArea);
+    const resetWorkingDevelopers = calculateDeveloperOutput(workingDevelopers, 0, 0).updatedDevelopers;
+    setMainArea(resetWorkingDevelopers);
 
     if (result.developerPowerIncreased) {
       setDeveloperPower(prev => prev + 1);
@@ -117,13 +112,13 @@ export default function App() {
   
     setTurnsRemaining(result.updatedTurns);
     setCompletedInvestments(result.updatedCompleted);
-    setDevelopers(result.updatedDevelopers);
+    setDevelopers(result.freeDevelopers);
     setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
 
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    for (let i = 0; i < mainArea.length; i++) {
+    for (let i = 0; i < workingDevelopers.length; i++) {
       setMainArea(prev => {
         const updated = [...prev];
         updated[i] = { ...updated[i], working: true };
@@ -133,14 +128,10 @@ export default function App() {
       // Wait a bit
       await new Promise(resolve => setTimeout(resolve, 400));
   
-      // Update developer with output + bug
-      setMainArea(prev => {
+      const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower, techDebt);
+      setMainArea((prev) => {
         const updated = [...prev];
-        const dev = updated[i];
-        const output = Math.floor(Math.random() * developerPower) + 1;
-        const bugRoll = Math.random() * 100;
-        const hasBug = bugRoll <= techDebt;
-        updated[i] = { ...dev, output, hasBug, working: false };
+        updated[i] = updatedDevelopers[0]; // Update only the specific developer
         return updated;
       });
     }
@@ -179,14 +170,13 @@ export default function App() {
 
     setTurnInProgress(false); // Mark the turn as finished
   };
-  
 
   const onDrop = (
     event: React.DragEvent,
     targetArea: string,
     areaSetter: (updater: (prev: Developer[]) => Developer[]) => void
   ) => {
-    if (turnInProgress) {
+    if (turnInProgress || releaseStatus === null) {
       console.warn('Cannot drop while a turn is in progress.');
       return; // Prevent dropping if a turn is in progress
     }
@@ -195,8 +185,8 @@ export default function App() {
       event,
       targetArea,
       areaSetter,
-      developers,
-      mainArea,
+      nonWorkingdevelopers,
+      workingDevelopers,
       activeInvestments,
       setDevelopers,
       setMainArea,
@@ -208,38 +198,43 @@ export default function App() {
 
   const handleDropZoneDoubleClick = (target: string) => {
     
-    if (turnInProgress) {
+    if (turnInProgress || releaseStatus === null) {
       console.warn('Cannot assign developers while a turn is in progress.');
       return; // Prevent double-click actions if a turn is in progress
     }
 
-    if (developers.length > 0) {
+    if (nonWorkingdevelopers.length > 0) {
       // Take first available and assign to target area
-      const [first, ...rest] = developers;
+      const [first, ...rest] = nonWorkingdevelopers;
       setDevelopers(rest);
   
+      const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
+  
       if (target === 'Build') {
-        setMainArea(prev => [...prev, first]);
+        setMainArea(prev => [...prev, clearedDeveloper]);
       } else {
         setActiveInvestments(prev => ({
           ...prev,
-          [target]: [...prev[target], first]
+          [target]: [...prev[target], clearedDeveloper]
         }));
       }
-    } else if (target !== 'Build' && mainArea.length > 0) {
+    } else if (target !== 'Build' && workingDevelopers.length > 0) {
       // Take from Build instead
-      const [first, ...rest] = mainArea;
+      const [first, ...rest] = workingDevelopers;
       setMainArea(rest);
+
+      const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
+
       setActiveInvestments(prev => ({
         ...prev,
-        [target]: [...prev[target], first]
+        [target]: [...prev[target], clearedDeveloper]
       }));
     }
   };
 
   const getTurnButtonText = () => {
     if (currentSprint >= maxSprintCount) return 'Game Over';
-    if (developers.length > 0) return 'Allocate Remaining Developers';
+    if (nonWorkingdevelopers.length > 0) return 'Allocate Remaining Developers';
     return 'Begin Turn';
   };
 
@@ -289,7 +284,7 @@ export default function App() {
           <GameDropZone 
             name="Build" 
             title={`Sprint ${currentSprint.toString()}`}
-            area={mainArea} 
+            area={workingDevelopers} 
             setArea={setMainArea} 
             isBuildArea={true}  
             turnsRemaining={turnsRemaining}
@@ -320,7 +315,7 @@ export default function App() {
             </div>
   
             <div className={styles.developers}>              
-              {developers.map((m) => (
+              {nonWorkingdevelopers.map((m) => (
                   <DeveloperComponent 
                     key={`available-${m.id}`}
                     developer={m} 
@@ -334,8 +329,7 @@ export default function App() {
                     developerPower={developerPower}
                   />
                 ))}
-            </div>
-                    
+            </div>                 
           </div>     
           
           {/* Begin Turn Button */}
@@ -381,13 +375,12 @@ export default function App() {
         
       </div> 
 
-
-
       {/* Sprint Counter */}
       <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
 
       {/* Graph */}
       <SprintChart data={chartData} />
+
       {/* Sprint History Table */}
       <ResultHistoryTable data={resultHistory} />
 

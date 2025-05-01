@@ -1,4 +1,5 @@
 import { Developer } from '../types';
+import { BASE_TECH_DEBT } from '../utils/helpers';
 
 export function resetDevelopers(developers: Developer[]) {
   return developers.map((dev) => ({ ...dev, output: null, hasBug: false }));
@@ -12,10 +13,15 @@ export function calculateDeveloperOutput(
   let totalValue = 0;
   let bugs = 0;
 
+  debugger
   const updatedDevelopers = developers.map((dev) => {
+
+    if (developerPower <= 0) {
+      return { ...dev, output: null, hasBug: false }; }
+
     const output = Math.floor(Math.random() * developerPower) + 1;
-    const roll = Math.random() * 100;
-    const hasBug = roll <= techDebt;
+    const roll = Math.random() * BASE_TECH_DEBT*20;
+    const hasBug = roll <= (techDebt*20);
 
     if (hasBug) bugs++;
     totalValue += output;
