@@ -63,7 +63,7 @@ export default function App() {
     setTurnInProgress(true); // Mark the turn as in progress
     
     // Immediately clear old spin result TODO: remove ResetSpinResultTrigge dont think we need anymore
-    setResetSpinResultTrigger(prev => prev + 1);
+   // setResetSpinResultTrigger(prev => prev + 1);
 
     // Trigger the spinner
     setStartSpinVersion((prev) => prev + 1);
@@ -130,7 +130,7 @@ export default function App() {
       });
   
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 400));
+      await new Promise(resolve => setTimeout(resolve, 500));
   
       // Update developer with output + bug
       setMainArea(prev => {

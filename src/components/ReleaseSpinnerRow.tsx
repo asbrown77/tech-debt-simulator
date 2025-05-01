@@ -23,10 +23,10 @@ export const ReleaseSpinnerRow = ({
 
   // Reset result and spinner when resetSpinResultTrigger changes
   useEffect(() => {
-    setSuccessful(null);
-    setFinalTarget(null);
-    setCurrent(null);
-    setSpinning(false);
+    // setSuccessful(null);
+    // setFinalTarget(null);
+    // setCurrent(null);
+    // setSpinning(false);
   }, [resetSpinResultTrigger]);
 
   useEffect(() => {
