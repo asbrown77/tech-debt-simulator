@@ -7,7 +7,9 @@ export type DeveloperComponentProps = {
   developer: Developer;
   onDragStart: (e: React.DragEvent, m: Developer) => void;
   developerPower: number;
-  isInvestment?: boolean;
+  isInvestment: boolean;
+  disabled?: boolean;
+  devInfo?: boolean;
 };
 
 export const DeveloperComponent = ({
@@ -15,12 +17,24 @@ export const DeveloperComponent = ({
   onDragStart,
   developerPower,
   isInvestment,
-}: DeveloperComponentProps) => {
-  const showOutput = !isInvestment && developer.output !== undefined && developer.output !== null;
-  const showBug = !isInvestment && developer.hasBug;
+  devInfo = true,
+  disabled,
+
+}: DeveloperComponentProps & { devInfo?: boolean }) => {
+  const showOutput = devInfo && !isInvestment && developer.output !== undefined && developer.output !== null;
+  const showBug = devInfo && !isInvestment && developer.hasBug;
+
 
   return (
-    <div className={styles.outerWrapper}>
+    <div
+      className={`${styles.outerWrapper} ${disabled ? styles.disabled : ''}`}
+      draggable={!disabled}
+      onDragStart={(e) => {
+        if (!disabled) {
+          onDragStart(e, developer);
+        }
+      }}
+    >
       <div className={styles.devCard}>
         
         {/* Top Row: Output */}
@@ -32,14 +46,9 @@ export const DeveloperComponent = ({
         <div className={styles.devIconRow}>
           <img
             src={DeveloperToken}
-            draggable
-            onDragStart={(e) => onDragStart(e, developer)}
-            onDragEnd={(e) => {
-              if (e.currentTarget instanceof HTMLElement) {
-                e.currentTarget.style.opacity = '1';
-              }
-            }}
-            className={`${styles.image} ${developer.working ? styles.imageWorking : ''} ${isInvestment ? styles.imageInvestment : ''}`}
+            className={`${styles.image} ${developer.working ? styles.imageWorking : ''} ${
+              isInvestment ? styles.imageInvestment : ''
+            } ${disabled ? styles.imageDisabled : ''}`} // Apply disabled class
             alt={`Developer ${developer.id}`}
           />
         </div>

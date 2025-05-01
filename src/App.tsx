@@ -84,7 +84,6 @@ export default function App() {
       // Define a callback to get the latest releaseStatus
     const getReleased = () => spinResult;
 
-
     const result = handleBeginTurnLogic(
       activeInvestments,
       investmentConfigs,
@@ -99,9 +98,10 @@ export default function App() {
       getReleased // Pass the callback to get the latest releaseStatus
     );
   
-    const resetWorkingDevelopers = calculateDeveloperOutput(workingDevelopers, 0, 0).updatedDevelopers;
+    // Reset developers in the Main Area
+    const resetWorkingDevelopers = workingDevelopers.map(resetDeveloper);
     setMainArea(resetWorkingDevelopers);
-
+  
     if (result.developerPowerIncreased) {
       setDeveloperPower(prev => prev + 1);
     }
@@ -320,13 +320,15 @@ export default function App() {
                     key={`available-${m.id}`}
                     developer={m} 
                     onDragStart={(e, m) => {
-                      if (e.currentTarget instanceof HTMLElement) {
+                      if (!turnInProgress && e.currentTarget instanceof HTMLElement) {
                         e.currentTarget.style.opacity = '0.5';
+                        handleDragStart(e, m, 'available');
                       }
-                      handleDragStart(e, m, 'available');
                     }}
                     isInvestment={false}
+                    devInfo={false} // Hide output and bug info for non-working developers
                     developerPower={developerPower}
+                    disabled={turnInProgress} // Disable if turn is in progress
                   />
                 ))}
             </div>                 

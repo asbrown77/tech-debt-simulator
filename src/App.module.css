@@ -134,3 +134,15 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none; /* Disable interactions */
+    cursor: not-allowed; /* Show a "not allowed" cursor */
+  }
+
+  .imageDisabled {
+    opacity: 0.5; /* Make the image appear greyed out */
+    pointer-events: none; /* Disable interactions */
+    cursor: not-allowed; /* Show a "not allowed" cursor */
+  }
