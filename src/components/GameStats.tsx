@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../styles/GameStats.module.css';
+import { TechDebtBadge } from './TechDebtBadge';
 
 export type GameStatsProps = {
   techDebt: number;
@@ -22,7 +23,7 @@ export const GameStats = ({
     <div>
       <span className={styles.label}>Tech Debt</span>
       <span className={`${styles.value} ${techDebt < prevTechDebt ? styles.improved : ''}`}>
-        {techDebt*20}%
+      <TechDebtBadge value={techDebt} maxValue={50} />
       </span>
     </div>
     <div>

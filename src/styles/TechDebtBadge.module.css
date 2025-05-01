@@ -1,0 +1,16 @@
+
+
+  .badge {
+    display: inline-flex; /* Use inline-flex for proper alignment */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    width: 2rem; /* Fixed width */
+    height: 2rem; /* Fixed height */
+    border-radius: 50%; /* Make it circular */
+    font-size: 1rem; /* Adjust font size */
+    font-weight: bold; /* Bold text */
+    text-align: center; /* Center text */
+    line-height: 1; /* Adjust line height */
+    background-color: #4caf50; /* Default green color */
+    color: #fff; /* White text */
+  }

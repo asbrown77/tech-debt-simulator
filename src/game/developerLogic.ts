@@ -13,7 +13,6 @@ export function calculateDeveloperOutput(
   let totalValue = 0;
   let bugs = 0;
 
-  debugger
   const updatedDevelopers = developers.map((dev) => {
 
     if (developerPower <= 0) {

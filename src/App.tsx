@@ -11,7 +11,7 @@ import { SprintCounter } from './components/SprintCounter';
 import { handleDragStart, handleDrop } from './utils/dragHandlers';
 import { handleBeginTurnLogic } from './game/gameLogic';
 import Header from './components/Header';
-import { generateChartData } from './utils/chartData';
+import { generateChartData, normalizeTechDebt } from './utils/chartData';
 import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
@@ -31,11 +31,27 @@ export default function App() {
   const [showRules, setShowRules] = useState(true);
   const [workingDevelopers, setMainArea] = useState<Developer[]>(initialDevelopers);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
-  const chartData = generateChartData(resultHistory, maxSprintCount);
+  //const chartData = generateChartData(resultHistory, maxSprintCount);
   const disableTurn = nonWorkingdevelopers.length > 0 || currentSprint >= maxSprintCount;
   const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
   const [prevConfidence, setPrevConfidence] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
+
+  const chartData = resultHistory.map((sprint) => {
+    const maxTechDebt = Math.max(...resultHistory.map((s) => s.techDebt || 0)); // Find the max tech debt
+    debugger;
+    return {
+      ...sprint,
+      sprintNumber: sprint.sprintNumber,
+      releaseConfidence: sprint.releaseConfidence || BASE_RELEASE_CONFIDENCE,
+      devValue: sprint.devValue || 0,
+      bugs: sprint.bugs || 0,
+      valueDelivered: sprint.released ? sprint.netValue|| 0 : 0,
+      accumulatedValueDelivered: sprint.accumulatedValueDelivered || 0,
+      released: sprint.released || false,
+      techDebt: sprint.techDebt, 
+    };
+  });
 
   const [resetTurnResultTrigger, setResetTurnResultTrigger] = useState(0);
   const [startReleaseSpin, setStartReleaseSpin] = useState(0);
