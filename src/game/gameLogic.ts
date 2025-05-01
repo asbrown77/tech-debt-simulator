@@ -53,7 +53,8 @@ export function handleBeginTurnLogic(
   const netValue = devValue - bugs;
   let accumulatedValueDelivered = resultHistory.at(-1)?.accumulatedValueDelivered || 0;
 
-  const released = rollForRelease(confidence);
+  //Todo: fix so correct as from spinner
+  const released = true;
   if (released) {
     accumulatedValueDelivered += netValue;
   }
