@@ -22,7 +22,7 @@ export const investmentConfigs: InvestmentConfig[] = [
     maxDevelopers: 3,
     turnsToComplete: 2,
     confidenceIncrease: 60,
-    techDebtReduction: 10,
+    techDebtReduction: 5,
     increaseValue: true
   }),
   Object.assign(new BaseInvestment(), {
@@ -30,21 +30,21 @@ export const investmentConfigs: InvestmentConfig[] = [
     maxDevelopers: 2,
     turnsToComplete: 2,
     confidenceIncrease: 25,
-    techDebtReduction: 30,
+    techDebtReduction: 15,
     increaseValue: true
   }),
   Object.assign(new BaseInvestment(), {
     name: 'Code Quality',
     maxDevelopers: 2,
     turnsToComplete: 1,
-    techDebtReduction: 20,
+    techDebtReduction: 10,
     increaseValue: true
   }),
   Object.assign(new BaseInvestment(), {
     name: 'Reduce Complexity',
     maxDevelopers: 1,
     turnsToComplete: 2,
-    techDebtReduction: 40
+    techDebtReduction: 20
   })
 ];
 
