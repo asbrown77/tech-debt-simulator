@@ -18,18 +18,25 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
     const history: SprintData[] = [];
   
     for (let i = 1; i <= sprints; i++) {
+      const devValue = Math.floor(Math.random() * 10) + 5; // Random dev output
+      const bugs = Math.floor(Math.random() * 5) + 2; // Random bugs
+      const netValue = devValue - bugs; // Calculate net value
+      const released = Math.random() <= BASE_RELEASE_CONFIDENCE / 100; // 20% confidence for release
+      const accumulatedValueDelivered = released
+        ? (history.at(-1)?.accumulatedValueDelivered || 0) + netValue
+        : history.at(-1)?.accumulatedValueDelivered || 0;
+  
       history.push({
         sprintNumber: i,
-        techDebt: 100, // high tech debt
-        releaseConfidence: BASE_RELEASE_CONFIDENCE, // low release chance
-        devValue: Math.floor(Math.random() * 10) + 5, // small random outputs
-        bugs: Math.floor(Math.random() * 5) + 2, // few bugs each sprint
-        netValue: 0, // assume very little value delivered
-        released: false,
-        accumulatedValueDelivered: 0,
+        techDebt: 100, // High tech debt
+        releaseConfidence: BASE_RELEASE_CONFIDENCE, // 20% release confidence
+        devValue,
+        bugs,
+        netValue,
+        released,
+        accumulatedValueDelivered,
       });
     }
   
     return history;
   }
-  

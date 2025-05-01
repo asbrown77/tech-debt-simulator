@@ -31,7 +31,7 @@ type GameDropZoneProps = {
   developerPower: number;
   currentSprintData: SprintData;
   resetSpinResultTrigger?: number;
-  startSpinVersion?: number
+  startReleaseSpin?: number
   onReleaseStatusChange?: (status: boolean) => void;
 };
 
@@ -53,15 +53,14 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   developerPower,
   currentSprintData,
   resetSpinResultTrigger,
-  startSpinVersion, 
+  startReleaseSpin, 
   onReleaseStatusChange,
 }) => {
   const investmentConfig = investmentConfigs.find((config) => config.name === name);
   const isCompleted = !isBuildArea && completedInvestments.has(name);
 
-  const [triggerReleaseSpin, setReleaseTriggerSpin] = React.useState(false);
+  const [triggerReleaseSpin, setTriggerReleaseSpin] = React.useState(false);
   const [spinResult, setSpinResult] = React.useState<boolean | null>(null);
-
 
   const allowDrop = (event: React.DragEvent) => {
     event.preventDefault();
@@ -70,15 +69,15 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   useEffect(() => {
     if (isBuildArea) {
       setSpinResult(null);       // ✅ Clear old result
-      setReleaseTriggerSpin(false);     // ✅ Prepare spinner (but don't spin yet)
+      setTriggerReleaseSpin(false);     // ✅ Prepare spinner (but don't spin yet)
     }
   }, [resetSpinResultTrigger]);
   
   useEffect(() => {
     if (isBuildArea) {
-      setReleaseTriggerSpin(true);     // ✅ Start release Spinner
+      setTriggerReleaseSpin(true);     // ✅ Start release Spinner
     }
-  }, [startSpinVersion]);
+  }, [startReleaseSpin]);
   
 
   return (
@@ -171,7 +170,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
           resetSpinResultTrigger={resetSpinResultTrigger ?? 0 }
           onSpinComplete={(success) => {
             setSpinResult(success); // Update releaseStatus
-            setReleaseTriggerSpin(false);   // ✅ stop spinning after finish
+            setTriggerReleaseSpin(false);   // ✅ stop spinning after finish
             onReleaseStatusChange?.(success); // Notify parent component
           }}
           netValue={currentSprintData.netValue ?? 0}

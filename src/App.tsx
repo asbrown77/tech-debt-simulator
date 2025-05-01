@@ -37,7 +37,7 @@ export default function App() {
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
 
   const [resetSpinResultTrigger, setResetSpinResultTrigger] = useState(0);
-  const [startSpinVersion, setStartSpinVersion] = useState(0);
+  const [startReleaseSpin, setStartReleaseSpin] = useState(0);
 
   const [turnInProgress, setTurnInProgress] = useState(false);
   const [releaseStatus, setReleaseStatus] = useState<boolean | null>(null);
@@ -64,9 +64,6 @@ export default function App() {
     
     // Immediately clear old spin result TODO: remove ResetSpinResultTrigge dont think we need anymore
    // setResetSpinResultTrigger(prev => prev + 1);
-
-    // Trigger the spinner
-    setStartSpinVersion((prev) => prev + 1);
 
     // Wait for the spinner to complete
     const spinResult = await new Promise<boolean>((resolve) => {
@@ -122,6 +119,8 @@ export default function App() {
     setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
 
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     for (let i = 0; i < mainArea.length; i++) {
       setMainArea(prev => {
         const updated = [...prev];
@@ -130,7 +129,7 @@ export default function App() {
       });
   
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 400));
   
       // Update developer with output + bug
       setMainArea(prev => {
@@ -142,9 +141,11 @@ export default function App() {
         updated[i] = { ...dev, output, hasBug, working: false };
         return updated;
       });
-
     }
     
+    // Trigger the spinner
+    setStartReleaseSpin((prev) => prev + 1);
+
     setResultHistory((prev) => {
       const lastSprint = prev[prev.length - 1]; // Get the last sprint data
       const accumulatedValueDelivered = lastSprint
@@ -298,7 +299,7 @@ export default function App() {
             developerPower={developerPower}
             currentSprintData={currentSprintData}
             resetSpinResultTrigger={currentSprint}
-            startSpinVersion={startSpinVersion}  
+            startReleaseSpin={startReleaseSpin}  
             onReleaseStatusChange={(status) => {
               setReleaseStatus(status); // Update releaseStatus in the parent
             }}
