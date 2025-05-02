@@ -51,19 +51,19 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
   export const getTechDebtLetter = (value: number, maxValue: number): string => {
     const percentage = (value / maxValue) * 100;
   
-    if (percentage < 5) return 'A'; // Less than 5%
-    if (percentage <= 10) return 'B'; // 6–10%
-    if (percentage <= 20) return 'C'; // 11–20%
-    if (percentage <= 50) return 'D'; // 21–50%
-    return 'E'; // Greater than 50%
+    if (percentage < 10) return 'A'; // Less than 10%
+    if (percentage <= 30) return 'B'; // 12–20%
+    if (percentage <= 45) return 'C'; // 21–40%
+    if (percentage <= 70) return 'D'; // 41–70%
+    return 'E'; // Greater than 70%
   };
 
 export const getTechDebtColor = (value: number, maxValue: number): string => {
   const percentage = (value / maxValue) * 100;
 
-  if (percentage < 5) return '#4caf50'; // Green for A
-  if (percentage <= 10) return '#8bc34a'; // Light green for B
-  if (percentage <= 20) return '#ffeb3b'; // Yellow for C
-  if (percentage <= 50) return '#ff9800'; // Orange for D
+  if (percentage < 10) return '#4caf50'; // Green for A
+  if (percentage <= 30) return '#8bc34a'; // Light green for B
+  if (percentage <= 45) return '#ffeb3b'; // Yellow for C
+  if (percentage <= 70) return '#ff9800'; // Orange for D
   return '#f44336'; // Red for E
 };
