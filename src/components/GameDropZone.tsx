@@ -52,7 +52,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   investmentConfigs,
   developerPower,
   currentSprintData,
-  resetTurnResultTrigger: resetTurnResultTrigger,
+  resetTurnResultTrigger: resetSpinnerTrigger,
   startReleaseSpin, 
   onReleaseStatusChange,
 }) => {
@@ -71,14 +71,30 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
       setSpinResult(null);       // ✅ Clear old result
       setTriggerReleaseSpin(false);     // ✅ Prepare spinner (but don't spin yet)
     }
-  }, [resetTurnResultTrigger]);
+  }, [resetSpinnerTrigger]);
   
+  // useEffect(() => {
+  //   if (isBuildArea) {
+  //     setTriggerReleaseSpin(true);     // ✅ Start release Spinner
+  //   }
+  // }, [startReleaseSpin]);
+  
+
   useEffect(() => {
     if (isBuildArea) {
-      setTriggerReleaseSpin(true);     // ✅ Start release Spinner
+      debugger
+      if (currentSprintData.sprintNumber > 10)
+      {
+        setTriggerReleaseSpin(true);     // ✅ Start release Spinner 
+      }
+      else
+      {
+        setSpinResult(currentSprintData.released); // Update releaseStatus
+        setTriggerReleaseSpin(false);   // ✅ stop spinning after finish
+        onReleaseStatusChange?.(currentSprintData.released); // Notify parent component
+      }
     }
   }, [startReleaseSpin]);
-  
 
   return (
     <div
@@ -167,7 +183,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         <ReleaseSpinnerRow
           releaseConfidence={currentSprintData.releaseConfidence ?? 0}
           triggerSpin={triggerReleaseSpin}
-          resetTurnResultTrigger={resetTurnResultTrigger ?? 0 }
+          resetSpinnerTrigger={resetSpinnerTrigger ?? 0 }
           onSpinComplete={(success) => {
             setSpinResult(success); // Update releaseStatus
             setTriggerReleaseSpin(false);   // ✅ stop spinning after finish

@@ -144,7 +144,7 @@ export default function App() {
       });
   
       // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 400));
+      await new Promise(resolve => setTimeout(resolve, 300));
   
       const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower, techDebt);
       setMainArea((prev) => {
