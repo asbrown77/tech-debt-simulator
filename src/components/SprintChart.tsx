@@ -42,13 +42,16 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
-          dataKey="sprint"
-          label={{
-            value: 'Sprint',
-            position: 'insideBottom', // Position the label at the bottom
-            offset: -10, // Adjust spacing between the label and the axis
-            style: { fontSize: '20px', fontWeight: 'bold' }, // Style the label
-          }}
+  type="number"
+  dataKey="sprint"
+  domain={[0, 20]}
+  tickCount={20}
+  label={{
+    value: 'Sprint',
+    position: 'insideBottom',
+    offset: -10,
+    style: { fontSize: '20px', fontWeight: 'bold' },
+  }}
         />
         <YAxis domain={[0, 120]} allowDecimals={false}/>
         <Tooltip />
