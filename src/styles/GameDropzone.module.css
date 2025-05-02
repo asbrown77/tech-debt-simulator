@@ -26,6 +26,7 @@
   
   .dropZoneHeader {
     display: flex;
+    color: #003366; /* dark blue */
     font-size: 20px;
     justify-content: space-between;
     align-items: center;
@@ -35,7 +36,6 @@
   .completedDropZoneHeader {
     color: white; /* Change title color to white */
   }
-  
   
   .turnsInfo {
     background-color: rgba(30, 119, 235, 0.7);
@@ -54,7 +54,8 @@
   .turnsToComplete {
     text-align: center;
     font-size: 1.1rem;
-    color: #666;
+    color: #f70;
+    font-weight: bold;
   }
   
   .placeholder {
@@ -69,10 +70,14 @@
   .description {
     text-align: center;
     font-size: 0.9rem;
-    color: #666;
+    color: #003366;
     margin-top: auto;
     padding: 1rem;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .completedDescription {
+    color: white; /* Change text color to white */
   }
   
   .sprintSummary {

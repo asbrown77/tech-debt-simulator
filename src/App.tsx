@@ -344,7 +344,8 @@ export default function App() {
               opacity: 0.5,
               fontSize: '0.85rem',
               textAlign: 'center',
-              marginBottom: '0.5rem'
+              marginBottom: '0.2rem',
+              color: '#666',
             }}>
               Drag or double-click to assign developers
             </div>

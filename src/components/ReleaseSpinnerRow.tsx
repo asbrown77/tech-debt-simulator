@@ -81,9 +81,9 @@ export const ReleaseSpinnerRow = ({
       <div style={{ flex: 1 }}>
         
         {/* Result Row */}
-        <div style={{ display: 'flex', fontSize: '1.2rem', justifyContent: 'space-evenly', alignItems: 'center', marginBottom: '1rem' }}>
-          <div>
-            <strong>Release Successful?</strong>
+        <div style={{ display: 'flex', justifyContent: 'space-evenly', fontSize: '1.2rem', alignItems: 'center', marginBottom: '1rem' }}>
+          <div >
+            <strong>Successful Release?</strong>
           </div>
           <div
             style={{

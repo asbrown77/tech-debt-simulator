@@ -1,0 +1,15 @@
+/* Tooltip styles */
+.react-tooltip {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+  }
+  
+  .react-tooltip ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }

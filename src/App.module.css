@@ -48,9 +48,9 @@
   /* Available devs area */
   .devPool {
     color: #358adf;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     border: 2px dashed #ccc;
-    padding: 1rem;
+    padding: 0.5rem;
     border-radius: 8px;
     background-color: #e4e4e4;
   }

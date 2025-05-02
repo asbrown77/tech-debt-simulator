@@ -108,6 +108,8 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
       <strong>{title}</strong>
     </div>
 
+    
+
     {turnsToComplete && !isBuildArea && investmentConfig && (!isCompleted  && area.length < (maxDevelopers ?? 0)) && (
       <div className={styles.turnsToComplete}>
         Turns to complete: {turnsToComplete}
@@ -154,6 +156,17 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         ))}
       </div>
 
+      
+      <div style={{
+              opacity: 0.5,
+              fontSize: '0.85rem',
+              textAlign: 'center',
+              marginBottom: '0rem',
+              color: '#666',
+            }}>
+              Drag or double-click to assign developers
+            </div>
+            
       {/* Show Sprint Summary inside Build only */}
       {isBuildArea && (
       <div className={styles.sprintSummary}>
@@ -168,9 +181,9 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
         </div>
       </div>  
       )}
-      
-      {isBuildArea && (
 
+
+      {isBuildArea && (
       <div style={{ marginTop: '1rem' }}>
 
         {/* Always show spinner */}
@@ -186,9 +199,17 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
           netValue={currentSprintData.netValue ?? 0}
         />
       </div>
+
+      
       )}
 
-      {description && <div className={styles.description}>{description}</div>}
+{description && (
+  <div
+    className={`${styles.description} ${isCompleted ? styles.completedDescription : ''}`}
+  >
+    {description}
+  </div>
+)}
     </div>
   );
 };
