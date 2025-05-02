@@ -23,7 +23,6 @@ type SprintChartProps = {
 export const SprintChart = ({ data }: { data: SprintData[] }) => {
   const maxTechDebt = 50; // Define the maximum tech debt for scaling
 
-
   // Add "Sprint 0" with default values
   const chartData = [
     { sprint: '0', net: 0, delivered: 0, techDebt: 0 }, // Sprint 0
