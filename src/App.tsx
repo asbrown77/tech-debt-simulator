@@ -78,6 +78,7 @@ export default function App() {
       return; // Prevent starting a new turn if one is already in progress
 
     if (currentSprint >= maxSprintCount) {
+      setShowGameEndModal(true); // Show the modal when the game ends
       resetGame(); // Reset the game if it's over
       return;
     }
@@ -275,6 +276,7 @@ export default function App() {
     setTechDebt(BASE_TECH_DEBT);
     setDeveloperPower(5);
     setResultHistory(generateStartingHistory(10));
+    setCurrentSprint(10);
     setActiveInvestments(
       investmentConfigs.reduce((acc, investment) => ({ ...acc, [investment.name]: [] }), {})
     );
@@ -301,13 +303,14 @@ export default function App() {
         </button>
 </div>
 
-<GameEndModal
-  isOpen={showGameEndModal}
-  onClose={() => setShowGameEndModal(false)}
-  resultHistory={resultHistory}
-  techDebt={techDebt}
-  valueDelivered={resultHistory.reduce((acc, sprint) => acc + (currentSprintData.accumulatedValueDelivered || 0), 0)}
-/>
+      <GameEndModal
+        isOpen={showGameEndModal}
+        onClose={() => setShowGameEndModal(false)}
+        resultHistory={resultHistory}
+        techDebt={techDebt}
+        valueDelivered={resultHistory.reduce((acc, sprint) => acc + (currentSprintData.accumulatedValueDelivered || 0), 0)}
+      />
+      
       <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
 
       {/* Build Game Area - 50/50 Split */}
