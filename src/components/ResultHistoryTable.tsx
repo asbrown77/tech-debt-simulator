@@ -29,7 +29,7 @@ export const ResultHistoryTable = ({ data }: Props) => {
             <th style={cellStyle}>Dev</th>
             <th style={cellStyle}>Bugs</th>
             <th style={cellStyle}>Net Output</th>
-            <th style={cellStyle}>Release</th>
+            <th style={cellStyle}>Released</th>
             <th style={cellStyle}>Value Delivered</th>
           </tr>
         </thead>

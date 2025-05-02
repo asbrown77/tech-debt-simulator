@@ -83,7 +83,7 @@ export const ReleaseSpinnerRow = ({
         {/* Result Row */}
         <div style={{ display: 'flex', justifyContent: 'space-evenly', fontSize: '1.2rem', alignItems: 'center', marginBottom: '1rem' }}>
           <div >
-            <strong>Successful Release?</strong>
+            <strong>Release Deployed Successful?</strong>
           </div>
           <div
             style={{
@@ -92,7 +92,7 @@ export const ReleaseSpinnerRow = ({
               color: successful ? 'green' : 'red',
             }}
           >
-            {successful == null ? '' : (successful ? '✅ Successful' : '❌ Failed')}
+            {successful == null ? '' : (successful ? '✅' : '❌')}
           </div>
         </div>
 

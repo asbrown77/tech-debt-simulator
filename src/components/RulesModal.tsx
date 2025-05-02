@@ -16,49 +16,58 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
         <div style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: 800, margin: '0 auto' }}>
           <h1 style={{ textAlign: 'center' }}>Tech Debt Simulation</h1>
           <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#444' }}>
-            See what happens when you ignore it or invest wisely.
-          </p>
-          <p style={{ textAlign: 'center', fontSize: '1rem', color: '#666', marginTop: '0.5rem' }}>
-            A simple tool to explore how tech debt decisions shape delivery outcomes.
+          A simple tool to explore how tech debt decisions shape delivery outcomes. See what happens when you ignore it or invest wisely.
           </p>
 
-          <h2>🎯 Your Goal</h2>
           <p>
-            You have <strong>10 sprints</strong> to deliver as much value as possible. Sounds simple.
+            Welcome to the Tech Debt Simulation! This exercise lets you <strong>explore how technical debt impacts delivery</strong> and how different strategies shape long-term outcomes.
           </p>
-          <p>
-            But your team is stuck. They are buried in tech debt, unable to release reliably, and looking busy without results.
-          </p>
-          <p>
-            What will you do next?
-          </p>
+
+          <h3>🎯 Purpose</h3>
           <ul>
-            <li>How will you help them start delivering?</li>
-            <li>What happens if you invest?</li>
-            <li>What happens if you do nothing?</li>
+            <li>What happens if you pay down tech debt or leave it untouched.</li>
+            <li>How improving feedback loops, increasing release frequency, improving product quality, or focusing on value can each lead to different outcomes.</li>
+            <li>What strategies you choose to strengthen the team and its long-term delivery ability.</li>
           </ul>
-          <p>
-            Every decision is a trade off. What you invest in or ignore will shape how your team delivers.
-          </p>
 
-          <h2>👨‍💻 Your Developers</h2>
+          <h3>💡 How It Works</h3>
           <ul>
-            <li>You have 6 devs. Each one starts with a <strong>power level of 5</strong>.</li>
             <li>
-              When assigned to <strong>Build</strong>, they generate <strong>1 to 5 value</strong> each sprint.
+              <strong>Build:</strong> Assign developers here to generate sprint output. Each developer rolls for value and may introduce bugs (higher tech debt means more bugs).
             </li>
-            <li>Double-click an area or drag and drop your devs to assign them.</li>
             <li>
-              Drop them into <strong>Build</strong> to crank out features, or invest in the future by assigning them to <strong>Improvements</strong>.
+              <strong>Investments:</strong> Assign developers to complete improvements like Test Coverage, CI/CD, or Code Quality. These reduce bugs, improve maintainability, and raise team capability, making future delivery faster and smoother.
+            </li>
+            <li>
+              <strong>Tech Debt:</strong> The more debt you carry, the harder it gets to deliver clean, reliable releases. Bugs reduce your net value each sprint and slow progress. Paying down debt opens up maintainability and extensibility, helping you respond faster to change.
+            </li>
+            <li>
+              <strong>Release Confidence & Spinner:</strong> After each sprint, the spinner shows whether your team successfully deploys the work. If confidence is low or quality is poor, deployments often fail, leading to rework and lost value. Investments like CI/CD improve your ability to release smoothly and avoid costly failures.
             </li>
           </ul>
 
-          <h2>⏰ Tech Debt Gets in the Way</h2>
+          <h3>🔄 Sprint Flow</h3>
+          <ol>
+            <li>Assign developers to Sprint or to Investments.</li>
+            <li>Click <strong>Next Sprint</strong>.</li>
+            <li>Developers work, output is generated, bugs are applied.</li>
+            <li>The release spinner runs, determining if you ship or fail.</li>
+            <li>Sprint results are recorded.</li>
+          </ol>
+
+          <h3>🔍 Explore Strategies</h3>
+          <p>
+            This simulation is about <strong>experimenting</strong>, not winning. Try out:
+          </p>
           <ul>
-            <li>You inherited <strong>100 percent tech debt</strong>. Lucky you.</li>
-            <li>Ignore it, and it gets worse, with more bugs and failed releases.</li>
-            <li>The only way out is to invest in improvements.</li>
+            <li>Investing early to improve feedback loops and delivery confidence.</li>
+            <li>Holding off on improvements to maximize short-term value (and see the tradeoffs).</li>
+            <li>Focusing on quality and maintainability to enable faster, safer delivery over time.</li>
           </ul>
+
+          <p>
+            See how each approach affects your ability to deliver consistent, valuable outcomes and what happens when tech debt builds up or is paid down.
+          </p>
 
           <h2>🧪 Team Improvements</h2>
           <p>Each investment you complete gives your team a permanent upgrade:</p>
@@ -70,7 +79,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
 
           <h2>📋 How the Simulation Works</h2>
           <ul>
-            <li>Only devs in <strong>Build</strong> generate value each sprint.</li>
+            <li>Only working devs in <strong>the Sprint</strong> will generate value.</li>
             <li><strong>Bugs</strong> are more likely with high tech debt for each developer building.</li>
             <li><strong>Releases</strong> depend on a roll from 1 to 100:
               <ul>
