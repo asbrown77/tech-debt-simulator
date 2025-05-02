@@ -78,15 +78,13 @@
   
   .sprintSummary {
     margin-top: 1rem;
-    background: #f70;
-    opacity: 0.9;
-    border: 1px solid #c3ddf5;
+    background: #007bff;
+    border: 1px solid #03111f;
     border-radius: 8px;
     padding: 0.2rem 0.2rem;
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: white;
     font-weight: bold;
   }

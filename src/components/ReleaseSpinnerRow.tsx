@@ -81,7 +81,7 @@ export const ReleaseSpinnerRow = ({
       <div style={{ flex: 1 }}>
         
         {/* Result Row */}
-        <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', fontSize: '1.2rem', justifyContent: 'space-evenly', alignItems: 'center', marginBottom: '1rem' }}>
           <div>
             <strong>Release Successful?</strong>
           </div>
@@ -92,7 +92,7 @@ export const ReleaseSpinnerRow = ({
               color: successful ? 'green' : 'red',
             }}
           >
-            {successful == null ? '' : (successful ? '✅ Release Successful' : '❌ Failed')}
+            {successful == null ? '' : (successful ? '✅ Successful' : '❌ Failed')}
           </div>
         </div>
 
@@ -125,7 +125,7 @@ export const ReleaseSpinnerRow = ({
                   transition: 'background-color 0.2s',
                 }}
               >
-                {idx + 1}
+                {/* {idx + 1} */}
               </div>
             );
           })}

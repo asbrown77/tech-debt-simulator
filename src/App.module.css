@@ -121,15 +121,6 @@
     margin-left: 1rem;
   }
 
-  .sprintSummary {
-    background-color: #f1f5f9;
-    border-top: 1px solid #ccc;
-    margin-top: 1rem;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    color: #333;
-  }
-
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
