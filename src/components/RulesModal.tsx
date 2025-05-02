@@ -14,13 +14,13 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
         <button style={styles.closeButton} onClick={onClose}>×</button>
 
         <div style={{ fontFamily: 'sans-serif', padding: '2rem', maxWidth: 800, margin: '0 auto' }}>
-          <h1 style={{ textAlign: 'center' }}>Tech Debt Simulation</h1>
+          <h1 style={{ textAlign: 'center' }}>Tech Debt Simulator</h1>
           <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#444' }}>
           A simple tool to explore how tech debt decisions shape delivery outcomes. See what happens when you ignore it or invest wisely.
           </p>
 
           <p>
-            Welcome to the Tech Debt Simulation! This exercise lets you <strong>explore how technical debt impacts delivery</strong> and how different strategies shape long-term outcomes.
+            Welcome to the Tech Debt Simulator! This exercise lets you <strong>explore how technical debt impacts delivery</strong> and how different strategies shape long-term outcomes.
           </p>
 
           <h3>🎯 Purpose</h3>
@@ -57,7 +57,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
 
           <h3>🔍 Explore Strategies</h3>
           <p>
-            This simulation is about <strong>experimenting</strong>, not winning. Try out:
+            This simulator is about <strong>experimenting</strong>, not winning. Try out:
           </p>
           <ul>
             <li>Investing early to improve feedback loops and delivery confidence.</li>
@@ -77,7 +77,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
             <li><strong>Less tech debt</strong>, meaning fewer bugs and faster progress.</li>
           </ul>
 
-          <h2>📋 How the Simulation Works</h2>
+          <h2>📋 How the Simulator Works</h2>
           <ul>
             <li>Only working devs in <strong>the Sprint</strong> will generate value.</li>
             <li><strong>Bugs</strong> are more likely with high tech debt for each developer building.</li>
@@ -88,7 +88,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
               </ul>
             </li>
             <li>Only released value counts. Failed release equals lost value.</li>
-            <li>The simulation ends after 10 sprints. Reflect on your results and what you might change next time.</li>
+            <li>The simulator ends after 10 sprints. Reflect on your results and what you might change next time.</li>
           </ul>
 
           <p style={{ marginTop: '2rem', fontSize: '1rem', textAlign: 'center' }}>
