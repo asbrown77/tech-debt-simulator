@@ -386,6 +386,7 @@ export default function App() {
 
         {/* Investment Area - 50% */}
         <div className={styles.rightColumn}>
+
           {investmentConfigs.map((investment) => (
             <GameDropZone
               name={investment.name}
@@ -415,7 +416,7 @@ export default function App() {
 
       {/* Graph */}
       <SprintChart data={chartData} />
-
+      
       {/* Sprint History Table */}
       <ResultHistoryTable data={resultHistory} />
 

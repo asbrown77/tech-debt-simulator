@@ -137,3 +137,31 @@
     pointer-events: none; /* Disable interactions */
     cursor: not-allowed; /* Show a "not allowed" cursor */
   }
+
+  /* Container for the investment area */
+.investmentContainer {
+  background-color: #f8f9fa; /* Light background for contrast */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+/* Blue header for the investment area */
+.investmentHeader {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  padding: 0.5rem 1rem;
+  border-radius: 8px 8px 0 0; /* Rounded corners for the top */
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Instructional text below the header */
+.investmentDescription {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0.5rem 0 1rem 0;
+  text-align: center;
+}
