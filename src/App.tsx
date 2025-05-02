@@ -292,18 +292,18 @@ export default function App() {
 
   return (
     <Layout>
-  <div className={styles.appContainer}>
-      {/* Header centered, with Rules button on same row (top right) */}
-      <div className={styles.headerWrapper}>
-        <div className={styles.headerTitle}>
-          <Header />
-        </div>
+      <div className={styles.appContainer}>
+          {/* Header centered, with Rules button on same row (top right) */}
+          <div className={styles.headerWrapper}>
+            <div className={styles.headerTitle}>
+              <Header />
+            </div>
 
-        <button className={styles.rulesButton}
-          onClick={() => setShowRules(true)}>
-          Game Rules
-        </button>
-</div>
+            <button className={styles.rulesButton}
+              onClick={() => setShowRules(true)}>
+              Game Rules
+            </button>
+      </div>
 
       <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
 
