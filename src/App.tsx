@@ -18,6 +18,7 @@ import logo from './bagile-logo.svg';
 import { BASE_RELEASE_CONFIDENCE, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper, uniqueDevelopers } from './utils/helpers';
 import { debug } from 'console';
 import { calculateDeveloperOutput } from './game/developerLogic';
+import { GameEndModal } from './components/GameEndModel';
 
 const maxSprintCount = 20;
 
@@ -31,10 +32,10 @@ export default function App() {
   const [workingDevelopers, setMainArea] = useState<Developer[]>(initialDevelopers);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
   //const chartData = generateChartData(resultHistory, maxSprintCount);
-  const disableTurn = currentSprint >= maxSprintCount;
   const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
   const [prevConfidence, setPrevConfidence] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
+  const [showGameEndModal, setShowGameEndModal] = useState(false);
 
   const chartData = resultHistory.map((sprint) => {
     const maxTechDebt = Math.max(...resultHistory.map((s) => s.techDebt || 0)); // Find the max tech debt
@@ -75,6 +76,11 @@ export default function App() {
 
     if (turnInProgress) 
       return; // Prevent starting a new turn if one is already in progress
+
+    if (currentSprint >= maxSprintCount) {
+      resetGame(); // Reset the game if it's over
+      return;
+    }
 
     //Reset status at each of turn 
     setTurnInProgress(true); 
@@ -187,6 +193,12 @@ export default function App() {
     });
 
     setTurnInProgress(false); // Mark the turn as finished
+
+    if (currentSprint >= maxSprintCount) {
+      setShowGameEndModal(true); // Show the modal when the game ends
+      return;
+    }
+  
   };
 
   const onDrop = (
@@ -237,10 +249,15 @@ export default function App() {
   };
 
   const getTurnButtonText = () => {
-    if (currentSprint >= maxSprintCount) return 'Game Over';
-    return 'Begin Turn';
+    if (currentSprint >= maxSprintCount) return 'New Game';
+    return 'Next Sprint';
   };
 
+  const getTurnButtonClass = () => {
+    if (currentSprint >= maxSprintCount) return styles.newGameButton; // Apply orange button style
+    return styles.beginButton; // Default button style
+  };
+  
   const currentSprintData = resultHistory[currentSprint - 1] || {
     sprintNumber: currentSprint,
     techDebt: 5,
@@ -251,6 +268,22 @@ export default function App() {
     valueDelivered: 0,
     accumulatedValueDelivered: 0,
     released: false,
+  };
+
+  const resetGame = () => {
+    setCurrentSprint(1);
+    setTechDebt(BASE_TECH_DEBT);
+    setDeveloperPower(5);
+    setResultHistory(generateStartingHistory(10));
+    setActiveInvestments(
+      investmentConfigs.reduce((acc, investment) => ({ ...acc, [investment.name]: [] }), {})
+    );
+    setCompletedInvestments(new Set());
+    setMainArea(initialDevelopers);
+    setTurnsRemaining(
+      investmentConfigs.reduce((acc, investment) => ({ ...acc, [investment.name]: undefined }), {})
+    );
+    setShowGameEndModal(false); // Close the modal
   };
 
   return (
@@ -268,6 +301,13 @@ export default function App() {
         </button>
 </div>
 
+<GameEndModal
+  isOpen={showGameEndModal}
+  onClose={() => setShowGameEndModal(false)}
+  resultHistory={resultHistory}
+  techDebt={techDebt}
+  valueDelivered={resultHistory.reduce((acc, sprint) => acc + (currentSprintData.accumulatedValueDelivered || 0), 0)}
+/>
       <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
 
       {/* Build Game Area - 50/50 Split */}
@@ -307,17 +347,15 @@ export default function App() {
 <br/>     
           {/* Begin Turn Button */}
           <div className={styles.buttonWrapper}>
-          <button
-  className={`${styles.beginButton} ${
-    disableTurn || turnInProgress || releaseStatus === null
-      ? styles.beginButtonDisabled
-      : ''
-  }`}
-  onClick={processTurn}
-  disabled={disableTurn || turnInProgress || releaseStatus === null}
->
-  {getTurnButtonText()}
-</button>
+            <button
+              className={`${getTurnButtonClass()} ${
+                turnInProgress || releaseStatus === null ? styles.beginButtonDisabled : ''
+              }`}
+              onClick={processTurn}
+              disabled={turnInProgress || releaseStatus === null}
+            >
+              {getTurnButtonText()}
+            </button>
           </div>
         </div>
 
@@ -357,6 +395,7 @@ export default function App() {
       {/* Sprint History Table */}
       <ResultHistoryTable data={resultHistory} />
 
+
       <hr style={{ marginTop: '3rem', marginBottom: '1rem' }} />
 
       <footer
@@ -395,6 +434,8 @@ export default function App() {
         />
       </footer>
       </div>
+
+      
     </Layout>
   );
 } 

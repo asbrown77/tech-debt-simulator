@@ -36,7 +36,7 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <LineChart
+      <ComposedChart
         data={chartData}
         margin={{ top: 20, right: 20, bottom: 40, left: 20 }} // Add padding around the chart
       >
@@ -50,20 +50,17 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
             style: { fontSize: '20px', fontWeight: 'bold' }, // Style the label
           }}
         />
-      <YAxis
-          domain={[0, maxTechDebt * 2 + 20]} // Ensure Y-axis starts at 0 and adds padding at the top
-          allowDecimals={false} // Disable decimals on the Y-axis
-        />
+        <YAxis domain={[0, 120]} allowDecimals={false}/>
         <Tooltip />
         <Legend
           verticalAlign="top" // Position the legend at the top
           align="center" // Center the legend horizontally
-          wrapperStyle={{ paddingBottom: '10px' }} // Add spacing between legend and chart
+          wrapperStyle={{ paddingBottom: '25px' }} // Add spacing between legend and chart
         />
-        <Line type="monotone" dataKey="techDebt" stroke="#dc3545" name="Tech Debt (%)" />
-        <Line type="monotone" dataKey="delivered" stroke="#28a745" name="Value Delivered" />
-        <Line type="monotone" dataKey="net" stroke="#007bff" name="Net Value" />
-      </LineChart>
+        <Area type="linear" dataKey="delivered" fill="#28a745"  stroke="#28a745" name="Value Delivered" />
+        <Line type="linear" dataKey="net" stroke="#007bff" name="Net Value" />
+        <Line type="linear" dataKey="techDebt" stroke="#dc3545" name="Tech Debt (%)" />
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };
