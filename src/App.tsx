@@ -272,11 +272,13 @@ export default function App() {
   };
 
   const resetGame = () => {
+    debugger
     setCurrentSprint(1);
     setTechDebt(BASE_TECH_DEBT);
     setDeveloperPower(5);
     setResultHistory(generateStartingHistory(10));
     setCurrentSprint(10);
+    setPrevTechDebt(BASE_TECH_DEBT);
     setActiveInvestments(
       investmentConfigs.reduce((acc, investment) => ({ ...acc, [investment.name]: [] }), {})
     );
