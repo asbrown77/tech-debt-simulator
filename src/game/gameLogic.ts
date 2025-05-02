@@ -12,7 +12,6 @@ export function handleBeginTurnLogic(
   investmentConfigs: InvestmentConfig[],
   turnsRemaining: { [key: string]: number | undefined },
   completedInvestments: Set<string>,
-  nonWorkingDevelopers: Developer[],
   mainArea: Developer[],
   resultHistory: SprintData[],
   currentSprint: number,
@@ -28,12 +27,12 @@ export function handleBeginTurnLogic(
     investmentConfigs
   );
 
-  let updatedNonWorkingDevelopers = resetDevelopers(nonWorkingDevelopers);
+  debugger
   let updatedMainArea = resetDevelopers(mainArea);
 
   const {
     updatedTechDebt,
-    freeDevelopers,
+    freeInvestedDevelopers,
     updatedActiveInvestments,
     developerPowerIncreased,
   } = finalizeCompletedInvestments(
@@ -42,12 +41,12 @@ export function handleBeginTurnLogic(
     investmentConfigs,
     techDebt,
     releaseConfidence,
-    updatedNonWorkingDevelopers
+    updatedMainArea
   );
 
   console.log('Updated Tech Debt:', updatedTechDebt);
-console.log('Free Developers:', freeDevelopers);
-console.log('Updated Active Investments:', updatedActiveInvestments);
+  console.log('Free Invested Developers:', freeInvestedDevelopers);
+  console.log('Updated Active Investments:', updatedActiveInvestments);
  
   const { updatedDevelopers: workingDevelopers, devValue: devValue, bugs } = calculateDeveloperOutput(
     updatedMainArea,
@@ -55,7 +54,6 @@ console.log('Updated Active Investments:', updatedActiveInvestments);
     updatedTechDebt
   );
 
-  debugger
   let previousSprintData = resultHistory.at(-1) ;
 
   const turnSprintData = generateSprintData(
@@ -72,7 +70,7 @@ console.log('Updated Active Investments:', updatedActiveInvestments);
   return {
     updatedTurns,
     updatedCompleted,
-    freeDevelopers,
+    freeInvestedDevelopers,
     workingDevelopers,
     updatedActiveInvestments,
     updatedTechDebt,

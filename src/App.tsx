@@ -1,6 +1,6 @@
 import React, { useState } from 'react'; 
 import { Developer, SprintData, ActiveInvestments} from './types';
-import { DeveloperComponent } from './components/Developer';
+
 import GameDropZone from './components/GameDropZone';
 import { GameStats } from './components/GameStats';
 import { SprintChart } from './components/SprintChart';
@@ -11,19 +11,18 @@ import { SprintCounter } from './components/SprintCounter';
 import { handleDragStart, handleDrop } from './utils/dragHandlers';
 import { handleBeginTurnLogic } from './game/gameLogic';
 import Header from './components/Header';
-import { generateChartData, normalizeTechDebt } from './utils/chartData';
 import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
-import { BASE_RELEASE_CONFIDENCE, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper } from './utils/helpers';
+import { BASE_RELEASE_CONFIDENCE, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper, uniqueDevelopers } from './utils/helpers';
 import { debug } from 'console';
 import { calculateDeveloperOutput } from './game/developerLogic';
 
 const maxSprintCount = 20;
 
 export default function App() {
-  const [nonWorkingdevelopers, setDevelopers] = useState<Developer[]>([]); 
+ // const [nonWorkingdevelopers, setDevelopers] = useState<Developer[]>([]); 
   const [developerPower, setDeveloperPower] = useState(5); 
   const [currentSprint, setCurrentSprint] = useState(10);
   const [techDebt, setTechDebt] = useState(BASE_TECH_DEBT);
@@ -32,7 +31,7 @@ export default function App() {
   const [workingDevelopers, setMainArea] = useState<Developer[]>(initialDevelopers);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
   //const chartData = generateChartData(resultHistory, maxSprintCount);
-  const disableTurn = nonWorkingdevelopers.length > 0 || currentSprint >= maxSprintCount;
+  const disableTurn = currentSprint >= maxSprintCount;
   const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
   const [prevConfidence, setPrevConfidence] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
@@ -105,7 +104,6 @@ export default function App() {
       investmentConfigs,
       turnsRemaining,
       completedInvestments,
-      nonWorkingdevelopers,
       workingDevelopers,
       resultHistory,
       currentSprint,
@@ -118,8 +116,7 @@ export default function App() {
     // Reset developers in the Main Area
     const resetWorkingDevelopers = workingDevelopers.map(resetDeveloper);
     setMainArea(resetWorkingDevelopers);
-  
-    debugger;
+
     if (result.developerPowerIncreased) {; 
       setDeveloperPower(developerPower +1 );
     }
@@ -130,8 +127,8 @@ export default function App() {
   
     setTurnsRemaining(result.updatedTurns);
     setCompletedInvestments(result.updatedCompleted);
-    setDevelopers(result.freeDevelopers);
-    setActiveInvestments(result.updatedActiveInvestments);
+
+    //setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
 
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -154,6 +151,9 @@ export default function App() {
       });
     }
     
+    let newWorkingDevelopers = uniqueDevelopers([...result.workingDevelopers, ...result.freeInvestedDevelopers]);
+    setMainArea(newWorkingDevelopers);
+
     // Trigger the spinner
     setStartReleaseSpin((prev) => prev + 1);
 
@@ -203,10 +203,8 @@ export default function App() {
       event,
       targetArea,
       areaSetter,
-      nonWorkingdevelopers,
       workingDevelopers,
       activeInvestments,
-      setDevelopers,
       setMainArea,
       setActiveInvestments,
       setTurnsRemaining,
@@ -220,10 +218,10 @@ export default function App() {
       return; // Prevent double-click actions if a turn is in progress
     }
   
-    if (nonWorkingdevelopers.length > 0) {
+    if (workingDevelopers.length > 0) {
       // Take first available and assign to target area
-      const [first, ...rest] = nonWorkingdevelopers;
-      setDevelopers(rest);
+      const [first, ...rest] = workingDevelopers;
+      setMainArea(rest);
   
       const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
   
@@ -235,42 +233,11 @@ export default function App() {
           [target]: [...prev[target], clearedDeveloper],
         }));
       }
-    } else if (target === 'Build') {
-      // If no developers in nonWorkingdevelopers, take from activeInvestments
-      for (const [investmentName, developers] of Object.entries(activeInvestments)) {
-        if (developers.length > 0) {
-          const [first, ...rest] = developers;
-  
-          // Remove the developer from the investment
-          setActiveInvestments((prev) => ({
-            ...prev,
-            [investmentName]: rest,
-          }));
-  
-          const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
-  
-          // Add the developer to the Build area
-          setMainArea((prev) => [...prev, clearedDeveloper]);
-          return; // Exit after assigning one developer
-        }
-      }
-    } else if (target !== 'Build' && workingDevelopers.length > 0) {
-      // Take from Build instead
-      const [first, ...rest] = workingDevelopers;
-      setMainArea(rest);
-  
-      const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
-  
-      setActiveInvestments((prev) => ({
-        ...prev,
-        [target]: [...prev[target], clearedDeveloper],
-      }));
     }
   };
 
   const getTurnButtonText = () => {
     if (currentSprint >= maxSprintCount) return 'Game Over';
-    if (nonWorkingdevelopers.length > 0) return 'Allocate Remaining Developers';
     return 'Begin Turn';
   };
 
@@ -337,38 +304,7 @@ export default function App() {
             }}
           />
           
-<br/>
-          <div className={styles.devPool}>
-            {/* Hint inside the box */}
-            <div style={{
-              opacity: 0.5,
-              fontSize: '0.85rem',
-              textAlign: 'center',
-              marginBottom: '0.2rem',
-              color: '#666',
-            }}>
-              Drag or double-click to assign developers
-            </div>
-  
-            <div className={styles.developers}>              
-              {nonWorkingdevelopers.map((m) => (
-                  <DeveloperComponent 
-                    key={`available-${m.id}`}
-                    developer={m} 
-                    onDragStart={(e, m) => {
-                      if (!turnInProgress && e.currentTarget instanceof HTMLElement) {
-                        e.currentTarget.style.opacity = '0.5';
-                        handleDragStart(e, m, 'available');
-                      }
-                    }}
-                    isInvestment={false}
-                    devInfo={false} // Hide output and bug info for non-working developers
-                    disabled={turnInProgress} // Disable if turn is in progress
-                  />
-                ))}
-            </div>                 
-          </div>     
-          
+<br/>     
           {/* Begin Turn Button */}
           <div className={styles.buttonWrapper}>
           <button

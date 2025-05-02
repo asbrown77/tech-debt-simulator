@@ -20,10 +20,8 @@ export const handleDrop = (
   event: React.DragEvent,
   targetArea: string,
   areaSetter: (updater: (prev: Developer[]) => Developer[]) => void,
-  developers: Developer[],
   mainArea: Developer[],
   activeInvestments: ActiveInvestments,
-  setDevelopers: Dispatch<SetStateAction<Developer[]>>,
   setMainArea: Dispatch<SetStateAction<Developer[]>>,
   setActiveInvestments: Dispatch<SetStateAction<ActiveInvestments>>,
   setTurnsRemaining: Dispatch<SetStateAction<{ [key: string]: number | undefined }>>,
@@ -34,7 +32,6 @@ export const handleDrop = (
   const sourceArea = event.dataTransfer.getData('sourceArea');
 
   let draggedDeveloper: Developer | undefined =
-    developers.find(m => m.id === id) ||
     mainArea.find(m => m.id === id) ||
     Object.values(activeInvestments).flat().find(m => m.id === id);
 
@@ -43,7 +40,6 @@ export const handleDrop = (
   draggedDeveloper = resetDeveloper(draggedDeveloper); 
 
   // Remove from all areas
-  setDevelopers(prev => prev.filter(m => m.id !== id));
   setMainArea(prev => prev.filter(m => m.id !== id));
   setActiveInvestments(prev => {
     const updated: typeof activeInvestments = {};
