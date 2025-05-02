@@ -74,14 +74,14 @@ export default function App() {
 
   const processTurn = async () => {
 
-    if (turnInProgress) 
-      return; // Prevent starting a new turn if one is already in progress
-
     if (currentSprint >= maxSprintCount) {
       setShowGameEndModal(true); // Show the modal when the game ends
       resetGame(); // Reset the game if it's over
       return;
     }
+
+    if (turnInProgress) 
+      return; // Prevent starting a new turn if one is already in progress
 
     //Reset status at each of turn 
     setTurnInProgress(true); 
@@ -305,14 +305,6 @@ export default function App() {
         </button>
 </div>
 
-      <GameEndModal
-        isOpen={showGameEndModal}
-        onClose={() => setShowGameEndModal(false)}
-        resultHistory={resultHistory}
-        techDebt={techDebt}
-        valueDelivered={resultHistory.reduce((acc, sprint) => acc + (currentSprintData.accumulatedValueDelivered || 0), 0)}
-      />
-      
       <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
 
       {/* Build Game Area - 50/50 Split */}
@@ -391,9 +383,16 @@ export default function App() {
         
       </div> 
 
+      <GameEndModal
+        isOpen={showGameEndModal}
+        onClose={() => setShowGameEndModal(false)}
+        resultHistory={resultHistory}
+        techDebt={techDebt}
+      />
+
       {/* Sprint Counter */}
       <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
-
+      
       {/* Graph */}
       <SprintChart data={chartData} />
       
