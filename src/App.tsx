@@ -215,12 +215,11 @@ export default function App() {
   };
 
   const handleDropZoneDoubleClick = (target: string) => {
-    
     if (turnInProgress || releaseStatus === null) {
       console.warn('Cannot assign developers while a turn is in progress.');
       return; // Prevent double-click actions if a turn is in progress
     }
-
+  
     if (nonWorkingdevelopers.length > 0) {
       // Take first available and assign to target area
       const [first, ...rest] = nonWorkingdevelopers;
@@ -229,23 +228,42 @@ export default function App() {
       const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
   
       if (target === 'Build') {
-        setMainArea(prev => [...prev, clearedDeveloper]);
+        setMainArea((prev) => [...prev, clearedDeveloper]);
       } else {
-        setActiveInvestments(prev => ({
+        setActiveInvestments((prev) => ({
           ...prev,
-          [target]: [...prev[target], clearedDeveloper]
+          [target]: [...prev[target], clearedDeveloper],
         }));
+      }
+    } else if (target === 'Build') {
+      // If no developers in nonWorkingdevelopers, take from activeInvestments
+      for (const [investmentName, developers] of Object.entries(activeInvestments)) {
+        if (developers.length > 0) {
+          const [first, ...rest] = developers;
+  
+          // Remove the developer from the investment
+          setActiveInvestments((prev) => ({
+            ...prev,
+            [investmentName]: rest,
+          }));
+  
+          const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
+  
+          // Add the developer to the Build area
+          setMainArea((prev) => [...prev, clearedDeveloper]);
+          return; // Exit after assigning one developer
+        }
       }
     } else if (target !== 'Build' && workingDevelopers.length > 0) {
       // Take from Build instead
       const [first, ...rest] = workingDevelopers;
       setMainArea(rest);
-
+  
       const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
-
-      setActiveInvestments(prev => ({
+  
+      setActiveInvestments((prev) => ({
         ...prev,
-        [target]: [...prev[target], clearedDeveloper]
+        [target]: [...prev[target], clearedDeveloper],
       }));
     }
   };
@@ -311,7 +329,6 @@ export default function App() {
             handleDragStart={handleDragStart}
             completedInvestments={completedInvestments}
             investmentConfigs={investmentConfigs}
-            developerPower={developerPower}
             currentSprintData={currentSprintData}
             resetTurnResultTrigger={currentSprint}
             startReleaseSpin={startReleaseSpin}  
@@ -345,7 +362,6 @@ export default function App() {
                     }}
                     isInvestment={false}
                     devInfo={false} // Hide output and bug info for non-working developers
-                    developerPower={developerPower}
                     disabled={turnInProgress} // Disable if turn is in progress
                   />
                 ))}
@@ -387,7 +403,6 @@ export default function App() {
               handleDragStart={handleDragStart}
               completedInvestments={completedInvestments}
               investmentConfigs={investmentConfigs}
-              developerPower={developerPower}
               currentSprintData={currentSprintData}
             />
           ))}

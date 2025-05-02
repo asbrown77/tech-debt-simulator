@@ -6,7 +6,6 @@ import { Developer } from '../types';
 export type DeveloperComponentProps = {
   developer: Developer;
   onDragStart: (e: React.DragEvent, m: Developer) => void;
-  developerPower: number;
   isInvestment: boolean;
   disabled?: boolean;
   devInfo?: boolean;
@@ -15,7 +14,6 @@ export type DeveloperComponentProps = {
 export const DeveloperComponent = ({
   developer,
   onDragStart,
-  developerPower,
   isInvestment,
   devInfo = true,
   disabled,
@@ -35,12 +33,15 @@ export const DeveloperComponent = ({
         }
       }}
     >
+      
       <div className={styles.devCard}>
-        
-        {/* Top Row: Output */}
+
+        {/* Top Row: Output */}        
+        {devInfo && (
         <div className={styles.outputRow}>
           {showOutput ? `+${developer.output}` : ''}
         </div>
+        )}
 
         {/* Middle Row: Developer Icon */}
         <div className={styles.devIconRow}>
@@ -54,10 +55,11 @@ export const DeveloperComponent = ({
         </div>
 
         {/* Bottom Row: Bug */}
+        {devInfo && (
         <div className={styles.bugRow}>
           {showBug && <span className={styles.bugTag}>🐞</span>}
         </div>
-
+        )}
       </div>
     </div>
   );

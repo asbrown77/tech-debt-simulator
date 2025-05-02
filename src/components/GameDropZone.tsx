@@ -28,7 +28,6 @@ type GameDropZoneProps = {
   ) => void;
   completedInvestments: Set<string>;
   investmentConfigs: { name: string; maxDevelopers: number; turnsToComplete: number }[];
-  developerPower: number;
   currentSprintData: SprintData;
   resetTurnResultTrigger?: number;
   startReleaseSpin?: number
@@ -50,7 +49,6 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   handleDragStart,
   completedInvestments,
   investmentConfigs,
-  developerPower,
   currentSprintData,
   resetTurnResultTrigger: resetSpinnerTrigger,
   startReleaseSpin, 
@@ -72,13 +70,6 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
       setTriggerReleaseSpin(false);     // ✅ Prepare spinner (but don't spin yet)
     }
   }, [resetSpinnerTrigger]);
-  
-  // useEffect(() => {
-  //   if (isBuildArea) {
-  //     setTriggerReleaseSpin(true);     // ✅ Start release Spinner
-  //   }
-  // }, [startReleaseSpin]);
-  
 
   useEffect(() => {
     if (isBuildArea) {
@@ -98,7 +89,11 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
 
   return (
     <div
-      onDoubleClick={handleDoubleClick}
+      onDoubleClick={() => {
+        if (!isCompleted) {
+          handleDoubleClick?.();
+        }
+      }}
       onDrop={(e) => !isCompleted && handleDrop(e, name, setArea)}
       onDragOver={allowDrop}
       className={`${styles.gameDropZone} ${
@@ -109,55 +104,54 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
           : styles.investmentZone
       }`}
     >
-      <div className={styles.gameDropZoneHeader}>
-        <strong>{title}</strong>
-        {!isBuildArea && investmentConfig && (isCompleted || area.length === maxDevelopers) && (
-          <div className={`${styles.turnsInfo} ${isCompleted ? styles.turnsComplete : ''}`}>
-            {isCompleted ? 'Done' : `${turnsRemaining[name] ?? investmentConfig.turnsToComplete} turns`}
-          </div>
-        )}
+    <div className={`${styles.dropZoneHeader} ${isCompleted ? styles.completedDropZoneHeader : ''}`}>
+      <strong>{title}</strong>
+    </div>
+
+    {turnsToComplete && !isBuildArea && investmentConfig && (!isCompleted  && area.length < (maxDevelopers ?? 0)) && (
+      <div className={styles.turnsToComplete}>
+        Turns to complete: {turnsToComplete}
       </div>
+    )}
+    {!isBuildArea && investmentConfig && (isCompleted || area.length === maxDevelopers) && (
+      <div className={`${styles.turnsInfo} ${isCompleted ? styles.turnsComplete : ''}`}>
+        {isCompleted ? 'Done' : `${turnsRemaining[name] ?? investmentConfig.turnsToComplete} turns to complete`}
+      </div>
+    )}
 
-      {turnsToComplete && (
-        <div className={styles.turnsToComplete}>
-          Turns to complete: {turnsToComplete}
-        </div>
-      )}
-
-      <div
-        style={{
-          display: 'flex',
-          gap: '1rem',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: isBuildArea ? '150px' : '60px',
-          flex: 1,
-          alignContent: 'center'
-        }}
-      >
-        {Array((isBuildArea ? 6 : maxDevelopers || 0))
-          .fill(null)
-          .map((_, index) => (
-            <div key={`${name}-slot-${index}`} style={{ position: 'relative' }}>
-              {area[index] ? (
-                <DeveloperComponent
-                  key={`${name}-${area[index].id}`}
-                  developer={area[index]}
-                  onDragStart={(e, m) => {
-                    if (e.currentTarget instanceof HTMLElement) {
-                      e.currentTarget.style.opacity = '0.5';
-                    }
-                    handleDragStart(e, m, name);
-                  }}
-                  isInvestment={!isBuildArea}
-                  developerPower={developerPower}
-                />
-              ) : (
-                <DeveloperPlaceholder />
-              )}
-            </div>
-          ))}
+    <div
+      style={{
+        display: 'flex',
+        gap: '1rem',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: isBuildArea ? '150px' : '60px',
+        flex: 1,
+        alignContent: 'center'
+      }}
+    >
+      {Array((isBuildArea ? 6 : maxDevelopers || 0))
+        .fill(null)
+        .map((_, index) => (
+          <div key={`${name}-slot-${index}`} style={{ position: 'relative' }}>
+            {area[index] ? (
+              <DeveloperComponent
+                key={`${name}-${area[index].id}`}
+                developer={area[index]}
+                onDragStart={(e, m) => {
+                  if (e.currentTarget instanceof HTMLElement) {
+                    e.currentTarget.style.opacity = '0.5';
+                  }
+                  handleDragStart(e, m, name);
+                }}
+                isInvestment={!isBuildArea}
+              />
+            ) : (
+              <DeveloperPlaceholder />
+            )}
+          </div>
+        ))}
       </div>
 
       {/* Show Sprint Summary inside Build only */}
