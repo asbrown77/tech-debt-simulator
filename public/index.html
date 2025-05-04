@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <link rel="icon" href="/techdebt-simulator/bagileicon.png" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Explore the Tech Debt Simulator by Bagile. A simple tool that helps you experience how technical debt impacts delivery and trade-off decisions." />
   <meta property="og:title" content="Tech Debt Simulator" />
@@ -12,9 +12,14 @@
   <meta property="og:url" content="https://www.bagile.co.uk/techdebt-simulator" />
   <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- Prevent browser caching of index.html -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-M5YN5GVJKQ"></script>
   <script>
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     window.dataLayer = window.dataLayer || [];
     gtag('js', new Date());
     gtag('config', 'G-M5YN5GVJKQ');
@@ -22,7 +27,7 @@
 
   <title>Tech Debt Simulator</title>
 
-  <!-- ADD A VERSION QUERY STRING -->
+  <!-- Force fresh JS/CSS by adding version query -->
   <script defer src="%PUBLIC_URL%/static/js/main.js?v=%REACT_APP_VERSION%"></script>
   <link href="%PUBLIC_URL%/static/css/main.css?v=%REACT_APP_VERSION%" rel="stylesheet">
 </head>
