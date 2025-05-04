@@ -25,26 +25,6 @@
   .leftColumn, .rightColumn {
       flex: 1 1 100%;
   }
-  .footerContainer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .footerText {
-    flex: 1 1 auto;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
-
-  .footerLogo {
-      flex: 0 0 auto;
-      width: 100%;
-      text-align: center;
-      margin-top: 0;
-  }
-
 }
 
   /* Wrapper for header and rules button */
@@ -58,11 +38,13 @@
     text-align: center;
   }
   
-  /* Rules button in top right */
+  .rulesButtonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
   .rulesButton {
-    position: absolute;
-    top: 0;
-    right: 0;
     background-color: #4dabf7;
     color: white;
     border: none;
@@ -227,45 +209,39 @@
 .footerContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: center;
+  justify-content: space-between; /* not space-evenly */
+  align-items: flex-start; /* align to top, not center */
   width: 100%;
   padding: 1rem 0;
   box-sizing: border-box;
 }
 
-.footerLogo {
-  flex: 0 0 auto;
-  text-align: right;
-  margin-top: 12px;
-}
-
 .footerText {
-  flex: 1 1 300px;
+  flex: 1 1 auto;
   font-size: 1rem;
   color: #666;
   text-align: left;
+  margin-bottom: 0; /* remove extra bottom space */
 }
 
-
-
-.footerLogo img {
-  max-width: 150px;
-  height: auto;
-}
-
-.footerText a {
-  color: #4dabf7;
-  text-decoration: none;
+.footerLogo {
+  flex: 0 0 auto;
+  text-align: right;
+  margin-top: 0; /* remove margin pushing it down */
 }
 
 @media (max-width: 768px) {
-  .resultTableWrapper {
-      width: 100%;
-      overflow-x: auto;
+  .footerContainer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
-  table {
-      min-width: 600px; /* or whatever fits your columns */
+  .footerText {
+    margin-bottom: 0.5rem;
+  }
+
+  .footerLogo {
+    margin-top: 0.5rem;
   }
 }

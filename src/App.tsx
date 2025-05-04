@@ -28,7 +28,7 @@ export default function App() {
   const [currentSprint, setCurrentSprint] = useState(10);
   const [techDebt, setTechDebt] = useState(BASE_TECH_DEBT);
   const [resultHistory, setResultHistory] = useState<SprintData[]>(generateStartingHistory(10));
-  const [showRules, setShowRules] = useState(true);
+  const [showRules, setShowRules] = useState(false);
   const [workingDevelopers, setMainArea] = useState<Developer[]>(initialDevelopers);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
   //const chartData = generateChartData(resultHistory, maxSprintCount);
@@ -293,139 +293,134 @@ export default function App() {
   return (
     <Layout>
       <div className={styles.appContainer}>
-          {/* Header centered, with Rules button on same row (top right) */}
-          <div className={styles.headerWrapper}>
-            <div className={styles.headerTitle}>
-              <Header />
-            </div>
+        {/* Header centered, with Rules button on same row (top right) */}
+        <div className={styles.headerWrapper}>
+          <div className={styles.headerTitle}>
+            <Header />
+          </div>
 
+          <div className={styles.rulesButtonWrapper}>
             <button className={styles.rulesButton}
               onClick={() => setShowRules(true)}>
-              Game Rules
-            </button>
-      </div>
-
-      <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
-
-      {/* Build Game Area - 50/50 Split */}
-      <div className={styles.gameArea}>
-        <div className={styles.leftColumn}>
-
-          {/* Game Parameters Box */}
-          <GameStats
-            techDebt={currentSprintData.techDebt}
-            releaseConfidence={currentSprintData.releaseConfidence}
-            developerValue={developerPower}
-            prevTechDebt={techDebt}
-            prevConfidence={prevConfidence}
-            prevDevPower={prevDevPower}
-          />
-
-          <GameDropZone 
-            name="Build" 
-            title={`Sprint ${currentSprint.toString()}`}
-            area={workingDevelopers} 
-            setArea={setMainArea} 
-            isBuildArea={true}  
-            turnsRemaining={turnsRemaining}
-            handleDoubleClick={() => handleDropZoneDoubleClick('Build')}
-            handleDrop={onDrop}
-            handleDragStart={handleDragStart}
-            completedInvestments={completedInvestments}
-            investmentConfigs={investmentConfigs}
-            currentSprintData={currentSprintData}
-            resetTurnResultTrigger={currentSprint}
-            startReleaseSpin={startReleaseSpin}  
-            onReleaseStatusChange={(status) => {
-              setReleaseStatus(status); // Update releaseStatus in the parent
-            }}
-          />
-          
-<br/>     
-          {/* Begin Turn Button */}
-          <div className={styles.buttonWrapper}>
-            <button
-              className={`${getTurnButtonClass()} ${
-                turnInProgress || releaseStatus === null ? styles.beginButtonDisabled : ''
-              }`}
-              onClick={processTurn}
-              disabled={turnInProgress || releaseStatus === null}
-            >
-              {getTurnButtonText()}
+              How to Play
             </button>
           </div>
         </div>
 
-        {/* Investment Area - 50% */}
-        <div className={styles.rightColumn}>
+        <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
 
-          {investmentConfigs.map((investment) => (
-            <GameDropZone
-              name={investment.name}
-              title={investment.name}
-              area={activeInvestments[investment.name] || []}
-              setArea={(updater: (prev: Developer[]) => Developer[]) =>
-                setActiveInvestments((prev) => ({ ...prev, [investment.name]: updater(prev[investment.name]) }))
-              }
-              description={investment.description}
-              maxDevelopers={investment.maxDevelopers}
-              turnsToComplete={investment.turnsToComplete}
+        {/* Build Game Area - 50/50 Split */}
+        <div className={styles.gameArea}>
+          <div className={styles.leftColumn}>
+
+            {/* Game Parameters Box */}
+            <GameStats
+              techDebt={currentSprintData.techDebt}
+              releaseConfidence={currentSprintData.releaseConfidence}
+              developerValue={developerPower}
+              prevTechDebt={techDebt}
+              prevConfidence={prevConfidence}
+              prevDevPower={prevDevPower}
+            />
+
+            <GameDropZone 
+              name="Build" 
+              title={`Sprint ${currentSprint.toString()}`}
+              area={workingDevelopers} 
+              setArea={setMainArea} 
+              isBuildArea={true}  
               turnsRemaining={turnsRemaining}
-              handleDoubleClick={() => handleDropZoneDoubleClick(investment.name)}
+              handleDoubleClick={() => handleDropZoneDoubleClick('Build')}
               handleDrop={onDrop}
               handleDragStart={handleDragStart}
               completedInvestments={completedInvestments}
               investmentConfigs={investmentConfigs}
               currentSprintData={currentSprintData}
+              resetTurnResultTrigger={currentSprint}
+              startReleaseSpin={startReleaseSpin}  
+              onReleaseStatusChange={(status) => {
+                setReleaseStatus(status); // Update releaseStatus in the parent
+              }}
             />
-          ))}
-        </div>
+            
+  <br/>     
+            {/* Begin Turn Button */}
+            <div className={styles.buttonWrapper}>
+              <button
+                className={`${getTurnButtonClass()} ${
+                  turnInProgress || releaseStatus === null ? styles.beginButtonDisabled : ''
+                }`}
+                onClick={processTurn}
+                disabled={turnInProgress || releaseStatus === null}
+              >
+                {getTurnButtonText()}
+              </button>
+            </div>
+          </div>
+
+          {/* Investment Area - 50% */}
+          <div className={styles.rightColumn}>
+
+            {investmentConfigs.map((investment) => (
+              <GameDropZone
+                name={investment.name}
+                title={investment.name}
+                area={activeInvestments[investment.name] || []}
+                setArea={(updater: (prev: Developer[]) => Developer[]) =>
+                  setActiveInvestments((prev) => ({ ...prev, [investment.name]: updater(prev[investment.name]) }))
+                }
+                description={investment.description}
+                maxDevelopers={investment.maxDevelopers}
+                turnsToComplete={investment.turnsToComplete}
+                turnsRemaining={turnsRemaining}
+                handleDoubleClick={() => handleDropZoneDoubleClick(investment.name)}
+                handleDrop={onDrop}
+                handleDragStart={handleDragStart}
+                completedInvestments={completedInvestments}
+                investmentConfigs={investmentConfigs}
+                currentSprintData={currentSprintData}
+              />
+            ))}
+          </div>
+          
+        </div> 
+
+        <GameEndModal isOpen={showGameEndModal}
+          onClose={() => setShowGameEndModal(false)}
+          resultHistory={resultHistory} techDebt={techDebt}
+        />
+
+        {/* Sprint Counter */}
+        <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
         
-      </div> 
+        {/* Graph */}
+        <SprintChart data={chartData} />
+        
+        {/* Sprint History Table */}
+        <ResultHistoryTable data={resultHistory} />
 
-      <GameEndModal
-        isOpen={showGameEndModal}
-        onClose={() => setShowGameEndModal(false)}
-        resultHistory={resultHistory}
-        techDebt={techDebt}
-      />
-
-      {/* Sprint Counter */}
-      <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
-      
-      {/* Graph */}
-      <SprintChart data={chartData} />
-      
-      {/* Sprint History Table */}
-      <ResultHistoryTable data={resultHistory} />
-
-
-      <hr style={{ marginTop: '3rem', marginBottom: '1rem' }} />
-
-      <footer className={styles.footerContainer}>
-        <div className={styles.footerText}>
-          <p>
-            <strong>Got ideas or feedback to improve the game? </strong>
-            Email us at{' '}
-            <a href="mailto:info@bagile.co.uk">
-              info@bagile.co.uk
-            </a>
-          </p>
-          <p>
-            Created by <strong>Alex Brown</strong> · © 2025{' '}
-            <a href="https://www.bagile.co.uk">
-              bagile.co.uk
-            </a> – Making agility part of your DNA.
-          </p>
-        </div>
-        <div className={styles.footerlogo}>
-          <img src={logo} alt="Bagile logo" className={styles.logoImage} />
-        </div>
-      </footer>
-
-      </div>
-
-      
+        <hr style={{ marginTop: '3rem', marginBottom: '1rem' }} />
+        <footer className={styles.footerContainer}>
+          <div className={styles.footerText}>
+            <p>
+              <strong>Got ideas or feedback to improve the game? </strong>
+              Email us at{' '}
+              <a href="mailto:info@bagile.co.uk">
+                info@bagile.co.uk
+              </a>
+            </p>
+            <p>
+              Created by <strong>Alex Brown</strong> · © 2025{' '}
+              <a href="https://www.bagile.co.uk">
+                bagile.co.uk
+              </a> – Making agility part of your DNA.
+            </p>
+          </div>
+          <div className={styles.footerlogo}>
+            <img src={logo} alt="Bagile logo" className={styles.logoImage} />
+          </div>
+        </footer>
+      </div>    
     </Layout>
   );
 } 
