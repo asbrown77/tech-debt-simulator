@@ -1,5 +1,6 @@
 import React, { useState } from 'react'; 
 import { Developer, SprintData, ActiveInvestments} from './types';
+import { appConfig } from './config/appconfig';
 
 import GameDropZone from './components/GameDropZone';
 import { GameStats } from './components/GameStats';
@@ -414,6 +415,9 @@ export default function App() {
               <a href="https://www.bagile.co.uk">
                 bagile.co.uk
               </a> – Making agility part of your DNA.
+            </p>
+            <p style={{ fontSize: '0.8rem', color: '#999' }}>
+              Version: {appConfig.version}
             </p>
           </div>
           <div className={styles.footerlogo}>
