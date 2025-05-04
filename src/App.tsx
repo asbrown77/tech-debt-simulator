@@ -88,13 +88,35 @@ export default function App() {
     setReleaseStatus(null); 
     setResetTurnResultTrigger(prev => prev + 1);
 
+    // Developer work BEFORE spinner
+    for (let i = 0; i < workingDevelopers.length; i++) {
+      setMainArea(prev => {
+        const updated = [...prev];
+        updated[i] = { ...updated[i], working: true };
+        return updated;
+      });
+  
+      // Wait a bit
+      await new Promise(resolve => setTimeout(resolve, 300));
+  
+      const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower, techDebt);
+      setMainArea((prev) => {
+        const updated = [...prev];
+        updated[i] = updatedDevelopers[0]; // Update only the specific developer
+        return updated;
+      });
+    }
+
+    // Start spinner AFTER developer work
     const spinPromise = new Promise<boolean>((resolve) => {
       spinResolverRef.current = resolve;
     });
 
+    setStartReleaseSpin((prev) => prev + 1);
     const spinResult = await spinPromise;
     const getReleased = () => spinResult;
 
+        // Only AFTER spinner, apply investments and update state
     const result = handleBeginTurnLogic(
       activeInvestments,
       investmentConfigs,
@@ -125,28 +147,9 @@ export default function App() {
     setCompletedInvestments(result.updatedCompleted);
     setTechDebt(result.updatedTechDebt);
 
-    for (let i = 0; i < workingDevelopers.length; i++) {
-      setMainArea(prev => {
-        const updated = [...prev];
-        updated[i] = { ...updated[i], working: true };
-        return updated;
-      });
-  
-      // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 300));
-  
-      const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower, techDebt);
-      setMainArea((prev) => {
-        const updated = [...prev];
-        updated[i] = updatedDevelopers[0]; // Update only the specific developer
-        return updated;
-      });
-    }
-    
     let newWorkingDevelopers = uniqueDevelopers([...result.workingDevelopers, ...result.freeInvestedDevelopers]);
     setMainArea(newWorkingDevelopers);
 
-    setStartReleaseSpin((prev) => prev + 1);
 
     setResultHistory((prev) => {
       const lastSprint = prev[prev.length - 1]; // Get the last sprint data
