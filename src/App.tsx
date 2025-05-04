@@ -37,6 +37,7 @@ export default function App() {
   const [prevConfidence, setPrevConfidence] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
   const [showGameEndModal, setShowGameEndModal] = useState(false);
+  const spinResolverRef = React.useRef<((value: boolean) => void) | null>(null);
 
   const chartData = resultHistory.map((sprint) => {
     const maxTechDebt = Math.max(...resultHistory.map((s) => s.techDebt || 0)); // Find the max tech debt
@@ -81,30 +82,17 @@ export default function App() {
       return;
     }
 
-    if (turnInProgress) 
-      return; // Prevent starting a new turn if one is already in progress
+    if (turnInProgress) return; 
 
-    //Reset status at each of turn 
     setTurnInProgress(true); 
     setReleaseStatus(null); 
-
-    // Immediately clear old spin result TODO: move to boolean
     setResetTurnResultTrigger(prev => prev + 1);
 
-    // Wait for the spinner to complete
-    const spinResult = await new Promise<boolean>((resolve) => {
-      const checkSpinResult = () => {
-
-        if (releaseStatus !== null) {
-          resolve(releaseStatus); // Resolve when releaseStatus is updated
-        } else {
-          setTimeout(checkSpinResult, 50); // Poll every 100ms
-        }
-      };
-      checkSpinResult();
+    const spinPromise = new Promise<boolean>((resolve) => {
+      spinResolverRef.current = resolve;
     });
 
-      // Define a callback to get the latest releaseStatus
+    const spinResult = await spinPromise;
     const getReleased = () => spinResult;
 
     const result = handleBeginTurnLogic(
@@ -135,11 +123,7 @@ export default function App() {
   
     setTurnsRemaining(result.updatedTurns);
     setCompletedInvestments(result.updatedCompleted);
-
-    //setActiveInvestments(result.updatedActiveInvestments);
     setTechDebt(result.updatedTechDebt);
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
 
     for (let i = 0; i < workingDevelopers.length; i++) {
       setMainArea(prev => {
@@ -162,7 +146,6 @@ export default function App() {
     let newWorkingDevelopers = uniqueDevelopers([...result.workingDevelopers, ...result.freeInvestedDevelopers]);
     setMainArea(newWorkingDevelopers);
 
-    // Trigger the spinner
     setStartReleaseSpin((prev) => prev + 1);
 
     setResultHistory((prev) => {
@@ -181,6 +164,7 @@ export default function App() {
     
       return [...prev, updatedSprintData];
     });
+
     setCurrentSprint(prev => {
       const nextSprint = prev + 1;
   
@@ -340,7 +324,11 @@ export default function App() {
               resetTurnResultTrigger={currentSprint}
               startReleaseSpin={startReleaseSpin}  
               onReleaseStatusChange={(status) => {
-                setReleaseStatus(status); // Update releaseStatus in the parent
+                setReleaseStatus(status);
+                if (spinResolverRef.current) {
+                  spinResolverRef.current(status); // ✅ resolve the promise
+                  spinResolverRef.current = null; // clear after using
+                }
               }}
             />
             

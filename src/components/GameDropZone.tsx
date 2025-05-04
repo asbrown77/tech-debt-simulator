@@ -73,16 +73,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
 
   useEffect(() => {
     if (isBuildArea) {
-      if (currentSprintData.sprintNumber > 10)
-      {
-        setTriggerReleaseSpin(true);     // ✅ Start release Spinner 
-      }
-      else
-      {
-        setSpinResult(currentSprintData.released); // Update releaseStatus
-        setTriggerReleaseSpin(false);   // ✅ stop spinning after finish
-        onReleaseStatusChange?.(currentSprintData.released); // Notify parent component
-      }
+      setTriggerReleaseSpin(true);
     }
   }, [startReleaseSpin]);
 
