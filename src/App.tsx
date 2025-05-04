@@ -272,7 +272,7 @@ export default function App() {
   };
 
   const resetGame = () => {
-    debugger
+
     setCurrentSprint(1);
     setTechDebt(BASE_TECH_DEBT);
     setDeveloperPower(5);
@@ -402,41 +402,27 @@ export default function App() {
 
       <hr style={{ marginTop: '3rem', marginBottom: '1rem' }} />
 
-      <footer
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontSize: '0.9rem',
-          color: '#666',
-          flexWrap: 'wrap',
-          gap: '1rem',
-        }}
-      >
-        <div style={{ textAlign: 'center', flex: 1 }}>
-        <p style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', fontWeight: '600'}}>
-            <strong>Got ideas or feedback to improve the game? </strong>Email us at{' '}
-            <a
-              href="mailto:info@bagile.co.uk"
-              style={{ color: '#4dabf7', textDecoration: 'none' }}
-            >
+      <footer className={styles.footerContainer}>
+        <div className={styles.footerText}>
+          <p>
+            <strong>Got ideas or feedback to improve the game? </strong>
+            Email us at{' '}
+            <a href="mailto:info@bagile.co.uk">
               info@bagile.co.uk
             </a>
           </p>
-          <br/>
-          <p style={{ margin: 0 }}>
-           Created by <strong>Alex Brown</strong> · © 2025{' '}
-            <a href="https://www.bagile.co.uk" style={{ color: '#4dabf7', textDecoration: 'none' }}>
+          <p>
+            Created by <strong>Alex Brown</strong> · © 2025{' '}
+            <a href="https://www.bagile.co.uk">
               bagile.co.uk
             </a> – Making agility part of your DNA.
           </p>
         </div>
-
-        <img
-          src={logo}
-          alt="Bagile logo" className={styles.logoImage} 
-        />
+        <div className={styles.footerlogo}>
+          <img src={logo} alt="Bagile logo" className={styles.logoImage} />
+        </div>
       </footer>
+
       </div>
 
       

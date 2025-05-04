@@ -1,0 +1,24 @@
+
+.resultTableWrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.resultTableWrapper table {
+    width: 100%;
+    min-width: 600px; /* or however wide your table needs */
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.resultTableWrapper th,
+.resultTableWrapper td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+
+

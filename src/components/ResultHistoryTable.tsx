@@ -1,6 +1,7 @@
 import React from 'react';
 import { SprintData } from '../types';
 import { TechDebtBadge } from './TechDebtBadge';
+import styles from '../styles/ResultHistoryTable.module.css';
 
 type Props = {
   data: SprintData[];
@@ -10,12 +11,7 @@ export const ResultHistoryTable = ({ data }: Props) => {
   if (data.length === 0) return null;
 
   return (
-    <div style={{ 
-      marginBottom: '2rem',
-      border: '1px solid #ccc',
-      borderRadius: '8px',
-      overflow: 'hidden'
-    }}>
+<div className={styles.resultTableWrapper}>
       <table style={{ 
         width: '100%', 
         borderCollapse: 'collapse',

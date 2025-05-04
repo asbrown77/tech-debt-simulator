@@ -16,7 +16,6 @@ import {
 import { SprintData } from '../types';
 import { normalizeTechDebt } from '../utils/chartData';
 
-
 export const SprintChart = ({ data }: { data: SprintData[] }) => {
   const maxTechDebt = 50; // Define the maximum tech debt for scaling
 
@@ -33,10 +32,10 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <ComposedChart
-        data={chartData}
-        margin={{ top: 20, right: 20, bottom: 40, left: 20 }} // Add padding around the chart
-      >
+    <ComposedChart
+      data={chartData}
+      margin={{ top: 10, right: 10, bottom: 30, left: 10 }} // reduce left margin
+    >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
   type="number"
@@ -50,7 +49,7 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
     style: { fontSize: '20px', fontWeight: 'bold' },
   }}
         />
-        <YAxis domain={[0, 120]} allowDecimals={false}/>
+        <YAxis width={30} domain={[0, 120]} allowDecimals={false} />
         <Tooltip />
         <Legend
           verticalAlign="top" // Position the legend at the top
