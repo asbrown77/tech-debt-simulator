@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import styles from '../styles/ReleaseSpinnerRow.module.css';
 
 export const ReleaseSpinnerRow = ({
   releaseConfidence,
   triggerSpin,
   resetSpinnerTrigger,
   onSpinComplete,
-  netValue: netValue,
+  netValue,
 }: {
   releaseConfidence: number;
   triggerSpin: boolean;
@@ -13,145 +14,95 @@ export const ReleaseSpinnerRow = ({
   onSpinComplete: (success: boolean) => void;
   netValue: number;
 }) => {
+  const segments = Array.from({ length: 10 }, (_, i) => i);
+  const [current, setCurrent] = useState<number | null>(null);
+  const [successful, setSuccessful] = useState<boolean | null>(null);
+  const [finalTarget, setFinalTarget] = useState<number | null>(null);
+  const [spinning, setSpinning] = useState(false);
 
-  const segments = Array.from({ length: 10 }, (_, i) => i); // 10 segments
-  const [current, setCurrent] = useState<number | null>(null); // Current active segment
-  const [successful, setSuccessful] = useState<boolean | null>(null); // Spin result
-  const [finalTarget, setFinalTarget] = useState<number | null>(null); // Final target segment
-  const [spinning, setSpinning] = useState(false); // Track if the spinner is spinning
-
-  // Reset result and spinner when resetTurnResultTrigger changes
-  useEffect(() => {
-    // setSuccessful(null);
-    // setFinalTarget(null);
-    // setCurrent(null);
-    // setSpinning(false);
-  }, [resetSpinnerTrigger]);
+  useEffect(() => {}, [resetSpinnerTrigger]);
 
   useEffect(() => {
     if (triggerSpin) {
-      setSuccessful(null); // Clear previous result
-      setSpinning(true); // Start spinning
+      setSuccessful(null);
+      setSpinning(true);
 
-      let steps = 20 + Math.floor(Math.random() * segments.length); // Total steps for the spin
-      let speed = 50; // Initial speed (ms between steps)
+      let steps = 20 + Math.floor(Math.random() * segments.length);
+      let speed = 50;
 
-      const roll = Math.floor(Math.random() * 100) + 1; // Random roll (1-100)
-      const success = roll <= releaseConfidence; // Determine success based on confidence
+      const roll = Math.floor(Math.random() * 100) + 1;
+      const success = roll <= releaseConfidence;
 
-      const greenSegments = Math.floor((releaseConfidence / 100) * segments.length); // Number of success segments
+      const greenSegments = Math.floor((releaseConfidence / 100) * segments.length);
       const targetIndexes = success
-        ? segments.slice(0, greenSegments) // Success zones
-        : segments.slice(greenSegments); // Fail zones
+        ? segments.slice(0, greenSegments)
+        : segments.slice(greenSegments);
 
-      const target =
-        targetIndexes[Math.floor(Math.random() * targetIndexes.length)]; // Random target in success/fail zones
-      setFinalTarget(target); // Save the final target
+      const target = targetIndexes[Math.floor(Math.random() * targetIndexes.length)];
+      setFinalTarget(target);
 
       const spin = () => {
         setCurrent((prev) => {
-          const next = prev === null ? 0 : (prev + 1) % segments.length; // Move to the next segment
+          const next = prev === null ? 0 : (prev + 1) % segments.length;
           return next;
         });
 
         if (steps > 0) {
-          setTimeout(spin, speed); // Continue spinning
+          setTimeout(spin, speed);
           steps--;
 
           if (steps < 10) {
-            speed += 30; // Gradually slow down
+            speed += 30;
           }
         } else {
-          setSpinning(false); // Stop spinning
-          setCurrent(target); // Land on the correct box
-          setSuccessful(success); // Set result
-          onSpinComplete(success); // Notify parent component
+          setSpinning(false);
+          setCurrent(target);
+          setSuccessful(success);
+          onSpinComplete(success);
         }
       };
 
-      spin(); // Start the spin
+      spin();
     }
   }, [triggerSpin]);
 
-  const greenSegments = Math.floor((releaseConfidence / 100) * segments.length); // Calculate success segments
+  const greenSegments = Math.floor((releaseConfidence / 100) * segments.length);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', marginTop: '1rem' }}>
-      {/* Left Section */}
-      <div style={{ flex: 1 }}>
-        
-        {/* Result Row */}
-        <div style={{ display: 'flex', justifyContent: 'space-evenly', fontSize: '1.2rem', alignItems: 'center', marginBottom: '1rem' }}>
-          <div >
-            <strong>Release Deployed Successful?</strong>
-          </div>
-          <div
-            style={{
-              fontWeight: 'bold',
-              fontSize: '1.2rem',
-              color: successful ? 'green' : 'red',
-            }}
-          >
-            {successful == null ? '' : (successful ? '✅' : '❌')}
-          </div>
+    <div className={styles.releaseStatusContainer}>
+      <div className={styles.releaseStatusLeft}>
+        <div className={styles.releaseStatusTitle}>
+          <strong>Release Deployed Successful?</strong>
+          <span className={styles.statusIcon}>
+            {successful == null ? '' : successful ? '✅' : '❌'}
+          </span>
         </div>
 
-        {/* Spinner Row */}
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          
+        <div className={styles.releaseBar}>
           {segments.map((_, idx) => {
-            const isGreen = idx < greenSegments; // Success segment
-            const isActive = spinning ? idx === current : idx === finalTarget; // Highlight current during spin, finalTarget after spin
+            const isGreen = idx < greenSegments;
+            const isActive = spinning ? idx === current : idx === finalTarget;
 
             return (
               <div
                 key={idx}
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  margin: '0 4px',
-                  borderRadius: '4px',
-                  backgroundColor: isActive
-                    ? '#4dabf7' // Active segment color
-                    : isGreen
-                    ? 'lightgreen' // Success segment color
-                    : '#f8d7da', // Fail segment color
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  border: isActive ? '2px solid #333' : '1px solid #ccc', // Highlight active segment
-                  transition: 'background-color 0.2s',
-                }}
-              >
-                {/* {idx + 1} */}
-              </div>
+                className={`${styles.segment} ${isGreen ? styles.green : styles.red} ${
+                  isActive ? styles.active : ''
+                }`}
+              />
             );
           })}
         </div>
       </div>
 
-      {/* Right Section */}
-      <div style={{ marginLeft: '20px', textAlign: 'center', display: 'flex', flexDirection: 'column' }}>      
+      <div className={styles.releaseStatusRight}>
+        <div className={styles.valueLabel}>Value Delivered</div>
         <div
-          style={{
-            width: '120px',
-            height: '80px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: '2px solid #ccc',
-            borderRadius: '8px',
-            fontSize: '1.5rem',
-            fontWeight: 'bold',
-            color: successful ? 'green' : 'red',
-            backgroundColor: '#fff', // White background
-          }}
+          className={styles.valueBox}
+          style={{ color: successful ? 'green' : 'red' }}
         >
           {successful ? netValue : 0}
         </div>
-        <div style={{ fontSize: '1rem', fontWeight: 'bold', marginTop: '0.5rem' }}>Value Delivered</div>
       </div>
     </div>
   );

@@ -27,7 +27,6 @@ export function handleBeginTurnLogic(
     investmentConfigs
   );
 
-  debugger
   let updatedMainArea = resetDevelopers(mainArea);
 
   const {
@@ -40,8 +39,7 @@ export function handleBeginTurnLogic(
     activeInvestments,
     investmentConfigs,
     techDebt,
-    releaseConfidence,
-    updatedMainArea
+    releaseConfidence
   );
 
   console.log('Updated Tech Debt:', updatedTechDebt);

@@ -16,9 +16,6 @@ import {
 import { SprintData } from '../types';
 import { normalizeTechDebt } from '../utils/chartData';
 
-type SprintChartProps = {
-  data: SprintData[];
-};
 
 export const SprintChart = ({ data }: { data: SprintData[] }) => {
   const maxTechDebt = 50; // Define the maximum tech debt for scaling

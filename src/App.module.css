@@ -1,11 +1,32 @@
 /* Container for the whole app */
 .container {
-    font-family: sans-serif;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* In App.module.css or main CSS */
+.gameArea {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.leftColumn, .rightColumn {
+  flex: 1 1 50%;
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 768px) {
+  .gameArea {
+      flex-direction: column;
   }
-  
+  .leftColumn, .rightColumn {
+      flex: 1 1 100%;
+  }
+}
+
   /* Wrapper for header and rules button */
   .headerWrapper {
     position: relative;

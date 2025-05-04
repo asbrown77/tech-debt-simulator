@@ -1,6 +1,5 @@
 import { InvestmentConfig } from '../config/investmentsConfig';
 import { Developer } from '../types';
-import { uniqueDevelopers } from '../utils/helpers';
 
 type CompletedInvestmentResult = {
   updatedTechDebt: number;
@@ -15,8 +14,7 @@ export function finalizeCompletedInvestments(
   activeInvestmentsByName: { [investmentName: string]: Developer[] },
   investmentConfigs: InvestmentConfig[],
   currentTechDebt: number,
-  currentReleaseConfidence: number,
-  currentDevelopers: Developer[]
+  currentReleaseConfidence: number
 ): CompletedInvestmentResult {
   let updatedTechDebt = currentTechDebt;
   let updatedReleaseConfidence = currentReleaseConfidence;
@@ -38,10 +36,6 @@ export function finalizeCompletedInvestments(
     // Increase release confidence
     const confidenceIncrease = investment.confidenceIncrease ?? 0;
     updatedReleaseConfidence = Math.min(100, updatedReleaseConfidence + confidenceIncrease);
-
-    debugger;
-    // Add developers back to the pool
-    //freeDevelopers = uniqueDevelopers([...freeDevelopers, ...investedDevelopers]);
 
     // Clear the investment from active investments
     updatedActiveInvestments[investmentName] = [];

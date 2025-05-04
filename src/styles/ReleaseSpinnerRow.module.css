@@ -1,0 +1,117 @@
+.releaseStatusContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+}
+
+.releaseStatusLeft {
+    flex: 1;
+    min-width: 200px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.releaseStatusTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.releaseBar {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    padding: 4px;
+    justify-content: flex-start;
+}
+
+.releaseBar::-webkit-scrollbar {
+    display: none; /* hide scrollbar */
+}
+
+.segment {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    margin: 0 2px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.segment.green {
+    background-color: lightgreen;
+}
+
+.segment.red {
+    background-color: #f8d7da;
+}
+
+.segment.active {
+    border: 2px solid #333;
+    background-color: #4dabf7;
+}
+
+.releaseStatusRight {
+    margin-left: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.valueLabel {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.valueBox {
+    width: 120px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+@media (min-width: 769px) {
+    .releaseStatusContainer {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .releaseStatusRight {
+        margin-left: 20px;
+        align-items: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .releaseStatusContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+    .releaseStatusRight {
+        margin-left: 0;
+        margin-top: 12px;
+        align-items: center;
+    }
+}
