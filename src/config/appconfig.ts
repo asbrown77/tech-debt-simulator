@@ -1,3 +1,3 @@
 export const appConfig = {
-    version: '1.0.3',
-  };
+  version: process.env.REACT_APP_VERSION,
+};
