@@ -73,7 +73,8 @@ export const ReleaseSpinnerRow = ({
       <div className={styles.releaseStatusLeft}>
         <div className={styles.releaseStatusTitle}>
           <strong>Release Deployed Successful?</strong>
-          <span className={styles.statusIcon}>
+          <span className={styles.releaseStatusIcon}>
+            {spinning ? '⏳' : ''}
             {successful == null ? '' : successful ? '✅' : '❌'}
           </span>
         </div>
