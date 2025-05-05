@@ -1,6 +1,6 @@
 {
   "name": "techdebtgame",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "homepage": "/techdebt-simulator",
   "dependencies": {
@@ -15,7 +15,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "bump-version": "npm version patch --no-git-tag-version",
+    "build": "npm run bump-version && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

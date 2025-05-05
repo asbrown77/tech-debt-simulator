@@ -2,34 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="/techdebt-simulator/bagileicon.png" />
+  <link rel="icon" href="%PUBLIC_URL%/bagileicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Explore the Tech Debt Simulator by Bagile. A simple tool that helps you experience how technical debt impacts delivery and trade-off decisions." />
   <meta property="og:title" content="Tech Debt Simulator" />
   <meta property="og:description" content="Learn how technical debt affects delivery. Experience the trade-offs between short-term delivery and long-term sustainability in this lightweight simulator." />
-  <meta property="og:image" content="/techdebt-simulator/preview.png" />
+  <meta property="og:image" content="%PUBLIC_URL%/preview.png" />
   <meta property="og:url" content="https://www.bagile.co.uk/techdebt-simulator" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Prevent browser caching of index.html -->
+  <!-- Add no-cache on the HTML itself -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M5YN5GVJKQ"></script>
-  <script>
-    function gtag() { dataLayer.push(arguments); }
-    window.dataLayer = window.dataLayer || [];
-    gtag('js', new Date());
-    gtag('config', 'G-M5YN5GVJKQ');
-  </script>
-
   <title>Tech Debt Simulator</title>
 
-  <!-- Force fresh JS/CSS by adding version query -->
-  <script defer src="%PUBLIC_URL%/static/js/main.js?v=%REACT_APP_VERSION%"></script>
-  <link href="%PUBLIC_URL%/static/css/main.css?v=%REACT_APP_VERSION%" rel="stylesheet">
+  <!-- CRA will inject the correct CSS/JS with hashes -->
 </head>
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
