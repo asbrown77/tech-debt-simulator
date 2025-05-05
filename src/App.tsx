@@ -219,22 +219,35 @@ export default function App() {
       return; // Prevent double-click actions if a turn is in progress
     }
   
-    if (workingDevelopers.length > 0) {
-      // Take first available and assign to target area
-      const [first, ...rest] = workingDevelopers;
-      setMainArea(rest);
+    if (target === 'Build') {
+      // Look through investment areas
+      for (const investmentName of Object.keys(activeInvestments)) {
+        const area = activeInvestments[investmentName];
+        if (area.length > 0) {
+          const [first, ...rest] = area;
+          const clearedDeveloper = resetDeveloper(first);
+          setActiveInvestments((prev) => ({
+            ...prev,
+            [investmentName]: rest,
+          }));
+          setMainArea((prev) => [...prev, clearedDeveloper]);
+          break; // only take one
+        }
+      }
+    } else {
+      // Default behavior: take from workingDevelopers
+      if (workingDevelopers.length > 0) {
+        const [first, ...rest] = workingDevelopers;
+        setMainArea(rest);
+        const clearedDeveloper = resetDeveloper(first);
   
-      const clearedDeveloper = resetDeveloper(first); // Reset the developer's state
-  
-      if (target === 'Build') {
-        setMainArea((prev) => [...prev, clearedDeveloper]);
-      } else {
         setActiveInvestments((prev) => ({
           ...prev,
           [target]: [...prev[target], clearedDeveloper],
         }));
       }
     }
+
   };
 
   const getTurnButtonText = () => {
