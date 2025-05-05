@@ -21,7 +21,6 @@ export const ResultHistoryTable = ({ data }: Props) => {
           <tr style={{ backgroundColor: '#f8f9fa' }}>
             <th style={cellStyle}>Sprint</th>
             <th style={cellStyle}>Tech Debt</th>
-            <th style={cellStyle}>Release Confidence</th>
             <th style={cellStyle}>Dev</th>
             <th style={cellStyle}>Bugs</th>
             <th style={cellStyle}>Net Output</th>
@@ -36,14 +35,13 @@ export const ResultHistoryTable = ({ data }: Props) => {
             }}>
               <td style={cellStyle}>{sprint.sprintNumber}</td>
               <td style={{ ...cellStyle, textAlign: 'center', verticalAlign: 'middle' }}>
-  <TechDebtBadge value={sprint.techDebt} maxValue={50} />
-</td>
-              <td style={cellStyle}>{sprint.releaseConfidence}%</td>
+                <TechDebtBadge value={sprint.techDebt} maxValue={50} />
+              </td>
               <td style={cellStyle}>{sprint.devValue}</td>
               <td style={cellStyle}>{sprint.bugs}</td>
-              <td style={cellStyle}>{sprint.netValue}</td>
+              <td style={cellStyle}><strong>{sprint.netValue}</strong></td>
               <td style={cellStyle}>{sprint.released ? '✅' : '❌'}</td>
-              <td style={cellStyle}>{sprint.accumulatedValueDelivered}</td>
+              <td style={cellStyle}><strong>{sprint.accumulatedValueDelivered}</strong></td>
             </tr>
           ))}
         </tbody>
@@ -53,7 +51,7 @@ export const ResultHistoryTable = ({ data }: Props) => {
 };
 
 const cellStyle: React.CSSProperties = {
-  padding: '0.75rem',
+  padding: '0.5rem',
   textAlign: 'center',
   borderBottom: '1px solid #dee2e6'
 };

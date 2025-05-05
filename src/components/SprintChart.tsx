@@ -56,9 +56,9 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
           align="center" // Center the legend horizontally
           wrapperStyle={{ paddingBottom: '25px' }} // Add spacing between legend and chart
         />
+        <Line type="linear" dataKey="techDebt" stroke="#dc3545" name="Tech Debt" />
+        <Line type="linear" dataKey="net" stroke="#007bff" name="Net Output" />
         <Area type="linear" dataKey="delivered" fill="#28a745" stroke="#28a745" name="Value Delivered" />
-        <Line type="linear" dataKey="net" stroke="#007bff" name="Net Value" />
-        <Line type="linear" dataKey="techDebt" stroke="#dc3545" name="Tech Debt (%)" />
       </ComposedChart>
     </ResponsiveContainer>
   );
