@@ -38,7 +38,7 @@ export const investmentConfigs: InvestmentConfig[] = [
     name: 'Test Coverage',
     maxDevelopers: 2,
     turnsToComplete: 3,
-    confidenceIncrease: 25,
+    confidenceIncrease: 20,
     techDebtReduction: 15,
     increaseValue: true,
     description:  "Improve system reliability and reduce risks with better test coverage."
