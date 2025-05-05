@@ -302,7 +302,15 @@ export default function App() {
 
           <div className={styles.rulesButtonWrapper}>
             <button className={styles.rulesButton}
-              onClick={() => setShowRules(true)}>
+              onClick={() => {
+                if (window.gtag) {
+                  window.gtag('event', 'click', {
+                    event_category: 'Game',
+                    event_label: 'How to Play Button'
+                  });
+                }
+                setShowRules(true);
+              }}>
               How to Play
             </button>
           </div>
@@ -356,9 +364,17 @@ export default function App() {
                 className={`${getTurnButtonClass()} ${
                   turnInProgress ? styles.beginButtonDisabled : ''
                 }`}
-                onClick={processTurn}
-                disabled={turnInProgress}
-              >
+                onClick={() => {
+                  if (window.gtag) {
+                      window.gtag('event', 'click', {
+                        event_category: 'Game',
+                        event_label: 'Next Sprint Button'
+                      });
+                    }
+                    processTurn();
+                  }}
+                  disabled={turnInProgress}
+                >
                 {getTurnButtonText()}
               </button>
             </div>
