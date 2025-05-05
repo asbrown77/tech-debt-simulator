@@ -30,7 +30,8 @@ type GameDropZoneProps = {
   investmentConfigs: { name: string; maxDevelopers: number; turnsToComplete: number }[];
   currentSprintData: SprintData;
   resetTurnResultTrigger?: number;
-  startReleaseSpin?: number
+  startReleaseSpin?: number;
+  turnInProgress?: boolean;
   onReleaseStatusChange?: (status: boolean) => void;
 };
 
@@ -52,6 +53,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   currentSprintData,
   resetTurnResultTrigger: resetSpinnerTrigger,
   startReleaseSpin, 
+  turnInProgress,
   onReleaseStatusChange,
 }) => {
   const investmentConfig = investmentConfigs.find((config) => config.name === name);
@@ -72,7 +74,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   }, [resetSpinnerTrigger]);
 
   useEffect(() => {
-    if (isBuildArea) {
+    if (isBuildArea && turnInProgress) {
       setTriggerReleaseSpin(true);
     }
   }, [startReleaseSpin]);
@@ -97,8 +99,6 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
     <div className={`${styles.dropZoneHeader} ${isCompleted ? styles.completedDropZoneHeader : ''}`}>
       <strong>{title}</strong>
     </div>
-
-    
 
     {turnsToComplete && !isBuildArea && investmentConfig && (!isCompleted  && area.length < (maxDevelopers ?? 0)) && (
       <div className={styles.turnsToComplete}>

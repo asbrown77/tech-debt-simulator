@@ -195,7 +195,7 @@ export default function App() {
     targetArea: string,
     areaSetter: (updater: (prev: Developer[]) => Developer[]) => void
   ) => {
-    if (turnInProgress || releaseStatus === null) {
+    if (turnInProgress) {
       console.warn('Cannot drop while a turn is in progress.');
       return; // Prevent dropping if a turn is in progress
     }
@@ -214,7 +214,7 @@ export default function App() {
   };
 
   const handleDropZoneDoubleClick = (target: string) => {
-    if (turnInProgress || releaseStatus === null) {
+    if (turnInProgress) {
       console.warn('Cannot assign developers while a turn is in progress.');
       return; // Prevent double-click actions if a turn is in progress
     }
@@ -339,6 +339,7 @@ export default function App() {
               currentSprintData={currentSprintData}
               resetTurnResultTrigger={currentSprint}
               startReleaseSpin={startReleaseSpin}  
+              turnInProgress={turnInProgress}
               onReleaseStatusChange={(status) => {
                 setReleaseStatus(status);
                 if (spinResolverRef.current) {
@@ -353,10 +354,10 @@ export default function App() {
             <div className={styles.buttonWrapper}>
               <button
                 className={`${getTurnButtonClass()} ${
-                  turnInProgress || releaseStatus === null ? styles.beginButtonDisabled : ''
+                  turnInProgress ? styles.beginButtonDisabled : ''
                 }`}
                 onClick={processTurn}
-                disabled={turnInProgress || releaseStatus === null}
+                disabled={turnInProgress}
               >
                 {getTurnButtonText()}
               </button>
