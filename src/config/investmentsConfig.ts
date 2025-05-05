@@ -19,7 +19,7 @@ export type InvestmentConfig = BaseInvestment & {
 
 export const investmentConfigs: InvestmentConfig[] = [
   Object.assign(new BaseInvestment(), {
-    name: 'CI/CD',
+    name: 'Continuous Delivery',
     maxDevelopers: 3,
     turnsToComplete: 2,
     confidenceIncrease: 60,
@@ -27,7 +27,13 @@ export const investmentConfigs: InvestmentConfig[] = [
     increaseValue: true,
     description:  "Boost release confidence and accelerate feedback loops for faster value delivery"
   }),
-
+  Object.assign(new BaseInvestment(), {
+    name: 'Reduce Complexity',
+    maxDevelopers: 1,
+    turnsToComplete: 2,
+    techDebtReduction: 15,
+    description:  "Simplify codebase and improve maintainability for long-term success."
+  }),
   Object.assign(new BaseInvestment(), {
     name: 'Test Coverage',
     maxDevelopers: 2,
@@ -44,13 +50,6 @@ export const investmentConfigs: InvestmentConfig[] = [
     techDebtReduction: 15,
     increaseValue: true,
     description:  "Enhance code quality and maintainability for long-term success."
-  }),
-  Object.assign(new BaseInvestment(), {
-    name: 'Reduce Complexity',
-    maxDevelopers: 1,
-    turnsToComplete: 2,
-    techDebtReduction: 15,
-    description:  "Simplify codebase and improve maintainability for long-term success."
   })
 ];
 

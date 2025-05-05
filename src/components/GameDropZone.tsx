@@ -160,14 +160,14 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
       {/* Show Sprint Summary inside Build only */}
       {isBuildArea && (
       <div className={styles.sprintSummary}>
-        <div className={styles.summaryItem}>
-          <strong>Output:</strong> {currentSprintData?.devValue ?? 0}
+        <div className={styles.summaryItem} style={{ color: 'cyan' }}>
+          <strong>Dev:</strong> {currentSprintData?.devValue ?? 0}
         </div>
-        <div className={styles.summaryItem}>
+        <div className={styles.summaryItem} style={{ color: 'cyan' }}>
           <strong>Bugs:</strong> {currentSprintData?.bugs ?? 0}
         </div>
         <div className={styles.summaryItem}>
-          <strong>Net Ouput:</strong> {currentSprintData?.netValue ?? 0}
+          <strong>Ouput:</strong> {currentSprintData?.netValue ?? 0}
         </div>
       </div>  
       )}

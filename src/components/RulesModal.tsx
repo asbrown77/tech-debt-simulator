@@ -21,7 +21,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
           A simple tool to explore how ignoring or paying down tech debt shapes delivery outcomes.
           </p>
           <p>
-          <strong>Your goal</strong>: deliver as much value as possible over 20 sprints. Assign developers to build features or invest in improvements like CI/CD, test coverage, or reducing complexity.
+          <strong>Your goal</strong>: deliver as much value as possible over 20 sprints. Assign developers to build features or invest in improvements like Continuous Delivery, test coverage, or reducing complexity.
           </p>
 
           <p>

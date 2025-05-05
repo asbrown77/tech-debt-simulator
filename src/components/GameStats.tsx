@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../styles/GameStats.module.css';
 import { TechDebtBadge } from './TechDebtBadge';
+import DeveloperOutput from '../developer-output2.png';
 
 export type GameStatsProps = {
   techDebt: number;
@@ -17,61 +18,26 @@ export const GameStats = ({
   developerValue,
   prevTechDebt,
   prevConfidence,
-  prevDevPower
+  prevDevPower,
 }: GameStatsProps) => (
   <div className={styles.teamValues}>
-    <div>
+    <div className={styles.statBlock}>
       <span className={styles.label}>Tech Debt</span>
       <span className={`${styles.value} ${techDebt < prevTechDebt ? styles.improved : ''}`}>
-      <TechDebtBadge value={techDebt} maxValue={50} />
+        <TechDebtBadge value={techDebt} maxValue={50} />
       </span>
     </div>
-    <div>
+    <div className={`${styles.statBlock} ${styles.releaseConfidenceBlock}`}>
       <span className={styles.label}>Release Confidence</span>
       <span className={`${styles.value} ${releaseConfidence > prevConfidence ? styles.improved : ''}`}>
         {releaseConfidence}%
       </span>
     </div>
-    <div>
-      <span className={styles.label}>Dev Output</span>
+    <div className={styles.statBlock}>
+      <img src={DeveloperOutput} className={styles.image} alt="Developer Output" />
       <span className={`${styles.value} ${developerValue > prevDevPower ? styles.improved : ''}`}>
-        1 to {developerValue}
+        <strong>1 to {developerValue}</strong>
       </span>
     </div>
   </div>
 );
-
-
-export type TurnSummaryProps = {
-  value: number;
-  bugs: number;
-  netValue: number;
-  successfulRelease: boolean;
-};
-
-export const TurnSummary = ({
-  value,
-  bugs,
-  netValue,
-  successfulRelease
-}: TurnSummaryProps) => (
-  <div className={styles.turnSummary}>
-    <div>
-      <span className={styles.label}>Dev Output:</span>
-      <span className={styles.value}>{value}</span>
-    </div>
-    <div>
-      <span className={styles.label}>Number of Bugs:</span>
-      <span className={styles.value}>{bugs}</span>
-    </div>
-    <div>
-      <span className={styles.label}>Net Output:</span>
-      <span className={styles.value}>{netValue}</span>
-    </div>
-    <div>
-      <span className={styles.label}>Release Successful:</span>
-      <span className={styles.value}>{successfulRelease ? 'Yes' : 'No'}</span>
-    </div>
-  </div>
-);
-
