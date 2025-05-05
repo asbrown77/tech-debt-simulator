@@ -1,18 +1,18 @@
-export function calculateReleaseConfidence(
+export function calculateReleaseProbability(
   completedInvestments: Set<string>,
-  investmentConfigs: { name: string; confidenceIncrease?: number }[]
+  investmentConfigs: { name: string; probabilityIncrease?: number }[]
 ) {
-  let confidence = 20;
+  let releaseProbability = 20;
   if (completedInvestments.has('Continuous Delivery')) {
-    confidence += investmentConfigs.find((i) => i.name === 'Continuous Delivery')?.confidenceIncrease ?? 0;
+    releaseProbability += investmentConfigs.find((i) => i.name === 'Continuous Delivery')?.probabilityIncrease ?? 0;
   }
   if (completedInvestments.has('Test Coverage')) {
-    confidence += investmentConfigs.find((i) => i.name === 'Test Coverage')?.confidenceIncrease ?? 0;
+    releaseProbability += investmentConfigs.find((i) => i.name === 'Test Coverage')?.probabilityIncrease ?? 0;
   }
-  return Math.min(confidence, 100);
+  return Math.min(releaseProbability, 100);
 }
 
-export function rollForRelease(confidence: number) {
+export function rollForRelease(probability: number) {
   const roll = Math.floor(Math.random() * 100) + 1;
-  return roll <= confidence;
+  return roll <= probability;
 }

@@ -1,7 +1,7 @@
 
 
 export class BaseInvestment {
-  confidenceIncrease?: number;
+  releaseProbabilityIncrease?: number;
   techDebtReduction?: number;
   increaseValue?: boolean;
   description?: string;
@@ -22,10 +22,10 @@ export const investmentConfigs: InvestmentConfig[] = [
     name: 'Continuous Delivery',
     maxDevelopers: 3,
     turnsToComplete: 2,
-    confidenceIncrease: 60,
+    releaseProbabilityIncrease: 60,
     techDebtReduction: 5,
     increaseValue: true,
-    description:  "Boost release confidence and accelerate feedback loops for faster value delivery"
+    description:  "Boost release probability and accelerate feedback loops for faster value delivery"
   }),
   Object.assign(new BaseInvestment(), {
     name: 'Reduce Complexity',
@@ -38,7 +38,7 @@ export const investmentConfigs: InvestmentConfig[] = [
     name: 'Test Coverage',
     maxDevelopers: 2,
     turnsToComplete: 3,
-    confidenceIncrease: 20,
+    releaseProbabilityIncrease: 20,
     techDebtReduction: 15,
     increaseValue: true,
     description:  "Improve system reliability and reduce risks with better test coverage."
@@ -55,8 +55,8 @@ export const investmentConfigs: InvestmentConfig[] = [
 
 export const formatDescription = (config: BaseInvestment): string[] => {
   const parts: string[] = [];
-  if (config.confidenceIncrease)
-    parts.push(`+${config.confidenceIncrease}% release confidence`);
+  if (config.releaseProbabilityIncrease)
+    parts.push(`+${config.releaseProbabilityIncrease}% release propability`);
   if (config.techDebtReduction)
     parts.push(`-${config.techDebtReduction} tech debt`);
   if (config.increaseValue)

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/ReleaseSpinnerRow.module.css';
 
 export const ReleaseSpinnerRow = ({
-  releaseConfidence,
+  releaseProbability,
   triggerSpin,
   resetSpinnerTrigger,
   onSpinComplete,
   netValue,
 }: {
-  releaseConfidence: number;
+  releaseProbability: number;
   triggerSpin: boolean;
   resetSpinnerTrigger: number;
   onSpinComplete: (success: boolean) => void;
@@ -31,9 +31,9 @@ export const ReleaseSpinnerRow = ({
       let speed = 50;
 
       const roll = Math.floor(Math.random() * 100) + 1;
-      const success = roll <= releaseConfidence;
+      const success = roll <= releaseProbability;
 
-      const greenSegments = Math.floor((releaseConfidence / 100) * segments.length);
+      const greenSegments = Math.floor((releaseProbability / 100) * segments.length);
       const targetIndexes = success
         ? segments.slice(0, greenSegments)
         : segments.slice(greenSegments);
@@ -66,7 +66,7 @@ export const ReleaseSpinnerRow = ({
     }
   }, [triggerSpin]);
 
-  const greenSegments = Math.floor((releaseConfidence / 100) * segments.length);
+  const greenSegments = Math.floor((releaseProbability / 100) * segments.length);
 
   return (
     <div className={styles.releaseStatusContainer}>

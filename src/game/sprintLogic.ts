@@ -3,7 +3,7 @@ import { SprintData } from '../types';
 export function generateSprintData(
   currentSprint: number,
   techDebt: number,
-  releaseConfidence: number,
+  releaseProbability: number,
   devValue: number,
   bugs: number,
   released: boolean,
@@ -16,7 +16,7 @@ export function generateSprintData(
   return {
     sprintNumber: currentSprint + 1,
     techDebt,
-    releaseConfidence,
+    releaseProbability: releaseProbability,
     devValue,
     bugs,
     netValue,

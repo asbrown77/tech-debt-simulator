@@ -97,7 +97,7 @@
 }
 
 @media (max-width: 600px) {
-  .releaseConfidenceBlock {
+  .releaseProbabilityBlock {
     display: none;
   }
 }

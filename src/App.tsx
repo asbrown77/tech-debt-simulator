@@ -16,7 +16,7 @@ import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
-import { BASE_RELEASE_CONFIDENCE, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper, uniqueDevelopers } from './utils/helpers';
+import { BASE_RELEASE_PROBABILITY, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper, uniqueDevelopers } from './utils/helpers';
 import { debug } from 'console';
 import { calculateDeveloperOutput } from './game/developerLogic';
 import { GameEndModal } from './components/GameEndModel';
@@ -34,7 +34,7 @@ export default function App() {
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
   //const chartData = generateChartData(resultHistory, maxSprintCount);
   const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
-  const [prevConfidence, setPrevConfidence] = useState(10);
+  const [prevReleaseProbability, setPrevReleaseProbability] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
   const [showGameEndModal, setShowGameEndModal] = useState(false);
   const spinResolverRef = React.useRef<((value: boolean) => void) | null>(null);
@@ -45,7 +45,7 @@ export default function App() {
     return {
       ...sprint,
       sprintNumber: sprint.sprintNumber,
-      releaseConfidence: sprint.releaseConfidence || BASE_RELEASE_CONFIDENCE,
+      releaseProbability: sprint.releaseProbability || BASE_RELEASE_PROBABILITY,
       devValue: sprint.devValue || 0,
       bugs: sprint.bugs || 0,
       valueDelivered: sprint.released ? sprint.netValue|| 0 : 0,
@@ -126,7 +126,7 @@ export default function App() {
       resultHistory,
       currentSprint,
       techDebt,
-      currentSprintData.releaseConfidence,
+      currentSprintData.releaseProbability,
       developerPower, 
       getReleased // Pass the callback to get the latest releaseStatus
     );
@@ -140,7 +140,7 @@ export default function App() {
     }
     
     setPrevTechDebt(techDebt);
-    setPrevConfidence(currentSprintData.releaseConfidence);
+    setPrevReleaseProbability(currentSprintData.releaseProbability);
     setPrevDevPower(developerPower);
   
     setTurnsRemaining(result.updatedTurns);
@@ -263,7 +263,7 @@ export default function App() {
   const currentSprintData = resultHistory[currentSprint - 1] || {
     sprintNumber: currentSprint,
     techDebt: 5,
-    releaseConfidence: BASE_RELEASE_CONFIDENCE,
+    releaseProbability: BASE_RELEASE_PROBABILITY,
     devValue: 0,
     netValue: 0,
     bugs: 0,
@@ -317,10 +317,10 @@ export default function App() {
             {/* Game Parameters Box */}
             <GameStats
               techDebt={currentSprintData.techDebt}
-              releaseConfidence={currentSprintData.releaseConfidence}
+              releaseProbability={currentSprintData.releaseProbability}
               developerValue={developerPower}
               prevTechDebt={techDebt}
-              prevConfidence={prevConfidence}
+              prevReleaseProbability={prevReleaseProbability}
               prevDevPower={prevDevPower}
             />
 

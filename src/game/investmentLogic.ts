@@ -3,7 +3,7 @@ import { Developer } from '../types';
 
 type CompletedInvestmentResult = {
   updatedTechDebt: number;
-  updatedReleaseConfidence: number;
+  updatedReleaseProbability: number;
   freeInvestedDevelopers: Developer[];
   updatedActiveInvestments: { [investmentName: string]: Developer[] };
   developerPowerIncreased: boolean;
@@ -14,10 +14,10 @@ export function finalizeCompletedInvestments(
   activeInvestmentsByName: { [investmentName: string]: Developer[] },
   investmentConfigs: InvestmentConfig[],
   currentTechDebt: number,
-  currentReleaseConfidence: number
+  currentReleaseProbability: number
 ): CompletedInvestmentResult {
   let updatedTechDebt = currentTechDebt;
-  let updatedReleaseConfidence = currentReleaseConfidence;
+  let updatedReleaseProbability = currentReleaseProbability;
   let freeInvestedDevelopers: Developer[] = [];
   const updatedActiveInvestments = { ...activeInvestmentsByName };
   let developerPowerIncreased = false;
@@ -33,9 +33,9 @@ export function finalizeCompletedInvestments(
     const techDebtReduction = investment.techDebtReduction ?? 0;
     updatedTechDebt = Math.max(0, updatedTechDebt - techDebtReduction);
 
-    // Increase release confidence
-    const confidenceIncrease = investment.confidenceIncrease ?? 0;
-    updatedReleaseConfidence = Math.min(100, updatedReleaseConfidence + confidenceIncrease);
+    // Increase release probability
+    const probabilityIncrease = investment.releaseProbabilityIncrease ?? 0;
+    updatedReleaseProbability = Math.min(100, updatedReleaseProbability + probabilityIncrease);
 
     // Clear the investment from active investments
     updatedActiveInvestments[investmentName] = [];
@@ -48,7 +48,7 @@ export function finalizeCompletedInvestments(
 
   return {
     updatedTechDebt,
-    updatedReleaseConfidence,
+    updatedReleaseProbability: updatedReleaseProbability,
     freeInvestedDevelopers,
     updatedActiveInvestments,
     developerPowerIncreased,

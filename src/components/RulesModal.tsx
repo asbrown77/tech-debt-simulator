@@ -30,7 +30,7 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
 
           <p>
           👨🏻‍💻 Assign developers to the Sprint to generate output (but risk bugs).<br/>
-          🔧 Assign developers to investments to reduce tech debt, improve quality, or boost release confidence.<br/>
+          🔧 Assign developers to investments to reduce tech debt, improve quality, or boost release probability.<br/>
           🎲 After each sprint, roll the spinner - if you pass, your work ships; if not, value is lost.<br/>
           </p>
 
@@ -40,11 +40,11 @@ export const RulesModal = ({ isOpen, onClose }: RulesModalProps) => {
 
           <p>
           💪 More dev power → generate more value each sprint. <br/>
-          🚀 Higher release confidence → better odds your work is released.<br/>
+          🚀 Higher release probability → better odds your work is released.<br/>
           🧹 Less tech debt → fewer bugs 🐞 <br/>
           </p>
           <p>
-            Releases depend on a roll between 1-100. If you roll equal to or under your release confidence, the sprint’s value is delivered; otherwise, it’s lost.
+            Releases depend on a roll between 1-100. If you roll equal to or under your release probability rate, the sprint’s value is delivered; otherwise, it’s lost.
           </p>
 
           <p>

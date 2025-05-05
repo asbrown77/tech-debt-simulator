@@ -3,7 +3,7 @@ import { InvestmentConfig } from '../config/investmentsConfig';
 import { processInvestments } from './trackInvestments';
 import { finalizeCompletedInvestments } from './investmentLogic';
 import { resetDevelopers, calculateDeveloperOutput } from './developerLogic';
-import { calculateReleaseConfidence as getReleaseConfidence } from './releaseLogic';
+import { calculateReleaseProbability as getReleaseProbability } from './releaseLogic';
 import { generateSprintData } from './sprintLogic';
 import { SprintData } from '../types';
 
@@ -16,7 +16,7 @@ export function handleBeginTurnLogic(
   resultHistory: SprintData[],
   currentSprint: number,
   techDebt: number,
-  releaseConfidence: number,
+  releaseProbability: number,
   developerPower: number,
   getReleased: () => boolean
 ) {
@@ -39,7 +39,7 @@ export function handleBeginTurnLogic(
     activeInvestments,
     investmentConfigs,
     techDebt,
-    releaseConfidence
+    releaseProbability
   );
 
   console.log('Updated Tech Debt:', updatedTechDebt);
@@ -57,7 +57,7 @@ export function handleBeginTurnLogic(
   const turnSprintData = generateSprintData(
     currentSprint,
     updatedTechDebt,
-    getReleaseConfidence(updatedCompleted, investmentConfigs),
+    getReleaseProbability(updatedCompleted, investmentConfigs),
     devValue,
     bugs,
     getReleased(),

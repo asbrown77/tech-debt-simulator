@@ -5,19 +5,19 @@ import DeveloperOutput from '../developer-output2.png';
 
 export type GameStatsProps = {
   techDebt: number;
-  releaseConfidence: number;
+  releaseProbability: number;
   developerValue: number;
   prevTechDebt: number;
-  prevConfidence: number;
+  prevReleaseProbability: number;
   prevDevPower: number;
 };
 
 export const GameStats = ({
   techDebt,
-  releaseConfidence,
+  releaseProbability,
   developerValue,
   prevTechDebt,
-  prevConfidence,
+  prevReleaseProbability,
   prevDevPower,
 }: GameStatsProps) => (
   <div className={styles.teamValues}>
@@ -27,10 +27,10 @@ export const GameStats = ({
         <TechDebtBadge value={techDebt} maxValue={50} />
       </span>
     </div>
-    <div className={`${styles.statBlock} ${styles.releaseConfidenceBlock}`}>
-      <span className={styles.label}>Release Confidence</span>
-      <span className={`${styles.value} ${releaseConfidence > prevConfidence ? styles.improved : ''}`}>
-        {releaseConfidence}%
+    <div className={`${styles.statBlock} ${styles.releaseProbabilityBlock}`}>
+      <span className={styles.label}>Release Probability</span>
+      <span className={`${styles.value} ${releaseProbability > prevReleaseProbability ? styles.improved : ''}`}>
+        {releaseProbability}%
       </span>
     </div>
     <div className={styles.statBlock}>

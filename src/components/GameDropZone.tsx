@@ -178,7 +178,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
 
         {/* Always show spinner */}
         <ReleaseSpinnerRow
-          releaseConfidence={currentSprintData.releaseConfidence ?? 0}
+          releaseProbability={currentSprintData.releaseProbability ?? 0}
           triggerSpin={triggerReleaseSpin}
           resetSpinnerTrigger={resetSpinnerTrigger ?? 0 }
           onSpinComplete={(success) => {

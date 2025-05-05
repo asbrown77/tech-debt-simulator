@@ -11,7 +11,7 @@ export type Developer = {
 export type SprintData = {
   sprintNumber: number;
   techDebt: number;
-  releaseConfidence: number;
+  releaseProbability: number;
   devValue: number;
   bugs: number;
   netValue: number;

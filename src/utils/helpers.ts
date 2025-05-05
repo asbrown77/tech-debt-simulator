@@ -1,6 +1,6 @@
 import { Developer, SprintData } from "../types";
 
-export const BASE_RELEASE_CONFIDENCE = 20;
+export const BASE_RELEASE_PROBABILITY = 20;
 export const BASE_TECH_DEBT = 50;
 
 export function uniqueDevelopers(developers: Developer[]): Developer[] {
@@ -21,7 +21,7 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
       const devValue = Math.floor(Math.random() * 10) + 5; // Random dev output
       const bugs = Math.floor(Math.random() * 5) + 2; // Random bugs
       const netValue = devValue - bugs; // Calculate net value
-      const released = Math.random() <= BASE_RELEASE_CONFIDENCE / 100; // 20% confidence for release
+      const released = Math.random() <= BASE_RELEASE_PROBABILITY / 100; // 20% probability for release
       const accumulatedValueDelivered = released
         ? (history.at(-1)?.accumulatedValueDelivered || 0) + netValue
         : history.at(-1)?.accumulatedValueDelivered || 0;
@@ -29,7 +29,7 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
       history.push({
         sprintNumber: i,
         techDebt: BASE_TECH_DEBT,
-        releaseConfidence: BASE_RELEASE_CONFIDENCE, // 20% release confidence
+        releaseProbability: BASE_RELEASE_PROBABILITY, // 20% release probability
         devValue,
         bugs,
         netValue,
