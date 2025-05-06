@@ -5,9 +5,9 @@ import React from 'react';
 export const gameMessages: Record<number, React.ReactNode> = {
   10: (
     <>
-      <h2>Welcome!</h2>
+      <h2>🚩 Welcome! </h2>
       <p>
-       You’ve joined a team burdened by technical debt and struggling to deliver. Can you help turn things around? Explore how tackling (or ignoring) tech debt shapes delivery outcomes.
+       You’ve joined a team at Sprint 10, burdened by technical debt and struggling to deliver. Can you help turn things around? Explore how tackling (or ignoring) tech debt shapes delivery outcomes.
       </p>
       <p>
       👉🏻  Will you ignore the tech debt and keep pushing features? <br/>
@@ -16,11 +16,11 @@ export const gameMessages: Record<number, React.ReactNode> = {
       </p>
     </>
   ),
-  18: (
+  15: (
     <>
-      <h2>Time is Running Out!</h2>
+      <h2>⏳ Time is Running Out!</h2>
       <p>
-        Only a few sprints left. 
+        Its Sprint 15 - only a few sprints remain. 
       </p>
       <p>
       👉🏻  Have your investments paid off?<br/>
