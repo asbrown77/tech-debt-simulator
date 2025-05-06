@@ -7,7 +7,9 @@ export const gameMessages: Record<number, React.ReactNode> = {
     <>
       <h2>🚩 Welcome! </h2>
       <p>
-       You’ve joined a team at Sprint 10, burdened by technical debt and struggling to deliver. Can you help turn things around? Explore how tackling (or ignoring) tech debt shapes delivery outcomes.
+       You’ve joined a team at Sprint 10, burdened by technical debt and struggling to deliver. 
+       </p>
+       <p>Can you help turn things around? Explore how tackling (or ignoring) tech debt shapes delivery outcomes.
       </p>
       <p>
       👉🏻  Will you ignore the tech debt and keep pushing features? <br/>
