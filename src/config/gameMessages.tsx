@@ -9,26 +9,30 @@ export const gameMessages: Record<number, React.ReactNode> = {
       <p>
        You’ve joined a team at Sprint 10, burdened by technical debt and struggling to deliver. 
        </p>
-       <p>Can you help turn things around? Explore how tackling (or ignoring) tech debt shapes delivery outcomes.
+      <p>
+        Take a moment to review the history: how quickly did tech debt build up? What value have they actually delivered in the last 10 sprints?
       </p>
       <p>
-      👉🏻  Will you ignore the tech debt and keep pushing features? <br/>
-      👉🏻  What happens if you focus on paying it down?<br/>
-      👉🏻  How will different strategies change the outcome?
+        You face a choice: push forward and ignore the debt, or invest in paying it down. 
+      </p>
+      <p>
+        Tip: Different strategies lead to very different outcomes. What path will you choose?
       </p>
     </>
   ),
   15: (
     <>
-      <h2>⏳ Time is Running Out!</h2>
+      <h2>⏳ Sprint 15 - Final Stretch!</h2>
       <p>
-        Its Sprint 15 - only a few sprints remain. 
+        Just a few sprints left. Take a moment to reflect.
       </p>
       <p>
-      👉🏻  Have your investments paid off?<br/>
-      👉🏻  How much value have you actually delivered?<br/>
-      👉🏻  Should you adjust your approach in the final sprints?
+        So far, how much value has your team really delivered? <br/>
+        Have your early investments started paying off, or is tech debt still holding you back?
       </p>
-    </>
+      <p>
+        Tip: Focus your last sprints on what brings the biggest impact. It’s not too late to turn the game around!
+      </p>
+      </>
   ),
 };
