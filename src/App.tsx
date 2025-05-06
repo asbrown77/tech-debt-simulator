@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { Developer, SprintData, ActiveInvestments} from './types';
 import { appConfig } from './config/appconfig';
 
@@ -12,21 +12,22 @@ import { SprintCounter } from './components/SprintCounter';
 import { handleDragStart, handleDrop } from './utils/dragHandlers';
 import { handleBeginTurnLogic } from './game/gameLogic';
 import Header from './components/Header';
-import { RulesModal } from './components/RulesModal';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
 import { BASE_RELEASE_PROBABILITY, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper, uniqueDevelopers } from './utils/helpers';
 import { debug } from 'console';
 import { calculateDeveloperOutput } from './game/developerLogic';
-import { GameEndModal } from './components/GameEndModel';
 import { gameEndModalContent, rulesModalContent } from './components/ModalContent';
 import { GeneralModal } from './components/GeneralModal';
+import { gameMessages } from './config/gameMessages';
+import { useGameMessage } from './utils/useGameMessage';
+
 
 const maxSprintCount = 20;
 
 export default function App() {
- // const [nonWorkingdevelopers, setDevelopers] = useState<Developer[]>([]); 
+  const { gameMessage, setGameMessage } = useGameMessage(); 
   const [developerPower, setDeveloperPower] = useState(5); 
   const [currentSprint, setCurrentSprint] = useState(10);
   const [techDebt, setTechDebt] = useState(BASE_TECH_DEBT);
@@ -34,7 +35,6 @@ export default function App() {
   const [showRules, setShowRules] = useState(false);
   const [workingDevelopers, setMainArea] = useState<Developer[]>(initialDevelopers);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
-  //const chartData = generateChartData(resultHistory, maxSprintCount);
   const [prevTechDebt, setPrevTechDebt] = useState(techDebt);
   const [prevReleaseProbability, setPrevReleaseProbability] = useState(10);
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
@@ -76,8 +76,16 @@ export default function App() {
     }), {})
   );
 
+  useEffect(() => {
+    if (gameMessages[currentSprint]) {
+      setGameMessage({
+        isOpen: true,
+        content: gameMessages[currentSprint],
+      });
+    }
+  }, [currentSprint]);
+  
   const processTurn = async () => {
-
     if (currentSprint >= maxSprintCount) {
       resetGame(); // Reset the game 
       return;
@@ -171,7 +179,7 @@ export default function App() {
 
     setCurrentSprint(prev => {
       const nextSprint = prev + 1;
-  
+
       if (nextSprint >= maxSprintCount && window.gtag) {
         window.gtag('event', 'game_completed', {
           event_category: 'gameplay',
@@ -327,6 +335,13 @@ export default function App() {
             buttonText={rulesModalContent.buttonText}
           >
           {rulesModalContent.body}
+        </GeneralModal>
+
+        <GeneralModal
+            isOpen={gameMessage.isOpen}
+            onClose={() => setGameMessage({ isOpen: false, content: null })}
+          >
+          {gameMessage.content}
         </GeneralModal>
 
         {/* Build Game Area - 50/50 Split */}
