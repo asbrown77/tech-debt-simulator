@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type Developer = {
     id: number;
     name: string;
@@ -7,7 +9,6 @@ export type Developer = {
     working?: boolean | null;
   };
 
-  
 export type SprintData = {
   sprintNumber: number;
   techDebt: number;
@@ -26,4 +27,9 @@ export type CompletedInvestmentResult = {
   updatedDevelopers: Developer[];
   updatedActiveInvestments: ActiveInvestments;
   developerPowerIncreased: boolean;
+};
+
+export type ModalContent = {
+  buttonText?: string;
+  body: ReactNode;
 };

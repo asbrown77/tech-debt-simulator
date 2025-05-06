@@ -20,6 +20,8 @@ import { BASE_RELEASE_PROBABILITY, BASE_TECH_DEBT, generateStartingHistory, rese
 import { debug } from 'console';
 import { calculateDeveloperOutput } from './game/developerLogic';
 import { GameEndModal } from './components/GameEndModel';
+import { gameEndModalContent, rulesModalContent } from './components/ModalContent';
+import { GeneralModal } from './components/GeneralModal';
 
 const maxSprintCount = 20;
 
@@ -77,8 +79,7 @@ export default function App() {
   const processTurn = async () => {
 
     if (currentSprint >= maxSprintCount) {
-      setShowGameEndModal(true); // Show the modal when the game ends
-      resetGame(); // Reset the game if it's over
+      resetGame(); // Reset the game 
       return;
     }
 
@@ -183,7 +184,7 @@ export default function App() {
 
     setTurnInProgress(false); // Mark the turn as finished
 
-    if (currentSprint >= maxSprintCount) {
+    if (currentSprint >= maxSprintCount-1) {
       setShowGameEndModal(true); // Show the modal when the game ends
       return;
     }
@@ -291,6 +292,8 @@ export default function App() {
     setShowGameEndModal(false); // Close the modal
   };
 
+  const gameEndContent = gameEndModalContent(resultHistory, techDebt);
+
   return (
     <Layout>
       <div className={styles.appContainer}>
@@ -316,7 +319,15 @@ export default function App() {
           </div>
         </div>
 
-        <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} />
+        {/* <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} /> */}
+
+        <GeneralModal
+            isOpen={showRules}
+            onClose={() => setShowRules(false)}
+            buttonText={rulesModalContent.buttonText}
+          >
+          {rulesModalContent.body}
+        </GeneralModal>
 
         {/* Build Game Area - 50/50 Split */}
         <div className={styles.gameArea}>
@@ -407,10 +418,20 @@ export default function App() {
           
         </div> 
 
-        <GameEndModal isOpen={showGameEndModal}
+
+        {/* <GameEndModal isOpen={showGameEndModal}
           onClose={() => setShowGameEndModal(false)}
           resultHistory={resultHistory} techDebt={techDebt}
-        />
+        /> */}
+
+        <GeneralModal
+            isOpen={showGameEndModal}
+            onClose={() => {
+              setShowGameEndModal(false);
+            }}
+          >
+          {gameEndContent.body}
+        </GeneralModal>
 
         {/* Sprint Counter */}
         <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
