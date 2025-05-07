@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename="/techdebt-simulator/play">
+    <BrowserRouter basename="/techdebtgame">
       <App />
     </BrowserRouter>
   </React.StrictMode>
