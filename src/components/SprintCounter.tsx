@@ -15,7 +15,7 @@ export const SprintCounter: React.FC<SprintCounterProps> = ({ currentSprint, max
     fontWeight: 'bold',
     color: 'white'
   }}>
-    Sprint {currentSprint} of {maxSprints}
+    Iteration {currentSprint} of {maxSprints}
   </div>
   </div>
 );

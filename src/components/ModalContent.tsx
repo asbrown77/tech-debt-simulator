@@ -12,7 +12,7 @@ export const rulesModalContent: ModalContent = {
           A simple tool to explore how ignoring or paying down tech debt shapes delivery outcomes.
           </p>
           <p>
-          <strong>Your goal</strong>: deliver as much value as possible over 20 sprints. Assign developers to build features or invest in improvements like Continuous Delivery, test coverage, or reducing complexity.
+          <strong>Your goal</strong>: deliver as much value as possible over 20 iterations. Assign developers to build features or invest in improvements like Continuous Delivery, test coverage, or reducing complexity.
           </p>
 
           <p>
@@ -20,9 +20,9 @@ export const rulesModalContent: ModalContent = {
           </p>
 
           <p>
-          👨🏻‍💻 Assign developers to the Sprint to generate output (but risk bugs).<br/>
+          👨🏻‍💻 Assign developers to the Iteration to generate output (but risk bugs).<br/>
           🔧 Assign developers to investments to reduce tech debt, improve quality, or boost release probability.<br/>
-          🎲 After each sprint, roll the spinner - if you pass, your work ships; if not, value is lost.<br/>
+          🎲 After each iteration, roll the spinner - if you pass, your work ships; if not, value is lost.<br/>
           </p>
 
           <p>
@@ -30,16 +30,16 @@ export const rulesModalContent: ModalContent = {
           </p>
 
           <p>
-          💪 More dev power → generate more value each sprint. <br/>
+          💪 More dev power → generate more value each iteration. <br/>
           🚀 Higher release probability → better odds your work is released.<br/>
           🧹 Less tech debt → fewer bugs 🐞 <br/>
           </p>
           <p>
-            Releases depend on a roll between 1-100. If you roll equal to or under your release probability rate, the sprint’s value is delivered; otherwise, it’s lost.
+            Releases depend on a roll between 1-100. If you roll equal to or under your release probability rate, the iteration's value is delivered; otherwise, it’s lost.
           </p>
 
           <p>
-            Only delivered value counts! The simulator ends after 20 sprints - reflect on what strategies worked and what you might change next time.
+            Only delivered value counts! The simulator ends after 20 iterations - reflect on what strategies worked and what you might change next time.
           </p>
 
           <p style={{ marginTop: '1rem' }}>
@@ -53,7 +53,7 @@ export const rulesModalContent: ModalContent = {
 export const gameEndModalContent = (resultHistory: SprintData[], techDebt: number): ModalContent => ({
   body: (
     <>
-      <h2>Congratulations! You completed last Sprint {resultHistory.findLast(x=> x)?.sprintNumber}.</h2>
+      <h2>Congratulations! You completed last Iteration {resultHistory.findLast(x=> x)?.sprintNumber}.</h2>
         <p>
           Review how your team performed. What happened to your tech debt? Look at the graph and history. 
           What did you notice about your strategy? How did the actual value delivered compare to your expectations?

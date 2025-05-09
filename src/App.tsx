@@ -261,7 +261,7 @@ export default function App() {
 
   const getTurnButtonText = () => {
     if (currentSprint >= maxSprintCount) return 'New Game';
-    return 'Next Sprint';
+    return 'Next Iteration';
   };
 
   const getTurnButtonClass = () => {
@@ -360,7 +360,7 @@ export default function App() {
 
             <GameDropZone 
               name="Build" 
-              title={`Sprint ${currentSprint.toString()}`}
+              title={`Iteration ${currentSprint.toString()}`}
               area={workingDevelopers} 
               setArea={setMainArea} 
               isBuildArea={true}  
@@ -394,7 +394,7 @@ export default function App() {
                   if (window.gtag) {
                       window.gtag('event', 'click', {
                         event_category: 'Game',
-                        event_label: 'Next Sprint Button'
+                        event_label: 'Next Iteration Button'
                       });
                     }
                     processTurn();

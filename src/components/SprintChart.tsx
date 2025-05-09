@@ -43,7 +43,7 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
   domain={[0, 20]}
   tickCount={20}
   label={{
-    value: 'Sprint',
+    value: 'Iteration',
     position: 'insideBottom',
     offset: -10,
     style: { fontSize: '20px', fontWeight: 'bold' },
@@ -57,7 +57,7 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
           wrapperStyle={{ paddingBottom: '25px' }} // Add spacing between legend and chart
         />
         <Line type="linear" dataKey="techDebt" stroke="#dc3545" name="Tech Debt" />
-        <Line type="linear" dataKey="net" stroke="#007bff" name="Net Output" />
+        <Line type="linear" dataKey="net" stroke="#007bff" name="Iteration Output" />
         <Area type="linear" dataKey="delivered" fill="#28a745" stroke="#28a745" name="Value Delivered" />
       </ComposedChart>
     </ResponsiveContainer>
