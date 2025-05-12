@@ -84,11 +84,16 @@ export default function App() {
     }
   }, [currentSprint]);
   
+
   const processTurn = async () => {
     if (currentSprint >= maxSprintCount) {
       resetGame(); // Reset the game 
       return;
     }
+
+    // Clear developers in the Main Area (Reset)
+    const resetWorkingDevelopers = workingDevelopers.map(resetDeveloper);
+    setMainArea(resetWorkingDevelopers);
 
     if (turnInProgress) return; 
 
@@ -148,7 +153,7 @@ export default function App() {
       developerPower, 
       getReleased // Pass the callback to get the latest releaseStatus
     );
-  
+
     if (result.developerPowerIncreased) {; 
       setDeveloperPower(developerPower +1 );
     }
