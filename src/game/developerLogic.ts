@@ -7,8 +7,7 @@ export function resetDevelopers(developers: Developer[]) {
 
 export function calculateDeveloperOutput(
   developers: Developer[],
-  developerPower: number,
-  techDebt: number
+  developerPower: number
 ) {
   let totalValue = 0;
   let bugs = 0;
@@ -20,7 +19,7 @@ export function calculateDeveloperOutput(
 
     const output = Math.floor(Math.random() * developerPower) + 1;
     const roll = Math.random() * BASE_TECH_DEBT*20;
-    const hasBug = roll <= (techDebt*20);
+    const hasBug = roll <= (BASE_TECH_DEBT*20);
 
     if (hasBug) bugs++;
     totalValue += output;

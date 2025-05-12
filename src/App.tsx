@@ -107,7 +107,7 @@ export default function App() {
       // Wait a bit
       await new Promise(resolve => setTimeout(resolve, 300));
   
-      const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower, techDebt);
+      const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower);
 
       latestDevelopers[i] = {
         ...latestDevelopers[i],

@@ -1,7 +1,9 @@
 import { Developer, SprintData } from "../types";
+import { calculateDeveloperOutput } from '../game/developerLogic';
+import { initialDevelopers } from '../config/developersConfig';
 
-export const BASE_RELEASE_PROBABILITY = 20;
-export const BASE_TECH_DEBT = 50;
+ export const BASE_RELEASE_PROBABILITY = 20;
+ export const BASE_TECH_DEBT = 50;
 
 export function uniqueDevelopers(developers: Developer[]): Developer[] {
     const seen = new Map<number, Developer>();
@@ -15,30 +17,36 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
   }
 
   export function generateStartingHistory(sprints: number): SprintData[] {
-    const history: SprintData[] = [];
+  const history: SprintData[] = [];
 
-    for (let i = 1; i <= sprints; i++) {
-      const devValue = Math.floor(Math.random() * 10) + 5; // Random dev output
-      const bugs = Math.floor(Math.random() * 5) + 2; // Random bugs
-      const netValue = devValue - bugs; // Calculate net value
-      const released = Math.random() <= BASE_RELEASE_PROBABILITY / 100; // 20% probability for release
-      const accumulatedValueDelivered = released
-        ? (history.at(-1)?.accumulatedValueDelivered || 0) + netValue
-        : history.at(-1)?.accumulatedValueDelivered || 0;
-  
-      history.push({
-        sprintNumber: i,
-        techDebt: BASE_TECH_DEBT,
-        releaseProbability: BASE_RELEASE_PROBABILITY, // 20% release probability
-        devValue,
-        bugs,
-        netValue,
-        released,
-        accumulatedValueDelivered,
-      });
-    }
-  
-    return history;
+  let accumulated = 0;
+
+  for (let i = 1; i <= sprints; i++) {
+    const { updatedDevelopers, devValue, bugs } = calculateDeveloperOutput(
+      initialDevelopers,
+      5              // default devPower
+    );
+
+    const netValue = devValue - bugs;
+    // debugger
+    const released = Math.random() <= BASE_RELEASE_PROBABILITY / 100;
+    const valueDelivered = released ? netValue : 0;
+    accumulated += valueDelivered;
+    //debugger
+
+    history.push({
+      sprintNumber: i,
+      techDebt: BASE_TECH_DEBT,
+      releaseProbability: BASE_RELEASE_PROBABILITY,
+      devValue,
+      bugs,
+      netValue,
+      released,
+      accumulatedValueDelivered: accumulated,
+    });
+  }
+
+  return history;
   }
 
   export const resetDeveloper = (developer: Developer): Developer => ({
