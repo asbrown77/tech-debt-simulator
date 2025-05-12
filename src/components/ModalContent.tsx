@@ -45,6 +45,17 @@ export const rulesModalContent: ModalContent = {
           <p style={{ marginTop: '1rem' }}>
             This isn’t about winning - it’s about experimenting. Try investing early, delaying improvements, or balancing delivery and debt, and see how your choices shape the outcome.
           </p>
+          
+          <div style={{ marginTop: '2rem' }}>
+            <p>💡 <strong>A quick word on value:</strong></p>
+            <ul>
+              <li>Value can mean different things depending on the context</li>
+              <li>In this game, value means anything that helps you learn or deliver meaningful outcomes</li>
+              <li>That could be customer feedback, early risk signals, or insights into how your team delivers</li>
+              <li>But none of that matters unless the work is actually <strong>released</strong></li>
+              <li>No release means no feedback, no learning, and no real value delivered</li>
+            </ul>
+          </div>
     </>
   )
 };

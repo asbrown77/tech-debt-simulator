@@ -334,9 +334,8 @@ export default function App() {
             </button>
           </div>
         </div>
-
-        {/* <RulesModal isOpen={showRules} onClose={() => setShowRules(false)} /> */}
-
+        
+        {/*Modal Windows*/}
         <GeneralModal
             isOpen={showRules}
             onClose={() => setShowRules(false)}
@@ -352,11 +351,20 @@ export default function App() {
           {gameMessage.content}
         </GeneralModal>
 
+        <GeneralModal
+            isOpen={showGameEndModal}
+            onClose={() => {
+              setShowGameEndModal(false);
+            }}
+          >
+          {gameEndContent.body}
+        </GeneralModal>
+
         {/* Build Game Area - 50/50 Split */}
         <div className={styles.gameArea}>
           <div className={styles.leftColumn}>
 
-            {/* Game Parameters Box */}
+            {/* Game Header Stat Box */}
             <GameStats
               techDebt={currentSprintData.techDebt}
               releaseProbability={currentSprintData.releaseProbability}
@@ -391,8 +399,8 @@ export default function App() {
               }}
             />
             
-  <br/>     
-            {/* Begin Turn Button */}
+            <br/>     
+            {/* Next Iteration Button */}
             <div className={styles.buttonWrapper}>
               <button
                 className={`${getTurnButtonClass()} ${
@@ -440,21 +448,6 @@ export default function App() {
           </div>
           
         </div> 
-
-
-        {/* <GameEndModal isOpen={showGameEndModal}
-          onClose={() => setShowGameEndModal(false)}
-          resultHistory={resultHistory} techDebt={techDebt}
-        /> */}
-
-        <GeneralModal
-            isOpen={showGameEndModal}
-            onClose={() => {
-              setShowGameEndModal(false);
-            }}
-          >
-          {gameEndContent.body}
-        </GeneralModal>
 
         {/* Sprint Counter */}
         <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
