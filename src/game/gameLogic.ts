@@ -7,6 +7,18 @@ import { calculateReleaseProbability as getReleaseProbability } from './releaseL
 import { generateSprintData } from './sprintLogic';
 import { SprintData } from '../types';
 
+function summarizeDeveloperOutput(devs: Developer[]) {
+  let devValue = 0;
+  let bugs = 0;
+
+  for (const dev of devs) {
+    if (dev.output != null) devValue += dev.output;
+    if (dev.hasBug) bugs++;
+  }
+
+  return { devValue, bugs };
+}
+
 export function handleBeginTurnLogic(
   activeInvestments: ActiveInvestments,
   investmentConfigs: InvestmentConfig[],
@@ -46,11 +58,8 @@ export function handleBeginTurnLogic(
   console.log('Free Invested Developers:', freeInvestedDevelopers);
   console.log('Updated Active Investments:', updatedActiveInvestments);
  
-  const { updatedDevelopers: workingDevelopers, devValue: devValue, bugs } = calculateDeveloperOutput(
-    updatedMainArea,
-    developerPower,
-    updatedTechDebt
-  );
+  debugger;
+  const { devValue, bugs } = summarizeDeveloperOutput(mainArea);
 
   let previousSprintData = resultHistory.at(-1) ;
 
@@ -69,7 +78,6 @@ export function handleBeginTurnLogic(
     updatedTurns,
     updatedCompleted,
     freeInvestedDevelopers,
-    workingDevelopers,
     updatedActiveInvestments,
     updatedTechDebt,
     turnSprintData,

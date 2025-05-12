@@ -16,7 +16,6 @@ import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
 import { BASE_RELEASE_PROBABILITY, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper, uniqueDevelopers } from './utils/helpers';
-import { debug } from 'console';
 import { calculateDeveloperOutput } from './game/developerLogic';
 import { gameEndModalContent, rulesModalContent } from './components/ModalContent';
 import { GeneralModal } from './components/GeneralModal';
@@ -42,8 +41,6 @@ export default function App() {
   const spinResolverRef = React.useRef<((value: boolean) => void) | null>(null);
 
   const chartData = resultHistory.map((sprint) => {
-    const maxTechDebt = Math.max(...resultHistory.map((s) => s.techDebt || 0)); // Find the max tech debt
-
     return {
       ...sprint,
       sprintNumber: sprint.sprintNumber,
@@ -93,6 +90,8 @@ export default function App() {
 
     if (turnInProgress) return; 
 
+    let latestDevelopers: Developer[] = [...workingDevelopers];
+
     setTurnInProgress(true); 
     setReleaseStatus(null); 
     setResetTurnResultTrigger(prev => prev + 1);
@@ -109,6 +108,12 @@ export default function App() {
       await new Promise(resolve => setTimeout(resolve, 300));
   
       const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower, techDebt);
+
+      latestDevelopers[i] = {
+        ...latestDevelopers[i],
+        ...updatedDevelopers[0],
+      };
+
       setMainArea((prev) => {
         const updated = [...prev];
         updated[i] = updatedDevelopers[0]; // Update only the specific developer
@@ -116,6 +121,7 @@ export default function App() {
       });
     }
 
+      debugger;
     // Start spinner AFTER developer work
     const spinPromise = new Promise<boolean>((resolve) => {
       spinResolverRef.current = resolve;
@@ -131,7 +137,7 @@ export default function App() {
       investmentConfigs,
       turnsRemaining,
       completedInvestments,
-      workingDevelopers,
+      latestDevelopers,
       resultHistory,
       currentSprint,
       techDebt,
@@ -140,10 +146,6 @@ export default function App() {
       getReleased // Pass the callback to get the latest releaseStatus
     );
   
-    // Reset developers in the Main Area
-    const resetWorkingDevelopers = workingDevelopers.map(resetDeveloper);
-    setMainArea(resetWorkingDevelopers);
-
     if (result.developerPowerIncreased) {; 
       setDeveloperPower(developerPower +1 );
     }
@@ -156,9 +158,8 @@ export default function App() {
     setCompletedInvestments(result.updatedCompleted);
     setTechDebt(result.updatedTechDebt);
 
-    let newWorkingDevelopers = uniqueDevelopers([...result.workingDevelopers, ...result.freeInvestedDevelopers]);
-    setMainArea(newWorkingDevelopers);
-
+    debugger
+    setMainArea(prev => uniqueDevelopers([...prev, ...result.freeInvestedDevelopers.map(resetDeveloper)]));
 
     setResultHistory((prev) => {
       const lastSprint = prev[prev.length - 1]; // Get the last sprint data
