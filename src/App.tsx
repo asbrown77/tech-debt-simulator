@@ -15,7 +15,7 @@ import Header from './components/Header';
 import { Layout } from './components/Layout';
 import styles from './App.module.css';
 import logo from './bagile-logo.svg';
-import { BASE_RELEASE_PROBABILITY, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper, uniqueDevelopers } from './utils/helpers';
+import { BASE_RELEASE_PROBABILITY, BASE_TECH_DEBT, generateStartingHistory, resetDeveloper, STARING_DEV_POWER, uniqueDevelopers } from './utils/helpers';
 import { calculateDeveloperOutput } from './game/developerLogic';
 import { gameEndModalContent, rulesModalContent } from './components/ModalContent';
 import { GeneralModal } from './components/GeneralModal';
@@ -25,9 +25,10 @@ import { useGameMessage } from './utils/useGameMessage';
 
 const maxSprintCount = 20;
 
+
 export default function App() {
   const { gameMessage, setGameMessage } = useGameMessage(); 
-  const [developerPower, setDeveloperPower] = useState(5); 
+  const [developerPower, setDeveloperPower] = useState(STARING_DEV_POWER); 
   const [currentSprint, setCurrentSprint] = useState(10);
   const [techDebt, setTechDebt] = useState(BASE_TECH_DEBT);
   const [resultHistory, setResultHistory] = useState<SprintData[]>(generateStartingHistory(10));

@@ -4,6 +4,7 @@ import { initialDevelopers } from '../config/developersConfig';
 
  export const BASE_RELEASE_PROBABILITY = 20;
  export const BASE_TECH_DEBT = 50;
+export const STARING_DEV_POWER = 4;
 
 export function uniqueDevelopers(developers: Developer[]): Developer[] {
     const seen = new Map<number, Developer>();
@@ -24,7 +25,7 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
   for (let i = 1; i <= sprints; i++) {
     const { updatedDevelopers, devValue, bugs } = calculateDeveloperOutput(
       initialDevelopers,
-      5              // default devPower
+      STARING_DEV_POWER             
     );
 
     const netValue = devValue - bugs;
