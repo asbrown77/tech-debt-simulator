@@ -7,20 +7,21 @@ export function resetDevelopers(developers: Developer[]) {
 
 export function calculateDeveloperOutput(
   developers: Developer[],
-  developerPower: number
+  developerPower: number,
+  techDebt: number
 ) {
   let totalValue = 0;
   let bugs = 0;
 
-  const updatedDevelopers = developers.map((dev) => {
+  const clampedDebt = Math.min(100, Math.max(0, techDebt*2));
+  const bugChance = 5 + (clampedDebt * 0.9); // From 5% to 95%
 
-    debugger
+  const updatedDevelopers = developers.map((dev) => {
     if (developerPower <= 0) {
       return { ...dev, output: null, hasBug: false }; }
 
     const output = Math.floor(Math.random() * developerPower) + 1;
-    const roll = Math.random() * BASE_TECH_DEBT*20;
-    const hasBug = roll <= (BASE_TECH_DEBT*20);
+    const hasBug = Math.random() * 100 < bugChance;
 
     if (hasBug) bugs++;
     totalValue += output;

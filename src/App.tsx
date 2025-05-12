@@ -21,6 +21,7 @@ import { gameEndModalContent, rulesModalContent } from './components/ModalConten
 import { GeneralModal } from './components/GeneralModal';
 import { gameMessages } from './config/gameMessages';
 import { useGameMessage } from './utils/useGameMessage';
+import { debug } from 'console';
 
 
 const maxSprintCount = 20;
@@ -108,7 +109,8 @@ export default function App() {
       // Wait a bit
       await new Promise(resolve => setTimeout(resolve, 300));
   
-      const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower);
+      debugger
+      const { updatedDevelopers } = calculateDeveloperOutput([workingDevelopers[i]], developerPower, techDebt);
 
       latestDevelopers[i] = {
         ...latestDevelopers[i],
@@ -131,6 +133,7 @@ export default function App() {
     const spinResult = await spinPromise;
     const getReleased = () => spinResult;
 
+    debugger;
         // Only AFTER spinner, apply investments and update state
     const result = handleBeginTurnLogic(
       activeInvestments,
@@ -157,7 +160,7 @@ export default function App() {
     setTurnsRemaining(result.updatedTurns);
     setCompletedInvestments(result.updatedCompleted);
     setTechDebt(result.updatedTechDebt);
-
+    debugger;
     setMainArea(prev => uniqueDevelopers([...prev, ...result.freeInvestedDevelopers.map(resetDeveloper)]));
 
     setResultHistory((prev) => {
@@ -285,7 +288,7 @@ export default function App() {
 
     setCurrentSprint(1);
     setTechDebt(BASE_TECH_DEBT);
-    setDeveloperPower(5);
+    setDeveloperPower(STARING_DEV_POWER);
     setResultHistory(generateStartingHistory(10));
     setCurrentSprint(10);
     setPrevTechDebt(BASE_TECH_DEBT);
