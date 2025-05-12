@@ -121,7 +121,6 @@ export default function App() {
       });
     }
 
-      debugger;
     // Start spinner AFTER developer work
     const spinPromise = new Promise<boolean>((resolve) => {
       spinResolverRef.current = resolve;
@@ -158,7 +157,6 @@ export default function App() {
     setCompletedInvestments(result.updatedCompleted);
     setTechDebt(result.updatedTechDebt);
 
-    debugger
     setMainArea(prev => uniqueDevelopers([...prev, ...result.freeInvestedDevelopers.map(resetDeveloper)]));
 
     setResultHistory((prev) => {

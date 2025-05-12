@@ -58,7 +58,6 @@ export function handleBeginTurnLogic(
   console.log('Free Invested Developers:', freeInvestedDevelopers);
   console.log('Updated Active Investments:', updatedActiveInvestments);
  
-  debugger;
   const { devValue, bugs } = summarizeDeveloperOutput(mainArea);
 
   let previousSprintData = resultHistory.at(-1) ;
