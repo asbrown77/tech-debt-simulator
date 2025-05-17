@@ -41,9 +41,10 @@ export default function App() {
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
   const [showGameEndModal, setShowGameEndModal] = useState(false);
   const spinResolverRef = React.useRef<((value: boolean) => void) | null>(null);
-const [replayHistory, setReplayHistory] = useState<IterationData[] | null>(null);
-const [replayTitle, setReplayTitle] = useState<string>('');
-const [showReplayModal, setShowReplayModal] = useState(false);
+  const [replayHistory, setReplayHistory] = useState<IterationData[] | null>(null);
+  const [replayTitle, setReplayTitle] = useState<string>('');
+  const [showReplayModal, setShowReplayModal] = useState(false);
+  const [refreshHistoryTrigger, setRefreshHistoryTrigger] = useState(0);
 
   const chartData = resultHistory.map((iteration) => {
     return {
@@ -228,7 +229,7 @@ const loadPastGame = (history: IterationData[], name: string) => {
 
 
       localStorage.setItem('gameSessions', JSON.stringify([...previousGames, newGame]));
-
+      setRefreshHistoryTrigger(prev => prev + 1);
 
       return;
     }
@@ -501,7 +502,7 @@ const loadPastGame = (history: IterationData[], name: string) => {
         {/* Iteration History Table */}
         <ResultHistoryTable data={resultHistory} />
 
-<GameHistory onLoadGame={loadPastGame} />
+      <GameHistory onLoadGame={loadPastGame} refreshTrigger={refreshHistoryTrigger} />
 
         <hr style={{ marginTop: '3rem', marginBottom: '1rem' }} />
         <footer className={styles.footerContainer}>

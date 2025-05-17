@@ -11,17 +11,18 @@ type GameSession = {
 
 type GameHistoryProps = {
   onLoadGame: (history: IterationData[], name: string) => void;
+  refreshTrigger: number;
 };
 
-export const GameHistory = ({ onLoadGame }: GameHistoryProps) => {
+export const GameHistory = ({ onLoadGame, refreshTrigger }: GameHistoryProps) => {
   const [games, setGames] = useState<GameSession[]>([]);
 
-  useEffect(() => {
+    useEffect(() => {
     const stored = localStorage.getItem('gameSessions');
     if (stored) {
-      setGames(JSON.parse(stored));
+        setGames(JSON.parse(stored));
     }
-  }, []);
+    }, [refreshTrigger]);
 
   return (
     <div style={{ padding: '1rem' }}>
