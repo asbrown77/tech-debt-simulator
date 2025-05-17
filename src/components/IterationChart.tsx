@@ -49,16 +49,22 @@ export const IterationChart = ({ data }: { data: IterationData[] }) => {
     style: { fontSize: '20px', fontWeight: 'bold' },
   }}
         />
-        <YAxis width={30} domain={[0, 120]} allowDecimals={false} />
+        <YAxis width={30} domain={[0, 105]} allowDecimals={false} />
         <Tooltip />
         <Legend
           verticalAlign="top" // Position the legend at the top
           align="center" // Center the legend horizontally
           wrapperStyle={{ paddingBottom: '25px' }} // Add spacing between legend and chart
         />
-        <Line type="linear" dataKey="techDebt" stroke="#dc3545" name="Tech Debt" />
-        <Line type="linear" dataKey="net" stroke="#007bff" name="Iteration Output" />
-        <Area type="linear" dataKey="delivered" fill="#28a745" stroke="#28a745" name="Value Delivered" />
+        {/* <Line type="linear" dataKey="techDebt" stroke="#dc3545" name="Tech Debt" />
+        <Bar dataKey="net" fill="#007bff" name="Iteration Output" />
+        <Area type="linear" dataKey="delivered" fill="#28a745" stroke="#28a745" name="Value Delivered" /> */}
+
+        <Line type="linear" dataKey="techDebt" stroke="#dc3545" strokeWidth={2} name="Tech Debt"/>
+        /* Soften the Iteration Output bar */
+        <Bar dataKey="net" fill="#007bff" name="Iteration Output" barSize={26}/>
+        /* Boost emphasis on Value Delivered */
+        <Area type="linear" dataKey="delivered" fill="#28a745" stroke="#28a745" strokeWidth={3} name="Value Delivered"/>
       </ComposedChart>
     </ResponsiveContainer>
   );
