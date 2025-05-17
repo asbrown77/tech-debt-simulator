@@ -22,7 +22,7 @@ import { GeneralModal } from './components/GeneralModal';
 import { gameMessages } from './config/gameMessages';
 import { useGameMessage } from './utils/useGameMessage';
 import { debug } from 'console';
-
+import { GameHistory } from './components/GameHistory';
 
 const maxIterationCount = 20;
 
@@ -41,6 +41,9 @@ export default function App() {
   const [prevDevPower, setPrevDevPower] = useState(developerPower);
   const [showGameEndModal, setShowGameEndModal] = useState(false);
   const spinResolverRef = React.useRef<((value: boolean) => void) | null>(null);
+const [replayHistory, setReplayHistory] = useState<IterationData[] | null>(null);
+const [replayTitle, setReplayTitle] = useState<string>('');
+const [showReplayModal, setShowReplayModal] = useState(false);
 
   const chartData = resultHistory.map((iteration) => {
     return {
@@ -55,6 +58,12 @@ export default function App() {
       techDebt: iteration.techDebt, 
     };
   });
+
+const loadPastGame = (history: IterationData[], name: string) => {
+  setReplayHistory(history);
+  setReplayTitle(name);
+  setShowReplayModal(true);
+};
 
   const [resetTurnResultTrigger, setResetTurnResultTrigger] = useState(0);
   const [startReleaseSpin, setStartReleaseSpin] = useState(0);
@@ -202,6 +211,25 @@ export default function App() {
 
     if (currentIteration >= maxIterationCount-1) {
       setShowGameEndModal(true); // Show the modal when the game ends
+
+      const previousGames = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+
+      const defaultName = `Game ${previousGames.length + 1}`;
+      const name = window.prompt(
+        'Give this game a name (e.g. scenario played, theme, or focus):',
+        defaultName
+      ) || defaultName;
+
+      const newGame = {
+        name,
+        timestamp: Date.now(),
+        resultHistory,
+      };
+
+
+      localStorage.setItem('gameSessions', JSON.stringify([...previousGames, newGame]));
+
+
       return;
     }
   
@@ -344,6 +372,21 @@ export default function App() {
           {rulesModalContent.body}
         </GeneralModal>
 
+      <GeneralModal
+        isOpen={showReplayModal}
+        onClose={() => setShowReplayModal(false)}
+        buttonText="Close"
+      >
+        {replayHistory && (
+          <>
+            <h3 style={{ marginBottom: '1rem' }}>{replayTitle}</h3>
+            <IterationChart data={replayHistory} />
+            <ResultHistoryTable data={replayHistory} />
+          </>
+        )}
+      </GeneralModal>
+
+
         <GeneralModal
             isOpen={gameMessage.isOpen}
             onClose={() => setGameMessage({ isOpen: false, content: null })}
@@ -457,6 +500,8 @@ export default function App() {
         
         {/* Iteration History Table */}
         <ResultHistoryTable data={resultHistory} />
+
+<GameHistory onLoadGame={loadPastGame} />
 
         <hr style={{ marginTop: '3rem', marginBottom: '1rem' }} />
         <footer className={styles.footerContainer}>

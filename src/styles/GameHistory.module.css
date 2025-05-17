@@ -1,0 +1,16 @@
+/* Orange button for New Game */
+.newGameButton {
+  background-color: #ff7700; /* Orange background */
+  color: white; /* White text */
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.newGameButton:hover {
+  background-color: #e06600; /* Darker orange on hover */
+}

@@ -1,5 +1,11 @@
 import { ReactNode } from 'react';
 
+export type GameSession = {
+  name: string;
+  timestamp: number;
+  resultHistory: IterationData[];
+};
+
 export type Developer = {
     id: number;
     name: string;
