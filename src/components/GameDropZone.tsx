@@ -1,5 +1,5 @@
 import React from 'react';
-import { Developer, SprintData } from '../types';
+import { Developer, IterationData } from '../types';
 import { DeveloperComponent, DeveloperPlaceholder } from './Developer';
 import styles from '../styles/GameDropzone.module.css';
 import { ReleaseSpinnerRow } from './ReleaseSpinnerRow';
@@ -28,7 +28,7 @@ type GameDropZoneProps = {
   ) => void;
   completedInvestments: Set<string>;
   investmentConfigs: { name: string; maxDevelopers: number; turnsToComplete: number }[];
-  currentSprintData: SprintData;
+  currentIterationData: IterationData;
   resetTurnResultTrigger?: number;
   startReleaseSpin?: number;
   turnInProgress?: boolean;
@@ -50,7 +50,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
   handleDragStart,
   completedInvestments,
   investmentConfigs,
-  currentSprintData,
+  currentIterationData,
   resetTurnResultTrigger: resetSpinnerTrigger,
   startReleaseSpin, 
   turnInProgress,
@@ -157,17 +157,17 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
               Drag or double-click to assign developers
             </div>
             
-      {/* Show Sprint Summary inside Build only */}
+      {/* Show Iteration Summary inside Build only */}
       {isBuildArea && (
-      <div className={styles.sprintSummary}>
+      <div className={styles.iterationSummary}>
         <div className={styles.summaryItem} style={{ color: 'cyan' }}>
-          <strong>Dev:</strong> {currentSprintData?.devValue ?? 0}
+          <strong>Dev:</strong> {currentIterationData?.devValue ?? 0}
         </div>
         <div className={styles.summaryItem} style={{ color: 'cyan' }}>
-          <strong>Bugs:</strong> {currentSprintData?.bugs ?? 0}
+          <strong>Bugs:</strong> {currentIterationData?.bugs ?? 0}
         </div>
         <div className={styles.summaryItem}>
-          <strong>Ouput:</strong> {currentSprintData?.netValue ?? 0}
+          <strong>Ouput:</strong> {currentIterationData?.netValue ?? 0}
         </div>
       </div>  
       )}
@@ -178,7 +178,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
 
         {/* Always show spinner */}
         <ReleaseSpinnerRow
-          releaseProbability={currentSprintData.releaseProbability ?? 0}
+          releaseProbability={currentIterationData.releaseProbability ?? 0}
           triggerSpin={triggerReleaseSpin}
           resetSpinnerTrigger={resetSpinnerTrigger ?? 0 }
           onSpinComplete={(success) => {
@@ -186,7 +186,7 @@ const GameDropZone: React.FC<GameDropZoneProps> = ({
             setTriggerReleaseSpin(false);   // ✅ stop spinning after finish
             onReleaseStatusChange?.(success); // Notify parent component
           }}
-          netValue={currentSprintData.netValue ?? 0}
+          netValue={currentIterationData.netValue ?? 0}
         />
       </div>
 

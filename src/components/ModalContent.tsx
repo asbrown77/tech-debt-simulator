@@ -1,5 +1,5 @@
 
-import { ModalContent, SprintData } from '../types';
+import { ModalContent, IterationData } from '../types';
 import { TechDebtBadge } from './TechDebtBadge';
 
 export const rulesModalContent: ModalContent = {
@@ -61,10 +61,10 @@ export const rulesModalContent: ModalContent = {
 };
 
 
-export const gameEndModalContent = (resultHistory: SprintData[], techDebt: number): ModalContent => ({
+export const gameEndModalContent = (resultHistory: IterationData[], techDebt: number): ModalContent => ({
   body: (
     <>
-      <h2>Congratulations! You completed last Iteration {[...resultHistory].reverse().find((x: SprintData) => x)?.sprintNumber}.</h2>
+      <h2>Congratulations! You completed last Iteration {[...resultHistory].reverse().find((x: IterationData) => x)?.iterationNumber}.</h2>
 
         <p>
           Review how your team performed. What happened to your tech debt? Look at the graph and history. 
@@ -75,7 +75,7 @@ export const gameEndModalContent = (resultHistory: SprintData[], techDebt: numbe
           <span>  <TechDebtBadge value={techDebt} maxValue={50} /></span>
         </p>
         <p>
-          Total Value Delivered: <strong>{[...resultHistory].reverse().find((item: SprintData) => item)?.accumulatedValueDelivered || 0}</strong>
+          Total Value Delivered: <strong>{[...resultHistory].reverse().find((item: IterationData) => item)?.accumulatedValueDelivered || 0}</strong>
 
         </p>
     </>

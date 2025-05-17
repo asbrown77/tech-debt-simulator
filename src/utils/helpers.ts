@@ -1,4 +1,4 @@
-import { Developer, SprintData } from "../types";
+import { Developer, IterationData } from "../types";
 import { calculateDeveloperOutput } from '../game/developerLogic';
 import { initialDevelopers } from '../config/developersConfig';
 
@@ -17,12 +17,12 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
     return Array.from(seen.values());
   }
 
-  export function generateStartingHistory(sprints: number): SprintData[] {
-  const history: SprintData[] = [];
+  export function generateStartingHistory(iterations: number): IterationData[] {
+  const history: IterationData[] = [];
 
   let accumulated = 0;
 
-  for (let i = 1; i <= sprints; i++) {
+  for (let i = 1; i <= iterations; i++) {
     const { updatedDevelopers, devValue, bugs } = calculateDeveloperOutput(
       initialDevelopers,
       STARING_DEV_POWER,
@@ -37,7 +37,7 @@ export function uniqueDevelopers(developers: Developer[]): Developer[] {
     //debugger
 
     history.push({
-      sprintNumber: i,
+      iterationNumber: i,
       techDebt: BASE_TECH_DEBT,
       releaseProbability: BASE_RELEASE_PROBABILITY,
       devValue,

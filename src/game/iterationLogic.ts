@@ -1,20 +1,20 @@
-import { SprintData } from '../types';
+import { IterationData } from '../types';
 
-export function generateSprintData(
-  currentSprint: number,
+export function generateIterationData(
+  currentIteration: number,
   techDebt: number,
   releaseProbability: number,
   devValue: number,
   bugs: number,
   released: boolean,
-  previousSprint?: SprintData
-): SprintData {
+  previousIteration?: IterationData
+): IterationData {
   
   const netValue = devValue - bugs;
-  const accumulatedValueDelivered = previousSprint?.accumulatedValueDelivered || 0;
+  const accumulatedValueDelivered = previousIteration?.accumulatedValueDelivered || 0;
 
   return {
-    sprintNumber: currentSprint + 1,
+    iterationNumber: currentIteration + 1,
     techDebt,
     releaseProbability: releaseProbability,
     devValue,

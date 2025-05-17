@@ -13,20 +13,20 @@ import {
   Bar,
 } from 'recharts';
 
-import { SprintData } from '../types';
+import { IterationData } from '../types';
 import { normalizeTechDebt } from '../utils/chartData';
 
-export const SprintChart = ({ data }: { data: SprintData[] }) => {
+export const IterationChart = ({ data }: { data: IterationData[] }) => {
   const maxTechDebt = 50; // Define the maximum tech debt for scaling
 
-  // Add "Sprint 0" with default values
+  // Add "Iteration 0" with default values
   const chartData = [
-    { sprint: '0', net: 0, delivered: 0, techDebt: 0 }, // Sprint 0
-    ...data.map((sprint) => ({
-      sprint: sprint.sprintNumber.toString(),
-      net: sprint.netValue || 0,
-      delivered: sprint.accumulatedValueDelivered || 0,
-      techDebt: normalizeTechDebt(sprint.techDebt || 0, maxTechDebt), // Normalize tech debt
+    { iteration: '0', net: 0, delivered: 0, techDebt: 0 }, // Iteration 0
+    ...data.map((iteration) => ({
+      iteration: iteration.iterationNumber.toString(),
+      net: iteration.netValue || 0,
+      delivered: iteration.accumulatedValueDelivered || 0,
+      techDebt: normalizeTechDebt(iteration.techDebt || 0, maxTechDebt), // Normalize tech debt
     })),
   ];
 
@@ -39,7 +39,7 @@ export const SprintChart = ({ data }: { data: SprintData[] }) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
   type="number"
-  dataKey="sprint"
+  dataKey="iteration"
   domain={[0, 20]}
   tickCount={20}
   label={{

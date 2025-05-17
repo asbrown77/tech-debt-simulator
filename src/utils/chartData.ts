@@ -1,13 +1,13 @@
-import { SprintData } from '../types';
+import { IterationData } from '../types';
 
-export function generateChartData(history: SprintData[], max: number) {
+export function generateChartData(history: IterationData[], max: number) {
   return Array.from({ length: max }, (_, i) => {
-    const sprint = history.find(s => s.sprintNumber === i + 1);
+    const iteration = history.find(s => s.iterationNumber === i + 1);
     return {
-      sprint: `Sprint ${i + 1}`,
-      net: sprint?.netValue ?? null,
-      delivered: sprint?.accumulatedValueDelivered ?? null,
-      techDebt: sprint?.techDebt ?? null
+      iteration: `Iteration ${i + 1}`,
+      net: iteration?.netValue ?? null,
+      delivered: iteration?.accumulatedValueDelivered ?? null,
+      techDebt: iteration?.techDebt ?? null
     };
   });
 }

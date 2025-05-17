@@ -9,8 +9,8 @@ export type Developer = {
     working?: boolean | null;
   };
 
-export type SprintData = {
-  sprintNumber: number;
+export type IterationData = {
+  iterationNumber: number;
   techDebt: number;
   releaseProbability: number;
   devValue: number;

@@ -4,8 +4,8 @@ import { processInvestments } from './trackInvestments';
 import { finalizeCompletedInvestments } from './investmentLogic';
 import { resetDevelopers, calculateDeveloperOutput } from './developerLogic';
 import { calculateReleaseProbability as getReleaseProbability } from './releaseLogic';
-import { generateSprintData } from './sprintLogic';
-import { SprintData } from '../types';
+import { generateIterationData } from './iterationLogi';
+import { IterationData } from '../types';
 
 function summarizeDeveloperOutput(devs: Developer[]) {
   let devValue = 0;
@@ -25,8 +25,8 @@ export function handleBeginTurnLogic(
   turnsRemaining: { [key: string]: number | undefined },
   completedInvestments: Set<string>,
   mainArea: Developer[],
-  resultHistory: SprintData[],
-  currentSprint: number,
+  resultHistory: IterationData[],
+  currentIteration: number,
   techDebt: number,
   releaseProbability: number,
   developerPower: number,
@@ -60,16 +60,16 @@ export function handleBeginTurnLogic(
  
   const { devValue, bugs } = summarizeDeveloperOutput(mainArea);
 
-  let previousSprintData = resultHistory.at(-1) ;
+  let previousIterationData = resultHistory.at(-1) ;
 
-  const turnSprintData = generateSprintData(
-    currentSprint,
+  const turnIterationData = generateIterationData(
+    currentIteration,
     updatedTechDebt,
     getReleaseProbability(updatedCompleted, investmentConfigs),
     devValue,
     bugs,
     getReleased(),
-    previousSprintData,
+    previousIterationData,
   );
 
 
@@ -79,7 +79,7 @@ export function handleBeginTurnLogic(
     freeInvestedDevelopers,
     updatedActiveInvestments,
     updatedTechDebt,
-    turnSprintData,
+    turnIterationData,
     developerPowerIncreased,
   };
 }

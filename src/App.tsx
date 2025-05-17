@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'; 
-import { Developer, SprintData, ActiveInvestments} from './types';
+import { Developer, IterationData, ActiveInvestments} from './types';
 import { appConfig } from './config/appconfig';
 
 import GameDropZone from './components/GameDropZone';
 import { GameStats } from './components/GameStats';
-import { SprintChart } from './components/SprintChart';
+import { IterationChart } from './components/IterationChart';
 import { ResultHistoryTable } from './components/ResultHistoryTable';
 import { investmentConfigs } from './config/investmentsConfig';
 import { initialDevelopers } from './config/developersConfig';
-import { SprintCounter } from './components/SprintCounter';
+import { IterationCounter } from './components/IterationCounter';
 import { handleDragStart, handleDrop } from './utils/dragHandlers';
 import { handleBeginTurnLogic } from './game/gameLogic';
 import Header from './components/Header';
@@ -24,15 +24,15 @@ import { useGameMessage } from './utils/useGameMessage';
 import { debug } from 'console';
 
 
-const maxSprintCount = 20;
+const maxIterationCount = 20;
 
 
 export default function App() {
   const { gameMessage, setGameMessage } = useGameMessage(); 
   const [developerPower, setDeveloperPower] = useState(STARING_DEV_POWER); 
-  const [currentSprint, setCurrentSprint] = useState(10);
+  const [currentIteration, setCurrentIteration] = useState(10);
   const [techDebt, setTechDebt] = useState(BASE_TECH_DEBT);
-  const [resultHistory, setResultHistory] = useState<SprintData[]>(generateStartingHistory(10));
+  const [resultHistory, setResultHistory] = useState<IterationData[]>(generateStartingHistory(10));
   const [showRules, setShowRules] = useState(false);
   const [workingDevelopers, setMainArea] = useState<Developer[]>(initialDevelopers);
   const [completedInvestments, setCompletedInvestments] = useState<Set<string>>(new Set());
@@ -42,17 +42,17 @@ export default function App() {
   const [showGameEndModal, setShowGameEndModal] = useState(false);
   const spinResolverRef = React.useRef<((value: boolean) => void) | null>(null);
 
-  const chartData = resultHistory.map((sprint) => {
+  const chartData = resultHistory.map((iteration) => {
     return {
-      ...sprint,
-      sprintNumber: sprint.sprintNumber,
-      releaseProbability: sprint.releaseProbability || BASE_RELEASE_PROBABILITY,
-      devValue: sprint.devValue || 0,
-      bugs: sprint.bugs || 0,
-      valueDelivered: sprint.released ? sprint.netValue|| 0 : 0,
-      accumulatedValueDelivered: sprint.accumulatedValueDelivered || 0,
-      released: sprint.released || false,
-      techDebt: sprint.techDebt, 
+      ...iteration,
+      iterationNumber: iteration.iterationNumber,
+      releaseProbability: iteration.releaseProbability || BASE_RELEASE_PROBABILITY,
+      devValue: iteration.devValue || 0,
+      bugs: iteration.bugs || 0,
+      valueDelivered: iteration.released ? iteration.netValue|| 0 : 0,
+      accumulatedValueDelivered: iteration.accumulatedValueDelivered || 0,
+      released: iteration.released || false,
+      techDebt: iteration.techDebt, 
     };
   });
 
@@ -76,17 +76,17 @@ export default function App() {
   );
 
   useEffect(() => {
-    if (gameMessages[currentSprint]) {
+    if (gameMessages[currentIteration]) {
       setGameMessage({
         isOpen: true,
-        content: gameMessages[currentSprint],
+        content: gameMessages[currentIteration],
       });
     }
-  }, [currentSprint]);
+  }, [currentIteration]);
   
 
   const processTurn = async () => {
-    if (currentSprint >= maxSprintCount) {
+    if (currentIteration >= maxIterationCount) {
       resetGame(); // Reset the game 
       return;
     }
@@ -147,9 +147,9 @@ export default function App() {
       completedInvestments,
       latestDevelopers,
       resultHistory,
-      currentSprint,
+      currentIteration,
       techDebt,
-      currentSprintData.releaseProbability,
+      currentIterationData.releaseProbability,
       developerPower, 
       getReleased // Pass the callback to get the latest releaseStatus
     );
@@ -159,7 +159,7 @@ export default function App() {
     }
     
     setPrevTechDebt(techDebt);
-    setPrevReleaseProbability(currentSprintData.releaseProbability);
+    setPrevReleaseProbability(currentIterationData.releaseProbability);
     setPrevDevPower(developerPower);
   
     setTurnsRemaining(result.updatedTurns);
@@ -169,38 +169,38 @@ export default function App() {
     setMainArea(prev => uniqueDevelopers([...prev, ...result.freeInvestedDevelopers.map(resetDeveloper)]));
 
     setResultHistory((prev) => {
-      const lastSprint = prev[prev.length - 1]; // Get the last sprint data
-      const accumulatedValueDelivered = lastSprint
-        ? lastSprint.accumulatedValueDelivered + (result.turnSprintData.released ? result.turnSprintData.netValue : 0)
-        : result.turnSprintData.released
-        ? result.turnSprintData.netValue
+      const lastIteration = prev[prev.length - 1]; // Get the last iteration data
+      const accumulatedValueDelivered = lastIteration
+        ? lastIteration.accumulatedValueDelivered + (result.turnIterationData.released ? result.turnIterationData.netValue : 0)
+        : result.turnIterationData.released
+        ? result.turnIterationData.netValue
         : 0;
     
-      // Update the turnSprintData with the new accumulatedValueDelivered
-      const updatedSprintData = {
-        ...result.turnSprintData,
+      // Update the turnIterationData with the new accumulatedValueDelivered
+      const updatedIterationData = {
+        ...result.turnIterationData,
         accumulatedValueDelivered,
       };
     
-      return [...prev, updatedSprintData];
+      return [...prev, updatedIterationData];
     });
 
-    setCurrentSprint(prev => {
-      const nextSprint = prev + 1;
+    setCurrentIteration(prev => {
+      const nextIteration = prev + 1;
 
-      if (nextSprint >= maxSprintCount && window.gtag) {
+      if (nextIteration >= maxIterationCount && window.gtag) {
         window.gtag('event', 'game_completed', {
           event_category: 'gameplay',
           event_label: 'User completed the game',
         });
       }
   
-      return nextSprint;
+      return nextIteration;
     });
 
     setTurnInProgress(false); // Mark the turn as finished
 
-    if (currentSprint >= maxSprintCount-1) {
+    if (currentIteration >= maxIterationCount-1) {
       setShowGameEndModal(true); // Show the modal when the game ends
       return;
     }
@@ -268,17 +268,17 @@ export default function App() {
   };
 
   const getTurnButtonText = () => {
-    if (currentSprint >= maxSprintCount) return 'New Game';
+    if (currentIteration >= maxIterationCount) return 'New Game';
     return 'Next Iteration';
   };
 
   const getTurnButtonClass = () => {
-    if (currentSprint >= maxSprintCount) return styles.newGameButton; // Apply orange button style
+    if (currentIteration >= maxIterationCount) return styles.newGameButton; // Apply orange button style
     return styles.beginButton; // Default button style
   };
   
-  const currentSprintData = resultHistory[currentSprint - 1] || {
-    sprintNumber: currentSprint,
+  const currentIterationData = resultHistory[currentIteration - 1] || {
+    iterationNumber: currentIteration,
     techDebt: 5,
     releaseProbability: BASE_RELEASE_PROBABILITY,
     devValue: 0,
@@ -291,11 +291,11 @@ export default function App() {
 
   const resetGame = () => {
 
-    setCurrentSprint(1);
+    setCurrentIteration(1);
     setTechDebt(BASE_TECH_DEBT);
     setDeveloperPower(STARING_DEV_POWER);
     setResultHistory(generateStartingHistory(10));
-    setCurrentSprint(10);
+    setCurrentIteration(10);
     setPrevTechDebt(BASE_TECH_DEBT);
     setActiveInvestments(
       investmentConfigs.reduce((acc, investment) => ({ ...acc, [investment.name]: [] }), {})
@@ -366,8 +366,8 @@ export default function App() {
 
             {/* Game Header Stat Box */}
             <GameStats
-              techDebt={currentSprintData.techDebt}
-              releaseProbability={currentSprintData.releaseProbability}
+              techDebt={currentIterationData.techDebt}
+              releaseProbability={currentIterationData.releaseProbability}
               developerValue={developerPower}
               prevTechDebt={techDebt}
               prevReleaseProbability={prevReleaseProbability}
@@ -376,7 +376,7 @@ export default function App() {
 
             <GameDropZone 
               name="Build" 
-              title={`Iteration ${currentSprint.toString()}`}
+              title={`Iteration ${currentIteration.toString()}`}
               area={workingDevelopers} 
               setArea={setMainArea} 
               isBuildArea={true}  
@@ -386,8 +386,8 @@ export default function App() {
               handleDragStart={handleDragStart}
               completedInvestments={completedInvestments}
               investmentConfigs={investmentConfigs}
-              currentSprintData={currentSprintData}
-              resetTurnResultTrigger={currentSprint}
+              currentIterationData={currentIterationData}
+              resetTurnResultTrigger={currentIteration}
               startReleaseSpin={startReleaseSpin}  
               turnInProgress={turnInProgress}
               onReleaseStatusChange={(status) => {
@@ -442,20 +442,20 @@ export default function App() {
                 handleDragStart={handleDragStart}
                 completedInvestments={completedInvestments}
                 investmentConfigs={investmentConfigs}
-                currentSprintData={currentSprintData}
+                currentIterationData={currentIterationData}
               />
             ))}
           </div>
           
         </div> 
 
-        {/* Sprint Counter */}
-        <SprintCounter currentSprint={currentSprint} maxSprints={maxSprintCount} />
+        {/* Iteration Counter */}
+        <IterationCounter currentIteration={currentIteration} maxIterations={maxIterationCount} />
         
         {/* Graph */}
-        <SprintChart data={chartData} />
+        <IterationChart data={chartData} />
         
-        {/* Sprint History Table */}
+        {/* Iteration History Table */}
         <ResultHistoryTable data={resultHistory} />
 
         <hr style={{ marginTop: '3rem', marginBottom: '1rem' }} />

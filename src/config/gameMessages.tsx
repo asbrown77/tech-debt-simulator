@@ -10,7 +10,7 @@ export const gameMessages: Record<number, React.ReactNode> = {
        You’ve joined a team at Iteration 10, burdened by technical debt and struggling to deliver. 
        </p>
       <p>
-        Take a moment to review the history: how quickly did tech debt build up? What value have they actually delivered in the last 10 sprints?
+        Take a moment to review the history: how quickly did tech debt build up? What value have they actually delivered in the last 10 iterations?
       </p>
       <p>
         You face a choice: push forward and ignore the debt, or invest in paying it down. 

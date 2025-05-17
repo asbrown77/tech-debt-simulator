@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from '../styles/GameStats.module.css';
 
-type SprintCounterProps = {
-  currentSprint: number;
-  maxSprints: number;
+type IterationCounterProps = {
+  currentIteration: number;
+  maxIterations: number;
 };
 
-export const SprintCounter: React.FC<SprintCounterProps> = ({ currentSprint, maxSprints }) => (
+export const IterationCounter: React.FC<IterationCounterProps> = ({ currentIteration, maxIterations }) => (
   <div className={styles.turnSummary}>
   <div style={{ 
     textAlign: 'center', 
@@ -15,7 +15,7 @@ export const SprintCounter: React.FC<SprintCounterProps> = ({ currentSprint, max
     fontWeight: 'bold',
     color: 'white'
   }}>
-    Iteration {currentSprint} of {maxSprints}
+    Iteration {currentIteration} of {maxIterations}
   </div>
   </div>
 );

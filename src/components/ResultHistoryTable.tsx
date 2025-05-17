@@ -1,10 +1,10 @@
 import React from 'react';
-import { SprintData } from '../types';
+import { IterationData } from '../types';
 import { TechDebtBadge } from './TechDebtBadge';
 import styles from '../styles/ResultHistoryTable.module.css';
 
 type Props = {
-  data: SprintData[];
+  data: IterationData[];
 };
 
 export const ResultHistoryTable = ({ data }: Props) => {
@@ -19,7 +19,7 @@ export const ResultHistoryTable = ({ data }: Props) => {
       }}>
         <thead>
           <tr style={{ backgroundColor: '#f8f9fa' }}>
-            <th style={cellStyle}>Sprint</th>
+            <th style={cellStyle}>Iteration</th>
             <th style={cellStyle}>Tech Debt</th>
             <th style={cellStyle}>Dev</th>
             <th style={cellStyle}>Bugs</th>
@@ -29,19 +29,19 @@ export const ResultHistoryTable = ({ data }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((sprint, index) => (
+          {data.map((iteration, index) => (
             <tr key={index} style={{ 
               borderBottom: index < data.length - 1 ? '1px solid #dee2e6' : 'none'
             }}>
-              <td style={cellStyle}>{sprint.sprintNumber}</td>
+              <td style={cellStyle}>{iteration.iterationNumber}</td>
               <td style={{ ...cellStyle, textAlign: 'center', verticalAlign: 'middle' }}>
-                <TechDebtBadge value={sprint.techDebt} maxValue={50} />
+                <TechDebtBadge value={iteration.techDebt} maxValue={50} />
               </td>
-              <td style={cellStyle}>{sprint.devValue}</td>
-              <td style={cellStyle}>{sprint.bugs}</td>
-              <td style={cellStyle}><strong>{sprint.netValue}</strong></td>
-              <td style={cellStyle}>{sprint.released ? '✅' : '❌'}</td>
-              <td style={cellStyle}><strong>{sprint.accumulatedValueDelivered}</strong></td>
+              <td style={cellStyle}>{iteration.devValue}</td>
+              <td style={cellStyle}>{iteration.bugs}</td>
+              <td style={cellStyle}><strong>{iteration.netValue}</strong></td>
+              <td style={cellStyle}>{iteration.released ? '✅' : '❌'}</td>
+              <td style={cellStyle}><strong>{iteration.accumulatedValueDelivered}</strong></td>
             </tr>
           ))}
         </tbody>
