@@ -4,7 +4,7 @@ import { processInvestments } from './trackInvestments';
 import { finalizeCompletedInvestments } from './investmentLogic';
 import { resetDevelopers, calculateDeveloperOutput } from './developerLogic';
 import { calculateReleaseProbability as getReleaseProbability } from './releaseLogic';
-import { generateIterationData } from './iterationLogi';
+import { generateIterationData } from './iterationLogic';
 import { IterationData } from '../types';
 
 function summarizeDeveloperOutput(devs: Developer[]) {
