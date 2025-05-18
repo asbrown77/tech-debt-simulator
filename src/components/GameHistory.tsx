@@ -31,6 +31,7 @@ export const GameHistory = ({ onLoadGame, refreshTrigger }: GameHistoryProps) =>
         {games.length > 0 && (
             <button
             className={styles.clearHistoryButton}
+            title="Clear all saved games from history"
             onClick={() => {
                 if (window.confirm('Are you sure you want to clear all saved game history?')) {
                 localStorage.removeItem('gameSessions');
@@ -95,7 +96,7 @@ export const GameHistory = ({ onLoadGame, refreshTrigger }: GameHistoryProps) =>
                     {new Date(game.timestamp).toLocaleString()}
                   </td>
                   <td style={{ padding: '8px', textAlign: 'center', whiteSpace: 'nowrap' }}>
-                    <button className={styles.viewButton}>View</button>
+                    <button className={styles.viewButton} onClick={() => onLoadGame(game.resultHistory, game.name)}>View</button>             
                   </td>
                 </tr>
               );
