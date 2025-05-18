@@ -28,8 +28,9 @@ export const GameHistory = ({ onLoadGame, refreshTrigger }: GameHistoryProps) =>
     <div style={{ padding: '1rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ margin: 0 }}>Game History</h2>
+        {games.length > 0 && (
             <button
-            className={styles.newGameButton}
+            className={styles.clearHistoryButton}
             onClick={() => {
                 if (window.confirm('Are you sure you want to clear all saved game history?')) {
                 localStorage.removeItem('gameSessions');
@@ -37,23 +38,23 @@ export const GameHistory = ({ onLoadGame, refreshTrigger }: GameHistoryProps) =>
                 }
             }}
             >
+
             Clear History
             </button>
-
-
+        )}
         </div>
 
       {games.length === 0 ? (
         <p>No games played yet.</p>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }} >
           <thead>
             <tr style={{ backgroundColor: '#f0f0f0' }}>
-              <th style={{ textAlign: 'left', padding: '8px' }}>Game</th>
-              <th style={{ textAlign: 'left', padding: '8px' }}>Tech Debt</th>
-              <th style={{ textAlign: 'left', padding: '8px' }}>Total Value Delivered</th>
-              <th style={{ textAlign: 'left', padding: '8px' }}>Date</th>
-              <th style={{ padding: '8px' }}></th>
+              <th style={{ padding: '8px', textAlign: 'left', border: '0px solid #ccc', }}>Game Name</th>
+              <th style={{ padding: '8px', textAlign: 'center', whiteSpace: 'nowrap', border: '0px solid #ccc', width:'15%'}}>Tech Debt</th>
+              <th style={{ padding: '8px', textAlign: 'center', whiteSpace: 'nowrap', border: '0px solid #ccc', width:'15%'}}>Value</th>
+              <th style={{ padding: '8px', textAlign: 'center', border: '0px solid #ccc', width:'20%'}}>Date</th>
+              <th style={{ padding: '8px', textAlign: 'center', whiteSpace: 'nowrap' , border: '0px solid #ccc', width:'12ch'}}></th>
             </tr>
           </thead>
           <tbody>
@@ -65,8 +66,8 @@ export const GameHistory = ({ onLoadGame, refreshTrigger }: GameHistoryProps) =>
 
               return (
                 <tr key={index} style={{ borderTop: '1px solid #ccc' }}>
-                  <td style={{ padding: '8px' }}>{game.name}</td>
-                  <td style={{ padding: '8px' }}>
+                  <td style={{ padding: '8px', textAlign: 'left' }}>{game.name}</td>
+                  <td style={{ padding: '8px', textAlign: 'center', whiteSpace: 'nowrap' }}>
                     {(() => {
                         const debt = game.resultHistory.at(-1)?.techDebt ?? 0;
                         const letter = getTechDebtLetter(debt, 50);
@@ -89,10 +90,12 @@ export const GameHistory = ({ onLoadGame, refreshTrigger }: GameHistoryProps) =>
                     })()}
                   </td>
 
-                  <td style={{ padding: '8px' }}>{totalDelivered}</td>
-                <td style={{ padding: '8px' }}>{new Date(game.timestamp).toLocaleString()}</td>
-                  <td style={{ padding: '8px' }}>           
-                    <button onClick={() => onLoadGame(game.resultHistory, game.name)}>View</button>
+                  <td style={{ padding: '8px', textAlign: 'center', whiteSpace: 'nowrap' }}>{totalDelivered}</td>
+                  <td style={{ padding: '8px', textAlign: 'center',  }}>
+                    {new Date(game.timestamp).toLocaleString()}
+                  </td>
+                  <td style={{ padding: '8px', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                    <button className={styles.viewButton}>View</button>
                   </td>
                 </tr>
               );

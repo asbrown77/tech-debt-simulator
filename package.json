@@ -1,6 +1,6 @@
 {
   "name": "techdebtgame",
-  "version": "1.0.15",
+  "version": "1.0.17",
   "private": true,
   "homepage": "/techdebtgame",
   "dependencies": {

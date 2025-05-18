@@ -1,5 +1,5 @@
 /* Orange button for New Game */
-.newGameButton {
+.clearHistoryButton {
   background-color: #ff7700; /* Orange background */
   color: white; /* White text */
   border: none;
@@ -11,6 +11,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.newGameButton:hover {
+.clearHistoryButton:hover {
   background-color: #e06600; /* Darker orange on hover */
+}
+
+.viewButton {
+  background-color: #003366;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.viewButton:hover {
+  background-color: #005599;
 }
